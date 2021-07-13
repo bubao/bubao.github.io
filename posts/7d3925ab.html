@@ -1,0 +1,846 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="目标来源
+
+了解正则表达式语法
+
+在 IDE 中使用正则表达式处理复杂的字符串查找、替换需求
+
+在 JavaScript 程序设计中使用正则表达式处理字符串">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+  <title>正则表达式笔记 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/tomorrow-night.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>瓦猫杂货铺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="正则表达式笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-08-10 14:51" pubdate>
+        2016年8月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      940 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">正则表达式笔记</h1>
+            
+            <div class="markdown-body">
+              <h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p><a target="_blank" rel="noopener" href="http://deerchao.net/tutorials/regex/regex.htm">来源</a></p>
+<ul>
+<li><p>了解正则表达式语法</p>
+</li>
+<li><p>在 IDE 中使用正则表达式处理复杂的字符串查找、替换需求</p>
+</li>
+<li><p>在 JavaScript 程序设计中使用正则表达式处理字符串</p>
+<span id="more"></span>
+<h3 id="什么是正则表达式"><a href="#什么是正则表达式" class="headerlink" title="什么是正则表达式"></a>什么是正则表达式</h3></li>
+<li><p>Regular-Expression 使用单个字符串来描述、匹配一系列符合某个句法规则的字符串</p>
+</li>
+<li><p>说简单了就是按照某种规则去匹配符合条件的字符串<!--more--></p>
+</li>
+</ul>
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">find ./ -name *.txt<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="REGEXPER"><a href="#REGEXPER" class="headerlink" title="REGEXPER"></a>REGEXPER</h3><figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]&#123;2,3&#125;)&#123;1,2&#125;)$<br></code></pre></div></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://regexper.com/">REGEXPER</a></p>
+<table>
+<thead>
+<tr>
+<th align="center">reg</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">元字符</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>.</code></td>
+<td align="center">任意字符</td>
+</tr>
+<tr>
+<td align="center"><code>\w</code></td>
+<td align="center">匹配除换行符以外的任意字符</td>
+</tr>
+<tr>
+<td align="center"><code>\s</code></td>
+<td align="center">匹配字母或数字或下划线或汉字</td>
+</tr>
+<tr>
+<td align="center"><code>\d</code></td>
+<td align="center">匹配数字</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">单词边界</td>
+</tr>
+<tr>
+<td align="center"><code>^</code></td>
+<td align="center">开头</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">结尾</td>
+</tr>
+<tr>
+<td align="center"><strong>字符转义</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>\</code></td>
+<td align="center">转义</td>
+</tr>
+<tr>
+<td align="center"><strong>重复</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>*</code></td>
+<td align="center">重复零次或更多次</td>
+</tr>
+<tr>
+<td align="center"><code>+</code></td>
+<td align="center">重复一次或更多次</td>
+</tr>
+<tr>
+<td align="center"><code>?</code></td>
+<td align="center">重复零次或一次</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n&#125;</code></td>
+<td align="center">重复 n 次</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n,&#125;</code></td>
+<td align="center">重复 n 次或更多次</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n,m&#125;</code></td>
+<td align="center">重复 n 次到 m 次</td>
+</tr>
+<tr>
+<td align="center"><strong>字符类</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>[]</code></td>
+<td align="center">或</td>
+</tr>
+<tr>
+<td align="center"><code>\d</code></td>
+<td align="center">[0-9]</td>
+</tr>
+<tr>
+<td align="center"><code>\w</code></td>
+<td align="center">[a-zA-Z0-9_]</td>
+</tr>
+<tr>
+<td align="center"><strong>分支条件</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">`</td>
+<td align="center">`</td>
+</tr>
+<tr>
+<td align="center">*<em>分组</em></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>()</code></td>
+<td align="center">分组</td>
+</tr>
+<tr>
+<td align="center"><code>$1</code></td>
+<td align="center">获取分组</td>
+</tr>
+<tr>
+<td align="center"><strong>反义</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>\W</code></td>
+<td align="center">匹配任意不是字母，数字，下划线，汉字的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\S</code></td>
+<td align="center">匹配任意不是空白符的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\D</code></td>
+<td align="center">匹配任意非数字的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\B</code></td>
+<td align="center">匹配不是单词开头或结束的位置</td>
+</tr>
+<tr>
+<td align="center"><code>[^x]</code></td>
+<td align="center">匹配除了 x 以外的任意字符</td>
+</tr>
+<tr>
+<td align="center"><code>[^aeiou]</code></td>
+<td align="center">匹配除了 aeiou 这几个字母以外的任意字符</td>
+</tr>
+<tr>
+<td align="center"><strong>贪婪与懒惰</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>*?</code></td>
+<td align="center">重复任意次，但尽可能少重复</td>
+</tr>
+<tr>
+<td align="center"><code>+?</code></td>
+<td align="center">重复 1 次或更多次，但尽可能少重复</td>
+</tr>
+<tr>
+<td align="center"><code>??</code></td>
+<td align="center">重复 0 次或 1 次，但尽可能少重</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n,m&#125;?</code></td>
+<td align="center">重复 n 到 m 次，但尽可能少重复</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n,&#125;?</code></td>
+<td align="center">重复 n 次以上，但尽可能少重复</td>
+</tr>
+<tr>
+<td align="center"><strong>其他</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>\a</code></td>
+<td align="center">报警字符（打印它的效果是电脑嘀一声）</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">通常是单词分界位置，但如果在字符类里使用代表退格</td>
+</tr>
+<tr>
+<td align="center"><code>\t</code></td>
+<td align="center">制表符，Tab</td>
+</tr>
+<tr>
+<td align="center"><code>\r</code></td>
+<td align="center">回车</td>
+</tr>
+<tr>
+<td align="center"><code>\v</code></td>
+<td align="center">竖向制表符</td>
+</tr>
+<tr>
+<td align="center"><code>\f</code></td>
+<td align="center">换页符</td>
+</tr>
+<tr>
+<td align="center"><code>\n</code></td>
+<td align="center">换行符</td>
+</tr>
+<tr>
+<td align="center"><code>\e</code></td>
+<td align="center">Escape</td>
+</tr>
+<tr>
+<td align="center"><code>\0nn</code></td>
+<td align="center">ASCII 代码中八进制代码为 nn 的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\xnn</code></td>
+<td align="center">ASCII 代码中十六进制代码为 nn 的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\unnnn</code></td>
+<td align="center">Unicode 代码中十六进制代码为 nnnn 的字符</td>
+</tr>
+<tr>
+<td align="center"><code>\cN</code></td>
+<td align="center">ASCII 控制字符。比如、cC 代表 Ctrl+C</td>
+</tr>
+<tr>
+<td align="center"><code>\A</code></td>
+<td align="center">字符串开头（类似^，但不受处理多行选项的影响）</td>
+</tr>
+<tr>
+<td align="center"><code>\Z</code></td>
+<td align="center">字符串结尾或行尾（不受处理多行选项的影响）</td>
+</tr>
+<tr>
+<td align="center"><code>\z</code></td>
+<td align="center">字符串结尾（类似$，但不受处理多行选项的影响）</td>
+</tr>
+<tr>
+<td align="center"><code>\G</code></td>
+<td align="center">当前搜索的开头</td>
+</tr>
+<tr>
+<td align="center"><code>\p&#123;name&#125;</code></td>
+<td align="center">Unicode 中命名为 name 的字符类，例如、p{IsGreek}</td>
+</tr>
+<tr>
+<td align="center"><code> (?&gt;exp)</code></td>
+<td align="center">贪婪子表达式</td>
+</tr>
+<tr>
+<td align="center"><code>(?&lt;x&gt;-&lt;y&gt;exp)</code></td>
+<td align="center">平衡组</td>
+</tr>
+<tr>
+<td align="center"><code>(?im-nsx:exp)</code></td>
+<td align="center">在子表达式 exp 中改变处理选项</td>
+</tr>
+<tr>
+<td align="center"><code> (?im-nsx)</code></td>
+<td align="center">为表达式后面的部分改变处理选项</td>
+</tr>
+<tr>
+<td align="center"><code>(?(exp)yes|no)</code></td>
+<td align="center">把 exp 当作零宽正向先行断言，如果在这个位置能匹配，使用 yes 作为此组的表达式；否则使用 no</td>
+</tr>
+<tr>
+<td align="center"><code>(?(exp)yes)</code></td>
+<td align="center">同上，只是使用空表达式作为 no</td>
+</tr>
+<tr>
+<td align="center"><code>(?(name)yes|no)</code></td>
+<td align="center">如果命名为 name 的组捕获到了内容，使用 yes 作为表达式；否则使用 no</td>
+</tr>
+<tr>
+<td align="center"><code>(?(name)yes)</code></td>
+<td align="center">同上，只是使用空表达式作为 no</td>
+</tr>
+</tbody></table>
+<h2 id="REGEXP-对象"><a href="#REGEXP-对象" class="headerlink" title="REGEXP 对象"></a>REGEXP 对象</h2><p>JavaScript 通过内置对象 RegExp 支持正则表达式</p>
+<p>有两种方式实例化 RegExp 对象</p>
+<ul>
+<li>字面量</li>
+<li>构造函数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">/*字面量*/</span><br><span class="hljs-keyword">var</span> reg = <span class="hljs-regexp">/\bis\b /g</span>;<span class="hljs-comment">//g 是全局搜索</span><br><span class="hljs-string">&#x27;He is a Boy. This is a boy. Where is she&#x27;</span>.replace(reg,<span class="hljs-string">&#x27;IS&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> reg = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">&#x27;\\bis\\b&#x27;</span>,<span class="hljs-string">&#x27;g&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><ul>
+<li>g:global 全文搜索，不添加，搜索到地一个匹配停止</li>
+<li>i:ignore case 忽略大小写，默认大小写敏感</li>
+<li>m:multiple lines 多行搜索</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%87%AA%E7%94%A8%E7%AC%94%E8%AE%B0/">自用笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/70f06b63.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux 添加右键菜单</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/cefe6d2e.html">
+                        <span class="hidden-mobile">Java 关键字总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

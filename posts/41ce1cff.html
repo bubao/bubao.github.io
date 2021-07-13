@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="一直以来都是看别人写的周刊和月刊，然后 star 到自己的 github 仓库就忘记了。不如自己也整一个，把自己每一周看到的好项目以及学习资料收集起来，方便自己查阅。
+工具keppler通过浏览器，实时代码共享，可以用来在局域网内授课和 code review。">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+  <title>周刊 （第 1 期） - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/tomorrow-night.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>瓦猫杂货铺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="周刊 （第 1 期）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-27 10:19" pubdate>
+        2021年6月27日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      441 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      5
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">周刊 （第 1 期）</h1>
+            
+            <div class="markdown-body">
+              <p>一直以来都是看别人写的周刊和月刊，然后 star 到自己的 github 仓库就忘记了。不如自己也整一个，把自己每一周看到的好项目以及学习资料收集起来，方便自己查阅。</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><h3 id="keppler"><a href="#keppler" class="headerlink" title="keppler"></a><a target="_blank" rel="noopener" href="https://github.com/brunosimon/keppler">keppler</a></h3><p>通过浏览器，实时代码共享，可以用来在局域网内授课和 code review。</p>
+<span id="more"></span>
+
+<p><img src="https://github.com/brunosimon/keppler/raw/master/resources/screenshots/screen-project-1.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="easings-net"><a href="#easings-net" class="headerlink" title="easings.net"></a><a target="_blank" rel="noopener" href="https://github.com/ai/easings.net">easings.net</a></h3><p>常用缓动函数库，帮助开发者选择正确的缓动功能的备忘录。</p>
+<h3 id="SvgPathEditor"><a href="#SvgPathEditor" class="headerlink" title="SvgPathEditor"></a><a target="_blank" rel="noopener" href="https://github.com/Yqnn/svg-path-editor">SvgPathEditor</a></h3><p>在浏览器上常见和编辑 svg path。</p>
+<p><img src="https://github.com/Yqnn/svg-path-editor/raw/master/doc/screenshot.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="mitojs"><a href="#mitojs" class="headerlink" title="mitojs"></a><a target="_blank" rel="noopener" href="https://github.com/clouDr-f2e/mitojs">mitojs</a></h3><p><img src="https://camo.githubusercontent.com/97a8ca03fb1048dd510024912a28a174fe3ea48461d66b9cf48681ce730719ba/68747470733a2f2f747661312e73696e61696d672e636e2f6c617267652f3030386933736b4e6c793167716c386173697437716a333064653035633379672e6a7067" srcset="/img/loading.gif" lazyload></p>
+<p>一款轻量级的收集页面的用户点击行为、路由跳转、接口报错、代码报错、并上报服务端的 SDK</p>
+<p><img src="https://camo.githubusercontent.com/d54cd5c7e13c976cd0b65052f1c32aa0157d765586bd8609919e0ff548e77b89/68747470733a2f2f747661312e73696e61696d672e636e2f6c617267652f30303865476d5a456c7931676d78676e34793173616733313567306d326864742e676966" srcset="/img/loading.gif" lazyload></p>
+<h3 id="svgi"><a href="#svgi" class="headerlink" title="svgi"></a><a target="_blank" rel="noopener" href="https://github.com/Angelmmiguel/svgi">svgi</a></h3><p>命令行审查 svg 结构的工具。</p>
+<p><img src="https://camo.githubusercontent.com/fc0fb4898b08a1aabe7d6587d5b0232fe23b0da63bbd072db7179d58eff621fe/68747470733a2f2f61736369696e656d612e6f72672f612f3132333334332e706e67" srcset="/img/loading.gif" lazyload></p>
+<h3 id="piscina"><a href="#piscina" class="headerlink" title="piscina"></a><a target="_blank" rel="noopener" href="https://github.com/piscinajs/piscina">piscina</a></h3><p>Node.js 线程池</p>
+<h3 id="suncalc"><a href="#suncalc" class="headerlink" title="suncalc"></a><a target="_blank" rel="noopener" href="https://github.com/mourner/suncalc">suncalc</a></h3><p>一个可以计算日出日落的 Nodejs 库</p>
+<h3 id="1loc"><a href="#1loc" class="headerlink" title="1loc"></a><a target="_blank" rel="noopener" href="https://github.com/phuoc-ng/1loc">1loc</a></h3><p>这个网站上收集了一行 js 实用代码。</p>
+<p><img src="https://github.com/phuoc-ng/1loc/raw/master/assets/screenshot.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="better-sqlite3"><a href="#better-sqlite3" class="headerlink" title="better-sqlite3"></a><a target="_blank" rel="noopener" href="https://github.com/JoshuaWise/better-sqlite3">better-sqlite3</a></h3><p>Node.js 操作 sqlite3 的库，notion 的 github 账号 fork 过。</p>
+<blockquote>
+<p>一直以为 notion 官方没有 github 账号，通过这个包意外发现 <a target="_blank" rel="noopener" href="https://github.com/makenotion">github.com/makenotion</a>，另外是不是意味着 notion 打算做本地笔记了？</p>
+</blockquote>
+<h3 id="notion-sdk-js"><a href="#notion-sdk-js" class="headerlink" title="notion-sdk-js"></a><a target="_blank" rel="noopener" href="https://github.com/makenotion/notion-sdk-js">notion-sdk-js</a></h3><p>notion 官方 JavaScript Notion api。</p>
+<p><img src="https://www.notion.so/front-static/external/readme/images/code@2x.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><h3 id="Node-js-最佳实践"><a href="#Node-js-最佳实践" class="headerlink" title="Node.js 最佳实践"></a><a target="_blank" rel="noopener" href="https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md">Node.js 最佳实践</a></h3><p>Node.js 开发优质内容</p>
+<h3 id="TTS"><a href="#TTS" class="headerlink" title="TTS"></a><a target="_blank" rel="noopener" href="https://github.com/mozilla/TTS">TTS</a></h3><p>mozilla 开源的深度学习 TTS</p>
+<p><img src="https://user-images.githubusercontent.com/1402048/104139991-3fd15e00-53af-11eb-8640-3a78a64641dd.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="react-kawaii"><a href="#react-kawaii" class="headerlink" title="react-kawaii"></a><a target="_blank" rel="noopener" href="https://github.com/miukimiu/react-kawaii">react-kawaii</a></h3><p><img src="https://raw.githubusercontent.com/miukimiu/react-kawaii/master/docs/images/react-kawaii-logo%402x.png" srcset="/img/loading.gif" lazyload></p>
+<p>这是一个 react 组件库，这些 svg 图太可爱了，想把弄个同款的 icon</p>
+<p><img src="https://github.com/miukimiu/react-kawaii/raw/master/docs/images/react-kawaii-example.gif?raw=true" srcset="/img/loading.gif" lazyload></p>
+<h3 id="modernweb-dev"><a href="#modernweb-dev" class="headerlink" title="modernweb.dev"></a><a target="_blank" rel="noopener" href="https://github.com/modernweb-dev/web">modernweb.dev</a></h3><p>现代 web 开发指南，工具，库。</p>
+<p><img src="https://github.com/modernweb-dev/web/raw/master/assets/logo.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="《SVG-动画开发实战》小册"><a href="#《SVG-动画开发实战》小册" class="headerlink" title="《SVG 动画开发实战》小册"></a><a target="_blank" rel="noopener" href="https://github.com/xiaoluoboding/svg-animation-booklet">《SVG 动画开发实战》小册</a></h3><p>专注于有关 SVG 的动画开发，探究 SVG 开发常见动画的原理。站在巨人的肩膀上，借助 <code>GreenSock Animation Platform（GSAP）</code> 进行丰富的动画开发。</p>
+<p><img src="https://raw.githubusercontent.com/xiaoluoboding/svg-animation-booklet/main/docs/public/SVG_Animation.gif" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Deep-JavaScript-Theory-and-techniques"><a href="#Deep-JavaScript-Theory-and-techniques" class="headerlink" title="Deep JavaScript: Theory and techniques"></a><a target="_blank" rel="noopener" href="https://exploringjs.com/deep-js/">Deep JavaScript: Theory and techniques</a></h3><p><img src="https://exploringjs.com/deep-js/img-homepage/cover-homepage.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>深入探讨 JavaScript，一本很不错的 JavaScript 进阶读物，可在网上直接阅读。</p>
+<h3 id="css-animation-101"><a href="#css-animation-101" class="headerlink" title="css-animation-101"></a><a target="_blank" rel="noopener" href="https://github.com/cssanimation/css-animation-101">css-animation-101</a></h3><p><img src="https://raw.githubusercontent.com/cssanimation/css-animation-101/master/images/cover.png" srcset="/img/loading.gif" lazyload></p>
+<p>css 动画教程，<a target="_blank" rel="noopener" href="https://h-wakanda.github.io/css-animation-101-cn/">中文版</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%91%A8%E5%88%8A/">周刊</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%91%A8%E5%88%8A/">周刊</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/d77eae53.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">记 egg-redis 无法启动的问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/c0d2850d.html">
+                        <span class="hidden-mobile">Nginx实现防盗链</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="朋友送的 NanoPi M2 经过上次的折腾，算是能正常开机了，但是 NanoPi M2 自己是没有 wifi 模块的，我于是祭出了自己在 pc 上用的 腾达 U12 和开源的 rtl8812AU 驱动，想让 NanoPi M2 支持我这仅有的 usb wifi。于是又开始了我作死的折腾之旅。">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+  <title>从 NanoPi M2 中编译 wifi 模块中学习内核编译 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/tomorrow-night.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>瓦猫杂货铺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210306085857.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="从 NanoPi M2 中编译 wifi 模块中学习内核编译">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-08 11:11" pubdate>
+        2021年3月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从 NanoPi M2 中编译 wifi 模块中学习内核编译</h1>
+            
+            <div class="markdown-body">
+              <p>朋友送的 NanoPi M2 经过上次的折腾，算是能正常开机了，但是 NanoPi M2 自己是没有 wifi 模块的，我于是祭出了自己在 pc 上用的 <a target="_blank" rel="noopener" href="https://www.tenda.com.cn/product/U12.html">腾达 U12</a> 和开源的 <a target="_blank" rel="noopener" href="https://github.com/gnab/rtl8812au">rtl8812AU</a> 驱动，想让 NanoPi M2 支持我这仅有的 usb wifi。于是又开始了我作死的折腾之旅。</p>
+<span id="more"></span>
+
+<p>NanoPi M2 性能堪忧，而且 ssh 连接会突然假死，我没办法在真机上直接编译模块。虽然后来我找到 <a target="_blank" rel="noopener" href="https://www.vpsee.com/2013/08/how-to-kill-an-unresponsive-ssh-connection/">资料</a>，可以使用<code>~.</code>使得卡死的 ssh 终端复活，ssh 经常卡死找不到原因，我还是使用了交叉编译。</p>
+<p>NanoPi M2 并不在 <a target="_blank" rel="noopener" href="https://github.com/gnab/rtl8812au">rtl8812AU</a> 的配置中，幸亏在 github 上找到一个 NanoPi Neo 的交叉编译模块的 <a target="_blank" rel="noopener" href="https://github.com/makserge/webradio/blob/d39d2f96c29628385a71658f30b523eabb793c6e/backend-nanopi-neo/rtl8812au/build.txt">教程</a>，结合 <a target="_blank" rel="noopener" href="http://wiki.friendlyarm.com/wiki/index.php/NanoPi_M2/zh">NanoPi M2 wiki</a>，完成了模块编译。</p>
+<h2 id="交叉编译器"><a href="#交叉编译器" class="headerlink" title="交叉编译器"></a>交叉编译器</h2><p>万万没想到，编译一个内核模块是需要内核源码支持的，而为了编译内核源码，还要 uboot 的支持，而为了能正常编译前面这两个，还要准备交叉编译环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/friendlyarm/prebuilts.git -b master --depth 1<br><span class="hljs-built_in">cd</span> prebuilts/gcc-x64<br>cat toolchain-4.9.3-armhf.tar.gz* | sudo tar xz -C /<br></code></pre></div></td></tr></table></figure>
+
+<p>安装好的交叉编译器在<code>/opt/FriendlyARM/toolchain/4.9.3/bin</code>，所以删除的话，直接<code>sudo rm -rf /opt/FriendlyARM</code>，为了使其生效，还需要把路径加到<code>PATH</code>中，我使用的是 zsh，所以是在<code>~/.zshrc</code>的末尾添加</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> PATH=/opt/FriendlyARM/toolchain/4.9.3/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> GCC_COLORS=auto<br></code></pre></div></td></tr></table></figure>
+
+<p>执行一下<code>~/.zshrc</code>脚本让设置立即在当前 shell 窗口中生效</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">. ~/.zshrc<br></code></pre></div></td></tr></table></figure>
+
+<p>检查一下是否已经生效</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">arm-linux-gcc -v<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="编译-uboot"><a href="#编译-uboot" class="headerlink" title="编译 uboot"></a>编译 uboot</h2><p>下载 U-Boot 源代码并编译，NanoPi M2 使用的是<code>nanopi2-lollipop-mr1</code>分支</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/friendlyarm/uboot_nanopi2.git<br><span class="hljs-built_in">cd</span> uboot_nanopi2<br>git checkout nanopi2-lollipop-mr1<br><span class="hljs-comment"># 上面的命令也能写成</span><br><span class="hljs-comment"># git clone https://gitee.com/friendlyelec/prebuilts.git -b nanopi2-lollipop-mr1 --depth 1</span><br>make s5p4418_nanopi2_config<br>make CROSS_COMPILE=arm-linux-<br></code></pre></div></td></tr></table></figure>
+
+<p>做了这么多，其实只是需要<code>U-Boot</code>中的工具<code>mkimage</code>，wiki 上说可以使用<code>sudo apt-get install u-boot-tools</code>来安装，但是我还是乖乖自己编译吧</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> uboot_nanopi2<br>make CROSS_COMPILE=arm-linux- tools<br>sudo mkdir -p /usr/<span class="hljs-built_in">local</span>/sbin &amp;&amp; sudo cp -v tools/mkimage /usr/<span class="hljs-built_in">local</span>/sbin<br></code></pre></div></td></tr></table></figure>
+
+<p>emmmm，所以想删除的话可以运行<code>sudo rm /usr/local/sbin</code></p>
+<h2 id="编译-Linux-kernel"><a href="#编译-Linux-kernel" class="headerlink" title="编译 Linux kernel"></a>编译 Linux kernel</h2><p>搞了这么多，终于可以编译内核了</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">it <span class="hljs-built_in">clone</span> https://github.com/friendlyarm/linux-3.4.y.git<br><span class="hljs-built_in">cd</span> linux-3.4.y<br>git checkout nanopi2-lollipop-mr1<br><span class="hljs-comment"># 同样可以使用下面的代码代替</span><br><span class="hljs-comment"># git clone https://github.com/friendlyarm/linux-3.4.y.git -b nanopi2-lollipop-mr1 --depth 1</span><br></code></pre></div></td></tr></table></figure>
+
+<p>编译 Ubuntu Core 内核</p>
+<p>LCD 输出：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">make nanopi2_core-qt_defconfig<br></code></pre></div></td></tr></table></figure>
+
+<p>HDMI 输出：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">make nanopi2_core-qt_hdmi_defconfig<br></code></pre></div></td></tr></table></figure>
+
+<p>选择自己需要的内核配置后，使用以下命令即可编译生成 uImage。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">touch .scmversion<br>make uImage<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="编译内核模块"><a href="#编译内核模块" class="headerlink" title="编译内核模块"></a>编译内核模块</h2><p>终于，到编译<code>rtl8812AU</code>的时候了</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/gnab/rtl8812au.git<br><span class="hljs-built_in">cd</span> rtl8812au<br>make KSRC=/home/bubao/Workspaces/linux/linux-3.4.y \<br>     CROSS_COMPILE=arm-linux- \<br>     ARCH=arm<br></code></pre></div></td></tr></table></figure>
+
+<p>编译后生成<code>8812au.ko</code>，检查一下</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">file 8812au.ko<br>8812au.ko: ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV), BuildID[sha1]=a93331169d61966a05bfb2830cd65f5faa1b744e, with debug_info, not stripped<br></code></pre></div></td></tr></table></figure>
+
+<p>把模块发到 pi 上</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">scp 8812au.ko pi@192.168.1.11:/home/pi/<br></code></pre></div></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">sudo cp /home/pi/8812au.ko /lib/modules/3.4.39-s5p4418/kernel/drivers/net/wireless/8812au.ko<br>sudo depmod<br>sudo insmod /lib/modules/3.4.39-s5p4418/kernel/drivers/net/wireless/8812au.ko<br></code></pre></div></td></tr></table></figure>
+
+<p>报错了？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs log">insmod: ERROR: could not insert module 8812au.ko: Unknown symbol in module<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ dmesg | tail -n 19<br>[    9.408000] Bluetooth: HCI UART driver ver 2.3<br>[    9.416000] Bluetooth: HCI UART protocol H4 registered<br>[    9.424000] Bluetooth: HCI UART protocol BCM registered<br>[    9.436000] Bluetooth: BNEP (Ethernet Emulation) ver 1.3<br>[    9.444000] Bluetooth: BNEP filters: protocol multicast<br>[    9.452000] Bluetooth: BNEP socket layer initialized<br>[    9.472000] setting PHY_BASEADDR_POWER_GATE, <span class="hljs-built_in">set</span> 1<br>[    9.480000] setting PHY_BASEADDR_PMU_ISOLATE+4, <span class="hljs-built_in">set</span> 0<br>[    9.488000] setting PHY_BASEADDR_PMU_ISOLATE+8, <span class="hljs-built_in">set</span> 0<br>[    9.496000] setting PHY_BASEADDR_PMU_ISOLATE, <span class="hljs-built_in">set</span> 1<br>[    9.504000] <span class="hljs-built_in">read</span> PHY_BASEADDR_PMU_ISOLATE + 0xC<br>[    9.512000] Wait Power UP Ack(powerUpAck=0x00000000)<br>[    9.520000] setting ClockGen, <span class="hljs-built_in">set</span> 1<br>[    9.528000] setting Reset VR addr(0xf0012008)<br>[    9.536000] setting PHY_BASEADDR_VR_PMU addr(0xf0072000)<br>[    9.544000] Vr: VR device driver loaded(ver1.2) <span class="hljs-keyword">for</span> s5p4418<br>[   11.208000] eth0: device MAC address 9a:63:b3:25:10:7e<br>[   14.988000] PHY: stmmac-0:07 - Link is Up - 1000/Full<br>[ 4336.044000] 8812au: Unknown symbol kernel_write (err 0)<br></code></pre></div></td></tr></table></figure>
+
+<p>查看一下，果然还是没加载上来呢</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-variable">$lsmod</span><br>Module                  Size  Used by<br>nx_vpu                351383  0<br>vr                    142655  0<br>bnep                   11245  0<br>hci_uart               14744  0<br>btbcm                   5120  1 hci_uart<br>bluetooth             385422  3 bnep,btbcm,hci_uart<br>cfg80211              459462  0<br>compat                 23995  4 bnep,cfg80211,hci_uart,bluetooth<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">$ modinfo 8812au.ko <br>filename:       /home/pi/8812au.ko<br>version:        v4.2.3<br>author:         Realtek Semiconductor Corp.<br>description:    Realtek Wireless Lan Driver<br>license:        GPL<br>srcversion:     A0769B96B082C1E7D80256F<br><span class="hljs-built_in">alias</span>:          usb:v2357p0120d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p011Ed*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp0823d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v3823p6249d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p3318d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDApA811d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v04BBp0959d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v04BBp0953d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v056Ep4007d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0411p029Bd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0411p0242d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2019pAB32d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0846p9052d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p3314d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v7392pA813d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v7392pA812d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v7392pA811d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp8822d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp0821d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp0811d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2604p0012d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp8812d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0411p025Dd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p0122d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p010Ed*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p010Dd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p0103d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2357p0101d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v20F4p805Bd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p3316d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p3315d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v07B8p8812d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2019pAB30d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v1740p0100d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v13B1p003Fd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v1058p0632d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p3313d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0586p3426d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0E66p0022d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0B05p17D2d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0409p0408d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0789p016Ed*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v04BBp0952d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0DF6p0074d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v7392pA822d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2001p330Ed*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v050Dp1109d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v2604p0012d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v050Dp1106d*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp881Cd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp881Bd*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp881Ad*dc*dsc*dp*ic*isc*ip*<br><span class="hljs-built_in">alias</span>:          usb:v0BDAp8812d*dc*dsc*dp*ic*isc*ip*<br>depends:        <br>vermagic:       3.4.39-s5p4418 SMP preempt mod_unload ARMv7 p2v8 <br>parm:           rtw_ips_mode:The default IPS mode (int)<br>parm:           rtw_regulatory_id:int<br>parm:           ifname:The default name to allocate <span class="hljs-keyword">for</span> first interface (charp)<br>parm:           if2name:The default name to allocate <span class="hljs-keyword">for</span> second interface (charp)<br>parm:           rtw_initmac:charp<br>parm:           rtw_channel_plan:int<br>parm:           rtw_chip_version:int<br>parm:           rtw_rfintfs:int<br>parm:           rtw_lbkmode:int<br>parm:           rtw_network_mode:int<br>parm:           rtw_channel:int<br>parm:           rtw_mp_mode:int<br>parm:           rtw_wmm_enable:int<br>parm:           rtw_vrtl_carrier_sense:int<br>parm:           rtw_vcs_type:int<br>parm:           rtw_busy_thresh:int<br>parm:           rtw_ht_enable:int<br>parm:           rtw_bw_mode:int<br>parm:           rtw_ampdu_enable:int<br>parm:           rtw_rx_stbc:int<br>parm:           rtw_ampdu_amsdu:int<br>parm:           rtw_vht_enable:int<br>parm:           rtw_lowrate_two_xmit:int<br>parm:           rtw_rf_config:int<br>parm:           rtw_power_mgnt:int<br>parm:           rtw_smart_ps:int<br>parm:           rtw_low_power:int<br>parm:           rtw_wifi_spec:int<br>parm:           rtw_antdiv_cfg:int<br>parm:           rtw_antdiv_type:int<br>parm:           rtw_enusbss:int<br>parm:           rtw_hwpdn_mode:int<br>parm:           rtw_hwpwrp_detect:int<br>parm:           rtw_hw_wps_pbc:int<br>parm:           rtw_max_roaming_times:The max roaming <span class="hljs-built_in">times</span> to try (uint)<br>parm:           rtw_mc2u_disable:int<br>parm:           rtw_80211d:Enable 802.11d mechanism (int)<br>parm:           rtw_notch_filter:0:Disable, 1:Enable, 2:Enable only <span class="hljs-keyword">for</span> P2P (uint)<br>parm:           rtw_led_enable:Enable status LED (int)<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然最后没能在<code>NanoPi M2</code>上成功驱动腾达 U12，但是还是学会很多东西的。</p>
+<h2 id="参考-amp-资料"><a href="#参考-amp-资料" class="headerlink" title="参考 &amp; 资料"></a>参考 &amp; 资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gnab/rtl8812au">gnab/rtl8812au</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/makserge/webradio/blob/d39d2f96c29628385a71658f30b523eabb793c6e/backend-nanopi-neo/rtl8812au/build.txt">backend-nanopi-neo/rtl8812au/build.txt</a></li>
+<li><a target="_blank" rel="noopener" href="http://wiki.friendlyarm.com/wiki/index.php/NanoPi_M2/zh">NanoPi M2 wiki</a></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E8%AF%91/">编译</a>
+                    
+                      <a class="hover-with-bg" href="/tags/pi/">pi</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/372bc467.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">设计短链接生成服务</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/d9c40f77.html">
+                        <span class="hidden-mobile">手动编译 NanoPi debian 系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

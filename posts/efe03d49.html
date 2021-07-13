@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="verdaccio 是一个开源 npm 私有仓库，我为了做实验，自己搭一个玩玩。">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+  <title>docker 部署 verdaccio - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/tomorrow-night.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>瓦猫杂货铺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210122074609.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="docker 部署 verdaccio">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-21 20:02" pubdate>
+        2021年1月21日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">docker 部署 verdaccio</h1>
+            
+            <div class="markdown-body">
+              <p>verdaccio 是一个开源 npm 私有仓库，我为了做实验，自己搭一个玩玩。</p>
+<span id="more"></span>
+
+<h2 id="安装-verdaccio"><a href="#安装-verdaccio" class="headerlink" title="安装 verdaccio"></a>安装 verdaccio</h2><p>获取<code>verdaccio</code>的例子</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> -b 5.x https://github.com/verdaccio/verdaccio.git<br><br>cp -r verdaccio/docker-examples/docker-local-storage-volume/ ../opt/verdaccio/<br><br><span class="hljs-built_in">cd</span> ../opt/verdaccio/<br></code></pre></div></td></tr></table></figure>
+
+<p><code>../opt/verdaccio/</code> 是我 docker 容器持久化的文件夹。官方的例子和我想要的不太一致，所有需要自己手动修改一下<code>docker-compose.yaml</code>，修改后的内容为：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">cat docker-compose.yaml<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;2.1&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">verdaccio:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">verdaccio/verdaccio:4</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">verdaccio</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;14873:4873&#x27;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;./storage:/verdaccio/storage&#x27;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;./conf:/verdaccio/conf&#x27;</span><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">verdaccio:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">local</span><br></code></pre></div></td></tr></table></figure>
+
+<p>因为容器的权限和本机权限会不一致，需要对容器的文件夹更改权限。</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment">#../opt/verdaccio/</span><br>sudo chown -R 10001:65533 .<br></code></pre></div></td></tr></table></figure>
+
+<p>后台部署：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">docker-compose up -d<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="安装配置-nrm"><a href="#安装配置-nrm" class="headerlink" title="安装配置 nrm"></a>安装配置 nrm</h2><p>nrm 是 npm registry 管理器，能方便的切换源。安装很简单：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">npm i -g nrm<br></code></pre></div></td></tr></table></figure>
+
+<p>查看当前使用的 registry:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">nrm ls<br></code></pre></div></td></tr></table></figure>
+
+<p>添加一个新的 registry:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">nrm add verdaccio http://10.0.0.3:14873/<br></code></pre></div></td></tr></table></figure>
+
+<p>使用一个新的 registry:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">nrm use verdaccio<br></code></pre></div></td></tr></table></figure>
+
+<p>删除一个 registry:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">nrm del verdaccio<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="publish-已有包"><a href="#publish-已有包" class="headerlink" title="publish 已有包"></a>publish 已有包</h3><p>我本来有一个包<code>max6675-raspi</code>两年前就发布到<code>npmjs.com</code>上了，因为<code>verdaccio</code>内部有个逻辑是：在推送时，只要远程仓库 (<code>npmjs.com</code>) 存在此包，则不能推送同一个版本到仓库。很多人解决这个问题的方案就是修改<code>package.json</code>的<code>version</code>或者<code>name</code>，使其升级或者不同名。</p>
+<p>这不是我想要的结果呀，只能把代理先屏蔽掉：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">sudo vim conf/config.yaml<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment">#</span><br><span class="hljs-comment"># This is the config file used for the docker images.</span><br><span class="hljs-comment"># It allows all users to do anything, so don&#x27;t use it on production systems.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Do not configure host and port under `listen` in this file</span><br><span class="hljs-comment"># as it will be ignored when using docker.</span><br><span class="hljs-comment"># see https://github.com/verdaccio/verdaccio/blob/master/wiki/docker.md#docker-and-custom-port-configuration</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Look here for more config file examples:</span><br><span class="hljs-comment"># https://github.com/verdaccio/verdaccio/tree/master/conf</span><br><span class="hljs-comment">#</span><br><br><span class="hljs-comment"># path to a directory with all packages</span><br>storage: /verdaccio/storage<br><br>auth:<br>  htpasswd:<br>    file: /verdaccio/conf/htpasswd<br>    <span class="hljs-comment"># Maximum amount of users allowed to register, defaults to &quot;+inf&quot;.</span><br>    <span class="hljs-comment"># You can set this to -1 to disable registration.</span><br>    <span class="hljs-comment">#max_users: 1000</span><br>security:<br>  api:<br>    jwt:<br>      sign:<br>        expiresIn: 60d<br>        notBefore: 1<br>  web:<br>    sign:<br>      expiresIn: 7d<br><br><span class="hljs-comment"># a list of other known repositories we can talk to</span><br>uplinks:<br>  <span class="hljs-comment">#npmjs:</span><br>  <span class="hljs-comment"># url: https://registry.npmjs.org/</span><br>  <span class="hljs-comment">#cnpm:</span><br>  <span class="hljs-comment">#  url: http://r.cnpmjs.org/</span><br><br>packages:<br>  <span class="hljs-string">&#x27;@jota/*&#x27;</span>:<br>    access: <span class="hljs-variable">$all</span><br>    publish: <span class="hljs-variable">$all</span><br><br>  <span class="hljs-string">&#x27;@*/*&#x27;</span>:<br>    <span class="hljs-comment"># scoped packages</span><br>    access: <span class="hljs-variable">$all</span><br>    publish: <span class="hljs-variable">$all</span><br>    <span class="hljs-comment">#proxy: cnpm</span><br><br>  <span class="hljs-string">&#x27;**&#x27;</span>:<br>    <span class="hljs-comment"># allow all users (including non-authenticated users) to read and</span><br>    <span class="hljs-comment"># publish all packages</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># you can specify usernames/groupnames (depending on your auth plugin)</span><br>    <span class="hljs-comment"># and three keywords: &quot;$all&quot;, &quot;$anonymous&quot;, &quot;$authenticated&quot;</span><br>    access: <span class="hljs-variable">$all</span><br><br>    <span class="hljs-comment"># allow all known users to publish packages</span><br>    <span class="hljs-comment"># (anyone can register by default, remember?)</span><br>    publish: <span class="hljs-variable">$all</span><br><br>    <span class="hljs-comment"># if package is not available locally, proxy requests to &#x27;npmjs&#x27; registry</span><br>    <span class="hljs-comment">#proxy: cnpm</span><br><br><span class="hljs-comment"># To use `npm audit` uncomment the following section</span><br>middlewares:<br>  audit:<br>    enabled: <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># publish config</span><br><span class="hljs-comment">## Special packages publish configurations</span><br>publish:<br><span class="hljs-comment">## This will allow the publisher to publish packages even if any uplink is down.</span><br>  allow_offline: <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># log settings</span><br>logs:<br>  - &#123; <span class="hljs-built_in">type</span>: stdout, format: pretty, level: trace &#125;<br>  <span class="hljs-comment">#- &#123;type: file, path: verdaccio.log, level: info&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>重启<code>verdaccio</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">docker-compose restart verdaccio<br></code></pre></div></td></tr></table></figure>
+
+<p>这样子再把代码推上去</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">npm publish --registry http://10.0.0.3:14873<br></code></pre></div></td></tr></table></figure>
+
+<p>推上去之后再打开配置</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment">#</span><br><span class="hljs-comment"># This is the config file used for the docker images.</span><br><span class="hljs-comment"># It allows all users to do anything, so don&#x27;t use it on production systems.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Do not configure host and port under `listen` in this file</span><br><span class="hljs-comment"># as it will be ignored when using docker.</span><br><span class="hljs-comment"># see https://github.com/verdaccio/verdaccio/blob/master/wiki/docker.md#docker-and-custom-port-configuration</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Look here for more config file examples:</span><br><span class="hljs-comment"># https://github.com/verdaccio/verdaccio/tree/master/conf</span><br><span class="hljs-comment">#</span><br><br><span class="hljs-comment"># path to a directory with all packages</span><br>storage: /verdaccio/storage<br><br>auth:<br>  htpasswd:<br>    file: /verdaccio/conf/htpasswd<br>    <span class="hljs-comment"># Maximum amount of users allowed to register, defaults to &quot;+inf&quot;.</span><br>    <span class="hljs-comment"># You can set this to -1 to disable registration.</span><br>    <span class="hljs-comment">#max_users: 1000</span><br>security:<br>  api:<br>    jwt:<br>      sign:<br>        expiresIn: 60d<br>        notBefore: 1<br>  web:<br>    sign:<br>      expiresIn: 7d<br><br><span class="hljs-comment"># a list of other known repositories we can talk to</span><br>uplinks:<br>  <span class="hljs-comment">#npmjs:</span><br>  <span class="hljs-comment"># url: https://registry.npmjs.org/</span><br>  cnpm:<br>    url: http://r.cnpmjs.org/<br><br>packages:<br>  <span class="hljs-string">&#x27;@jota/*&#x27;</span>:<br>    access: <span class="hljs-variable">$all</span><br>    publish: <span class="hljs-variable">$all</span><br><br>  <span class="hljs-string">&#x27;@*/*&#x27;</span>:<br>    <span class="hljs-comment"># scoped packages</span><br>    access: <span class="hljs-variable">$all</span><br>    publish: <span class="hljs-variable">$all</span><br>    proxy: cnpm<br><br>  <span class="hljs-string">&#x27;**&#x27;</span>:<br>    <span class="hljs-comment"># allow all users (including non-authenticated users) to read and</span><br>    <span class="hljs-comment"># publish all packages</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># you can specify usernames/groupnames (depending on your auth plugin)</span><br>    <span class="hljs-comment"># and three keywords: &quot;$all&quot;, &quot;$anonymous&quot;, &quot;$authenticated&quot;</span><br>    access: <span class="hljs-variable">$all</span><br><br>    <span class="hljs-comment"># allow all known users to publish packages</span><br>    <span class="hljs-comment"># (anyone can register by default, remember?)</span><br>    publish: <span class="hljs-variable">$all</span><br><br>    <span class="hljs-comment"># if package is not available locally, proxy requests to &#x27;npmjs&#x27; registry</span><br>    proxy: cnpm<br><br><span class="hljs-comment"># To use `npm audit` uncomment the following section</span><br>middlewares:<br>  audit:<br>    enabled: <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># publish config</span><br><span class="hljs-comment">## Special packages publish configurations 重启`verdaccio`</span><br>publish:<br><span class="hljs-comment">## This will allow the publisher to publish packages even if any uplink is down.</span><br>  allow_offline: <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># log settings</span><br>logs:<br>  - &#123; <span class="hljs-built_in">type</span>: stdout, format: pretty, level: trace &#125;<br>  <span class="hljs-comment">#- &#123;type: file, path: verdaccio.log, level: info&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>重启<code>verdaccio</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">docker-compose restart verdaccio<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>这个配置里面，默认<code>verdaccio</code>是缓存下载过的公共包的，也就是说我们可以使用这个来加速安装包，这也是目前这个私有仓库最大的优势。verdaccio 还不能管理上传的包，功能还是很少，希望以后能有更多的功能吧。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/tool/">tool</a>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/7d851d0d.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">hexo 博客部署云服务器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/55a16da5.html">
+                        <span class="hidden-mobile">Archlinux 美化之桌面系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

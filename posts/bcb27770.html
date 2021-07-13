@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;dark&#34;>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="一直使用 Linux 工作、娱乐，因为 Linux 上的网易云音乐缓存在~/.cache/netease-cloud-music/CachedSongs下。直接保存为 mp3 格式的。所以想下载一些会员才能下载的音乐，直接在网易云上听一遍，到缓存的位置找出来就行了。">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+  <title>手机网易云音乐缓存文件生成 mp3 文件 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/tomorrow-night.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>瓦猫杂货铺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="手机网易云音乐缓存文件生成 mp3 文件">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-03 20:57" pubdate>
+        2021年3月3日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">手机网易云音乐缓存文件生成 mp3 文件</h1>
+            
+            <div class="markdown-body">
+              <p>一直使用 Linux 工作、娱乐，因为 Linux 上的网易云音乐缓存在<code>~/.cache/netease-cloud-music/CachedSongs</code>下。直接保存为 mp3 格式的。所以想下载一些会员才能下载的音乐，直接在网易云上听一遍，到缓存的位置找出来就行了。</p>
+<span id="more"></span>
+
+<p>最近表弟问我有没有网易云音乐的会员，我就在手机上找出网易云音乐的缓存文件，手动改了一个文件的后缀成<code>mp3</code>, 好家伙，手机上的网易云音乐缓存竟然是加密的。emmm，开始 hack 网易云音乐缓存文件。</p>
+<h2 id="解密缓存文件"><a href="#解密缓存文件" class="headerlink" title="解密缓存文件"></a>解密缓存文件</h2><p>安卓手机上的缓存文件在<code>netease/cloudmusic/Cache/Music1</code>里</p>
+<p>缓存文件分为两种，一种是<code>.idx!</code>，可以用文本编辑器直接打开，包含歌曲的<code>id</code>信息；另一种是<code>.uc!</code>，根据文件大小判断，很大可能是歌曲文件。</p>
+<p>直接修改<code>.uc!</code>文件后缀为<code>.mp3</code>是没办法播放的，很多想从缓存文件中得到可播放文件的人已经不抱希望了。但是作为一个程序员，还是很希望知道怎么实现的。</p>
+<p>上网找一圈，终于知道可以通过按位异或<code>0xa3</code>得到的可播放文件。<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="从网易云音乐缓存文件得到 MP3
+">[1]</span></a></sup></p>
+<p>另外直到现在才知道异或运输在二进制中是可逆运算。 <sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="关于异或的可逆运算？
+">[2]</span></a></sup></p>
+<p>网上有 java 和 python 的代码，但是没有 nodejs 的，于是自己动手写一个 <sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="提取网易云音乐的音频缓存（含 Python 脚本）
+">[3]</span></a></sup></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><br>fs.readFile(<span class="hljs-string">&quot;./1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3.uc!&quot;</span>,<span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span>&#123;<br>    <span class="hljs-keyword">if</span> (error) <span class="hljs-keyword">return</span> ;<br>    <span class="hljs-keyword">const</span> mp3 = data.map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value^<span class="hljs-number">0xA3</span>);<br>    fs.writeFile(<span class="hljs-string">&quot;./1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3&quot;</span>, mp3,<span class="hljs-function">()=&gt;</span>&#123;&#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>bingo，mp3 文件拿到了</p>
+<h2 id="获取歌曲信息"><a href="#获取歌曲信息" class="headerlink" title="获取歌曲信息"></a>获取歌曲信息</h2><p>网易云缓存文件的命名实在是太奇怪了，一开始我还以为就是随机<code>uuid</code>生成的命名，而<code>.idx!</code>文件的内容改变了我的想法：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// 1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3.idx!</span><br>&#123;<br>    <span class="hljs-attr">&quot;duration&quot;</span>: <span class="hljs-number">266301</span>,<br>    <span class="hljs-attr">&quot;filesize&quot;</span>: <span class="hljs-number">3247708</span>,<br>    <span class="hljs-attr">&quot;musicId&quot;</span>: <span class="hljs-number">1498323856</span>,<br>    <span class="hljs-attr">&quot;filemd5&quot;</span>: <span class="hljs-string">&quot;a1ccabb838649c9a8cc96ae5bd249a5e&quot;</span>,<br>    <span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">&quot;parts&quot;</span>: [<br>        <span class="hljs-string">&quot;0,3247708&quot;</span><br>    ],<br>    <span class="hljs-attr">&quot;bitrate&quot;</span>: <span class="hljs-number">96024</span>,<br>    <span class="hljs-attr">&quot;md5&quot;</span>: <span class="hljs-string">&quot;4fbe5cc8a05fd998b560f342c86f6ec7&quot;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>文件名被两个横杆<code>-</code>分为三段：</p>
+<ol>
+<li>musicId: 音乐的 id</li>
+<li>bitrate: 比特率</li>
+<li>filemd5: <code>uc!</code>文件的 md5</li>
+</ol>
+<p>我用上面的代码生成 mp3 文件后，生成 md5:</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">➜ md5 1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3.uc\! 1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3<br><br>A59B5C6B81B2FA2FCBA40CD256566B32  1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3.uc!<br>A1CCABB838649C9A8CC96AE5BD249A5E  1498323856-96024-a1ccabb838649c9a8cc96ae5bd249a5e.mp3<br></code></pre></div></td></tr></table></figure>
+
+<p>本来还想从<code>.idx!</code>文件中回去人性化的文件名来着，看来这是没办法了。</p>
+<p>我记得以前用 windows 的时候，有一些音乐文件是能看到图片的，而且属性里面还要很多信息。于是找一下怎么获取里面的数据。</p>
+<p>原来 mp3 文件有<code>metadata</code>，标签里面包含歌曲的歌手，歌曲图片，歌曲专辑等等信息。<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="MP3 wikipedia
+">[4]</span></a></sup></p>
+<p>找了一个现成的包，写了个 demo，才发现缓存文件里没有<code>metadata</code>，但是代码对正常下载的网易云音乐文件还是能获取到信息的</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// npm i node-id3</span><br><span class="hljs-keyword">const</span> NodeID3 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;node-id3&#x27;</span>);<br><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);<br><br><span class="hljs-keyword">const</span> tags = NodeID3.read(<span class="hljs-string">&quot;./3.mp3&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>从文件获取<code>id3</code>数据想法破灭了，那只能通过 api 来获取相关信息了：<a target="_blank" rel="noopener" href="https://api.imjad.cn/cloudmusic/?type=detail&id=1498323856">https://api.imjad.cn/cloudmusic/?type=detail&amp;id=1498323856</a></p>
+<p>也可以自己用 <a target="_blank" rel="noopener" href="https://github.com/Binaryify/NeteaseCloudMusicApi">Binaryify/NeteaseCloudMusicApi</a> 搭建一个 API。</p>
+<h2 id="nodejs-写一个脚本"><a href="#nodejs-写一个脚本" class="headerlink" title="nodejs 写一个脚本"></a>nodejs 写一个脚本</h2><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: 本地网易云音乐缓存文件 uc! 转 mp3</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: bubao</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021-03-04 05:58:03</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@last </span>author: bubao</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@last </span>edit time: 2021-03-06 19:19:02</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><br><span class="hljs-keyword">let</span> [,,input,output] = process.argv;<br><br><span class="hljs-keyword">if</span> (!output) &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;node insdex.js inputDirectory outputDirectory&quot;</span>);<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> stats = fs.statSync(input);<br>    <span class="hljs-keyword">if</span>(!stats.isDirectory()) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;&quot;</span>);<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> dir = fs.readdirSync(input).filter(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> path.extname(value) === <span class="hljs-string">&quot;.uc!&quot;</span>);<br><br><span class="hljs-keyword">try</span> &#123;<br>    fs.mkdirSync(output);<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123; &#125;<br><br><span class="hljs-built_in">Array</span>.isArray(dir) &amp;&amp; main(dir);<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params">dir</span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> filename = path.join(input, dir.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>]);<br>    fs.readFile(filename, <span class="hljs-function">(<span class="hljs-params">error, data</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (error) <span class="hljs-keyword">return</span>;<br>        <span class="hljs-keyword">const</span> mp3 = data.map(<span class="hljs-function"><span class="hljs-params">buffer</span> =&gt;</span> buffer ^ <span class="hljs-number">0xA3</span>);<br>        <span class="hljs-keyword">const</span> dlname = path.join(output, path.basename(filename, path.extname(filename)));<br>        fs.writeFile(dlname, mp3, <span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(dir.length);<br>            dir.length &amp;&amp; main(dir);<br>        &#125;);<br>    &#125;);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="用-go-写一个脚本工具"><a href="#用-go-写一个脚本工具" class="headerlink" title="用 go 写一个脚本工具"></a>用 go 写一个脚本工具</h2><p>用我蹩脚的 go 写一个工具</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * @description:</span><br><span class="hljs-comment"> * @author: bubao</span><br><span class="hljs-comment"> * @date: 2021-03-14 17:53:48</span><br><span class="hljs-comment"> * @last author: bubao</span><br><span class="hljs-comment"> * @last edit time: 2021-03-17 18:30:05</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;flag&quot;</span><br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;io/ioutil&quot;</span><br>    <span class="hljs-string">&quot;os&quot;</span><br>    <span class="hljs-string">&quot;path&quot;</span><br>    <span class="hljs-string">&quot;strings&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">uc2mp3</span><span class="hljs-params">(ucFilename <span class="hljs-keyword">string</span>, mp3Filename <span class="hljs-keyword">string</span>)</span></span> &#123;<br><br>    buf, err := ioutil.ReadFile(ucFilename)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Fprintf(os.Stderr, <span class="hljs-string">&quot;File Error: %s\n&quot;</span>, err)<br>    &#125;<br>    arr := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">uint8</span>, <span class="hljs-built_in">len</span>(buf))<br>    <span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> buf &#123;<br>        arr[i] = v ^ <span class="hljs-number">0xA3</span><br>    &#125;<br>    err = ioutil.WriteFile(mp3Filename, arr, <span class="hljs-number">0644</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err.Error())<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> dirName <span class="hljs-keyword">string</span><br>    <span class="hljs-keyword">var</span> outputDir <span class="hljs-keyword">string</span><br>    <span class="hljs-keyword">var</span> inputFilename <span class="hljs-keyword">string</span><br>    <span class="hljs-keyword">var</span> rename <span class="hljs-keyword">string</span><br>    flag.StringVar(&amp;dirName, <span class="hljs-string">&quot;d&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;输入文件夹&quot;</span>)<br>    flag.StringVar(&amp;outputDir, <span class="hljs-string">&quot;o&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;输出文件夹&quot;</span>)<br>    flag.StringVar(&amp;inputFilename, <span class="hljs-string">&quot;f&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;uc! 文件&quot;</span>)<br>    flag.StringVar(&amp;rename, <span class="hljs-string">&quot;r&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;mp3 重命名&quot;</span>)<br>    flag.Parse()<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(flag.Args()) &lt; <span class="hljs-number">1</span> &#123;<br>        flag.Usage()<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <span class="hljs-keyword">var</span> ext <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;.uc!&quot;</span><br><br>    <span class="hljs-keyword">if</span> inputFilename == <span class="hljs-string">&quot;&quot;</span> &amp;&amp; dirName != <span class="hljs-string">&quot;&quot;</span> &#123;<br>        stat, err := os.Stat(dirName)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>            fmt.Fprintf(os.Stderr, <span class="hljs-string">&quot;File Error: %s\n&quot;</span>, err)<br>            <span class="hljs-built_in">panic</span>(err.Error())<br>        &#125;<br>        <span class="hljs-keyword">if</span> stat.IsDir() &#123;<br>            dir, err := ioutil.ReadDir(dirName)<br>            <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>                fmt.Fprintf(os.Stderr, <span class="hljs-string">&quot;File Error: %s\n&quot;</span>, err)<br>                <span class="hljs-built_in">panic</span>(err.Error())<br>            &#125;<br><br>            <span class="hljs-keyword">for</span> _, info := <span class="hljs-keyword">range</span> dir &#123;<br>                filename := info.Name()<br><br>                <span class="hljs-keyword">if</span> !info.IsDir() &amp;&amp; path.Ext(filename) == ext &#123;<br>                    <span class="hljs-keyword">var</span> outputFile <span class="hljs-keyword">string</span><br>                    outputFile = strings.TrimSuffix(path.Base(filename), ext)<br>                    uc2mp3(path.Join(dirName, filename), path.Join(outputDir, outputFile))<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> inputFilename != <span class="hljs-string">&quot;&quot;</span> &#123;<br>        <span class="hljs-keyword">if</span> path.Ext(inputFilename) == ext &#123;<br>            <span class="hljs-keyword">var</span> outputFile <span class="hljs-keyword">string</span><br>            <span class="hljs-keyword">if</span> rename != <span class="hljs-string">&quot;&quot;</span> &#123;<br>                outputFile = rename<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                outputFile = strings.TrimSuffix(path.Base(inputFilename), ext)<br>            &#125;<br>            uc2mp3(inputFilename, path.Join(outputFile))<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>使用也很简单</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">uc2mp3 -h<br>Usage of uc2mp3:<br>  -d string<br>        输入文件夹<br>  -f string<br>        uc! 文件<br>  -o string<br>        输出文件夹<br>  -r string<br>        mp3 重命名<br><span class="hljs-comment"># 文件夹</span><br>uc2mp3 -d /home/bubao/Downloads/Jami/music1 -o /home/bubao/Downloads/Jami/music<br><br><span class="hljs-comment"># 单个文件</span><br>uc2mp3 -f /home/bubao/Downloads/Jami/music1/28136576-160000-14cca46fa243ecb590d3fcdf5e530cd1.mp3.uc\! -r <span class="hljs-string">&quot;xx.mp3&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5fb2bcaa79f8?utm_campaign">从网易云音乐缓存文件得到 MP3</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/28693672">关于异或的可逆运算？</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://aomnisz.github.io/KnowledgeBase/#/Weiming/%E6%8F%90%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E7%BC%93%E5%AD%98">提取网易云音乐的音频缓存（含 Python 脚本）</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/MP3">MP3 wikipedia</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/tool/">tool</a>
+                    
+                      <a class="hover-with-bg" href="/tags/node-js/">node.js</a>
+                    
+                      <a class="hover-with-bg" href="/tags/go/">go</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/d9c40f77.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">手动编译 NanoPi debian 系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/daba6ec4.html">
+                        <span class="hidden-mobile">Archlinux 实现动态 motd</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[],"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
