@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="article">
+<meta property="og:title" content="《星界之梯》查询网页开发记录">
+<meta property="og:url" content="https://bubao.github.io/posts/cef2f6bc.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://as.firedogstudio.com/images/banner/banner_20150127_03a.png">
+<meta property="article:published_time" content="2017-08-13T12:27:41.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.880Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://as.firedogstudio.com/images/banner/banner_20150127_03a.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>《星界之梯》查询网页开发记录 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="《星界之梯》查询网页开发记录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-08-13 20:27" pubdate>
+          2017年8月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">《星界之梯》查询网页开发记录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="http://as.firedogstudio.com/images/banner/banner_20150127_03a.png" srcset="/img/loading.gif" lazyload alt="banner"></p>
+<span id="more"></span>
+
+<p>之前玩一款港游 <a target="_blank" rel="noopener" href="http://as.firedogstudio.com/">《星界之梯》</a> 就一直想把里面的立绘找出来做桌面，所以一边玩一遍寻思解包的方法。</p>
+<h2 id="游戏分析"><a href="#游戏分析" class="headerlink" title="游戏分析"></a>游戏分析</h2><p>要拿到资源，首先要确定游戏的资源在哪。我玩游戏的时候发现一个现象，就是在游戏副本里面，断开网络，并不影响副本里面的操作，只有通关把网络打开，就能 connect 到服务器领取奖励。</p>
+<p>也就是说，游戏大部分的运行逻辑都在手机端完成的，服务端只是对手机端的充值，副本胜利判定，和账户中关卡开放程度进行管理。</p>
+<p>那手机端的游戏数据会放在哪里呢？不应该在 apk 里面，因为图片，音效，运行逻辑数据太大，只能是需要的时候读取。而为了 apk 不卡顿，这些数据不应该存放在外置 SD 卡。而系统的 app 的 root 路径是需要管理员权限的，游戏如果把数据放那里，那没有 Root 用户怎么安装游戏呢？所以，游戏数据包应该在手机内存的<code>Android/data/</code>文件夹下。</p>
+<p>果然，我在<code>Android/data/</code>文件夹下的<code>com.firedog</code>里面找到了数据。以前要是更新，还会看到<code>*.obb</code>文件在<code>Android/obb/</code>文件夹下。</p>
+<h2 id="游戏包解析"><a href="#游戏包解析" class="headerlink" title="游戏包解析"></a>游戏包解析</h2><p>上面说到的<code>*.obb</code>文件，其实是 Android 游戏数据包。以前玩过手机 QQ 美化，所以知道 Android 上的特殊格式一般可以解压打开。而<code>*.obb</code>解压得到的就是<code>Android/data/</code>下的数据。</p>
+<p>接下来看解压后的数据，里面有 json 文件，unity3d 的文件。json 文件是一种对象数据文件，所以立绘是不会在这里的。而且我用 sublime 搜索没发现有任何 png 或者 jpg 的文件引用。先放一边，我们要的立绘不在这。接下来动手拆 unity3d 数据了。</p>
+<h3 id="拆包"><a href="#拆包" class="headerlink" title="拆包"></a>拆包</h3><p>没做过游戏，不太清楚 unity3d 的包怎么打开，上百度查了一圈，找到了 <a target="_blank" rel="noopener" href="https://github.com/ata4/disunity">disunity</a> 和 <a target="_blank" rel="noopener" href="https://github.com/RaduMC/UnityStudio">UnityStudio</a>。<a target="_blank" rel="noopener" href="https://github.com/ata4/disunity">disunity</a> 是一个命令行反编译 unity3d 工具，而 <a target="_blank" rel="noopener" href="https://github.com/RaduMC/UnityStudio">UnityStudio</a> 是 win 上使用的反编译 unity3d 工具。我用的是 Linux，所以毫不犹豫用了 <a target="_blank" rel="noopener" href="https://github.com/ata4/disunity">disunity</a>。说起来这款工具的作者在 2016 年 1 月 18 号停更了 Java 版本，2017 年 08 月 13 日我翻了一下发现有个 Python 版本的昨天刚刚更新。把里面的版本试了一圈，发现 3.x 系列才能正确的反编译出东西，4.x 貌似还是有点小问题，5.0 根本不能用好吗。</p>
+<p><strong>disunity 3.x 使用方法</strong>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">disunity extract Web.unity3d<br><span class="hljs-comment"># 或者</span><br>java -jar disunity.jar extract Web.unity3d<br></code></pre></td></tr></table></figure>
+
+<h3 id="图片格式批量转换"><a href="#图片格式批量转换" class="headerlink" title="图片格式批量转换"></a>图片格式批量转换</h3><p>得到了很多文件夹，里面有音频、纯文本数据和后缀为<code>tga</code>的文件，我要的 png 呢？难道是这些<code>tga</code>后缀文件？不知道就百度呗，果然这个 tga 也是图片资源，开始我电脑不识别呀，还是转换成大众点的格式比较好，上 github 找轮子，果然还是有人写过的，<a target="_blank" rel="noopener" href="https://github.com/steel1990/tga2png">tga2png</a> 有例子，可是我需要批量呀，既然是 js 模块，我用 node 写个批量处理好了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);<br><span class="hljs-keyword">let</span> glob = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;glob&quot;</span>)<span class="hljs-comment">//文件模式匹配</span><br><span class="hljs-keyword">var</span> filename = <span class="hljs-string">&#x27;CutInNew&#x27;</span><br><span class="hljs-keyword">let</span> <span class="hljs-title class_">Afiles</span> = <span class="hljs-string">`./files/<span class="hljs-subst">$&#123;filename&#125;</span>/**/**/Texture2D/*.tga`</span><br><span class="hljs-keyword">var</span> tga2png = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;tga2png&#x27;</span>);<span class="hljs-comment">//tga 转 png 工具</span><br><span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;async&#x27;</span>)<span class="hljs-comment">//异步工具</span><br><br>fs.<span class="hljs-title function_">exists</span>(filename, <span class="hljs-keyword">function</span>(<span class="hljs-params">exists</span>) &#123;<br>  <span class="hljs-keyword">if</span> (exists)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(filename + <span class="hljs-string">&#x27;文件夹存在&#x27;</span>);<br>  <span class="hljs-keyword">else</span> &#123;<br>    fs.<span class="hljs-title function_">mkdir</span>(filename, <span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) &#123;<br>      <span class="hljs-keyword">if</span> (err)<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(err);<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`创建<span class="hljs-subst">$&#123;filename&#125;</span>文件夹成功`</span>);<br>    &#125;)<br>  &#125;<br><br>&#125;);<br><span class="hljs-title function_">glob</span>(<span class="hljs-title class_">Afiles</span>, <span class="hljs-string">&#x27;buffer&#x27;</span>,<br>  <span class="hljs-keyword">function</span>(<span class="hljs-params">err, afiles</span>) &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * [async 遍历文件名，并转换格式]</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">async</span>.<span class="hljs-title function_">mapSeries</span>(afiles, <span class="hljs-keyword">function</span>(<span class="hljs-params">item, callback</span>) &#123;<br>      <span class="hljs-keyword">var</span> arrUrl = item.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;/&quot;</span>);<br>      <span class="hljs-keyword">var</span> name = arrUrl[arrUrl.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>].<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;.tga&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);<br>      <span class="hljs-keyword">var</span> fname = arrUrl[arrUrl.<span class="hljs-property">length</span> - <span class="hljs-number">3</span>]<br>      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">tga2png</span>(item, fname == <span class="hljs-string">&#x27;TC&#x27;</span> ? <span class="hljs-string">`./<span class="hljs-subst">$&#123;filename&#125;</span>/<span class="hljs-subst">$&#123;fname&#125;</span>-<span class="hljs-subst">$&#123;name&#125;</span>.png`</span> : <span class="hljs-string">`./<span class="hljs-subst">$&#123;filename&#125;</span>/<span class="hljs-subst">$&#123;name&#125;</span>.png`</span>)<br>          .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;the png buffer is &#x27;</span>, fname + <span class="hljs-string">&#x27;-&#x27;</span> + name);<br>          &#125;, <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;error&#x27;</span>, err);<br>          &#125;);<br>        <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, item + <span class="hljs-string">&#x27;!!!&#x27;</span>);<br>      &#125;, <span class="hljs-number">0</span>);<br>    &#125;, <span class="hljs-keyword">function</span>(<span class="hljs-params">err, results</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)<br>    &#125;);<br>  &#125;<br>)<br></code></pre></td></tr></table></figure>
+
+<p>这样就拿到立绘了。</p>
+<p>不过有个问题，obb 里面有些资源不全呀，游戏没出错。应该是有部分资源在 apk 里面。动手反编译 apk。</p>
+<h3 id="反编译-apk"><a href="#反编译-apk" class="headerlink" title="反编译 apk"></a>反编译 apk</h3><p>这里用到了一个工具 <a target="_blank" rel="noopener" href="https://ibotpeaches.github.io/Apktool/">apktool</a>，官网有说明的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 反编译</span><br>$ apktool d test.apk<br><span class="hljs-comment"># 打包</span><br>$ apktool b <span class="hljs-built_in">test</span><br></code></pre></td></tr></table></figure>
+
+<p>还有一种方法比较暴力，直接解压，用 <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/dex2jar/">dex2jar</a> 转换成 jar 用 <a target="_blank" rel="noopener" href="http://jd.benow.ca/">jd-gui</a> 看源码。</p>
+<h2 id="用纯-React-写一个-AS-查询网页"><a href="#用纯-React-写一个-AS-查询网页" class="headerlink" title="用纯 React 写一个 AS 查询网页"></a>用纯 React 写一个 AS 查询网页</h2><p>这个游戏的行使有 1000 多个，有时候搭配起来还是很麻烦的，所以就有了写个查询的网页。</p>
+<p>星界之梯的数据其实不符合我操作的预期的，例如：</p>
+<ol>
+<li>有些有名字的行使，并没有发布出来，也就是和立绘没有一一对应。</li>
+<li>行使的数据分散到不同的 json 文件，而文件对应关系也不理想。</li>
+</ol>
+<p>还有些是前端的问题：</p>
+<ol>
+<li>React 没有双向绑定，要点击一个头像，在侧边栏显示详情，组件关系怎么解决？</li>
+<li>图片太多，全部加载完的话会需要很长时间，有什么好的方案？</li>
+</ol>
+<p>目前这四个问题需要我一步一步解决。</p>
+<h3 id="json-数据处理"><a href="#json-数据处理" class="headerlink" title="json 数据处理"></a>json 数据处理</h3><p>数据如果没法对应起来，前端做的事就很麻烦了。为了解决这个问题，我决定把所有需要的数据写到一个 json 文件中，这样子处理起来，就容易许多了。</p>
+<p>整合完 json，接下来就是让立绘和数据一一对应。头像的文件和立绘文件是一一对应，所以只有检测头像是否存在，也就能知道立绘是否存在了。做法是读取头像文件夹存在的文件，把文件名转换成数值，保存到数组中，需要的时候拼接字符串即可。但是这个数组不能和整合好的 json 文件对应，所以 json 文件不能引用这个数组。怎么处理？</p>
+<p>其实可以这么做，把数组作为中间数据，用来规范命名资源文件，到时候 json 文件只需要数值拼接成字符串就能访问到准确的资源文件。</p>
+<h3 id="React-通信问题"><a href="#React-通信问题" class="headerlink" title="React 通信问题"></a>React 通信问题</h3><p>React 是单向数据的，常用的有<code>props</code>和<code>state</code>，<code>props</code>是父组件给子组件传值用的信使，<code>state</code>是组件内部的状态。没有子组件向父组件传值的方法呀。官方给出的答案是状态提升。</p>
+<p>状态提升，就是把<code>state</code>统一放在父组价中管理，父组件通过<code>props</code>把子组件需要的参数传给子组件。JavaScript 有个神技能，就是一等公民，所以我们可以把一个函数传递给子组件，子组件拿到参数，里面有需要的值和一个父组件中定义的函数，子组件把参数拿来给自己用，当有事触发，可以把触发的信息具体是什么塞到父组件给的函数里返回给父组件。这样就能实现子组件向父组件通信了。</p>
+<p>而我想在左边栏显示详情，右边是全部行使的头像，点击头像，左边栏显示对应的行使详情。状态提升就能做到。</p>
+<p>首先定义一个函数传递给右边栏组件，右边栏里面的的头像都要自己唯一的 ID，同时有个点击触发 handler 传递 id 给父组件的函数返回给父组件，父组件拿到 id 就传递给左边栏显示。左右边栏是兄弟关系。</p>
+<h3 id="图片太多的问题"><a href="#图片太多的问题" class="headerlink" title="图片太多的问题"></a>图片太多的问题</h3><p>行使头像还好，可是行使立绘就呵呵哒了呀。怎么样才能让行使立绘需要的时候才加载呢？问了慕课网的鞭挞师，答案是 CSS 引入图片，就这么简单。</p>
+<h3 id="界面美化"><a href="#界面美化" class="headerlink" title="界面美化"></a>界面美化</h3><p>虽然东西是写出来了，可是我感觉左边栏的滚动条好丑呀，可是隐藏滚动调，要是左边的内容太多，那就看不到了。….. 关键时刻找度娘，找到了个可行方案，就是写两个 div，上面的 div 比下面的 div 宽度小，就把下面的 div 的滚动条给盖住了，看不到的。而下面的 div 还是能滚动。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" class="category-chain-item">开发笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/React/" class="print-no-link">#React</a>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>《星界之梯》查询网页开发记录</div>
+      <div>https://bubao.github.io/posts/cef2f6bc.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年8月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/18aecbd.html" title="使用 Node.js 做出自己的 CLI 工具">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用 Node.js 做出自己的 CLI 工具</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/73a303cb.html" title="React 与 Redux 中的数组处理">
+                        <span class="hidden-mobile">React 与 Redux 中的数组处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

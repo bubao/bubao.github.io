@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在现代前端和 Node.js 开发中，我们经常会遇到需要在同一项目中使用某个包的多个版本的情况。这可能是由于项目迁移、兼容性要求或者第三方依赖的不同版本需求等原因造成的。本文将介绍如何在 Node.js 项目中同时安装和使用同一个包的不同版本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js 项目中管理同一包的多个版本">
+<meta property="og:url" content="https://bubao.github.io/posts/3c6f826c.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="在现代前端和 Node.js 开发中，我们经常会遇到需要在同一项目中使用某个包的多个版本的情况。这可能是由于项目迁移、兼容性要求或者第三方依赖的不同版本需求等原因造成的。本文将介绍如何在 Node.js 项目中同时安装和使用同一个包的不同版本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nodejs.org/static/images/logo.svg">
+<meta property="article:published_time" content="2025-12-06T15:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.877Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="node.js">
+<meta property="article:tag" content="npm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nodejs.org/static/images/logo.svg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Node.js 项目中管理同一包的多个版本 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://nodejs.org/static/images/logo.svg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Node.js 项目中管理同一包的多个版本"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-06 23:00" pubdate>
+          2025年12月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Node.js 项目中管理同一包的多个版本</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在现代前端和 Node.js 开发中，我们经常会遇到需要在同一项目中使用某个包的多个版本的情况。这可能是由于项目迁移、兼容性要求或者第三方依赖的不同版本需求等原因造成的。本文将介绍如何在 Node.js 项目中同时安装和使用同一个包的不同版本。</p>
+<span id="more"></span>
+
+<h2 id="场景介绍"><a href="#场景介绍" class="headerlink" title="场景介绍"></a>场景介绍</h2><p>假设我们有一个项目需要同时与多个不同版本的 Socket.IO 服务器进行通信。Socket.IO 在 v2、v3 和 v4 版本之间存在一些不兼容的变化，如果我们需要连接到这些不同版本的服务器，就需要在项目中同时使用这些版本的客户端。</p>
+<p>传统方式下，package.json 中的 dependencies 字段只允许每个包出现一次，所以我们不能直接这样写：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;socket.io-client&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;socket.io-client&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.0.0&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// 这会覆盖上面的版本</span><br>    <span class="hljs-attr">&quot;socket.io-client&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.0.0&quot;</span>  <span class="hljs-comment">// 这也会覆盖上面的版本</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="使用-npm-的-alias-功能"><a href="#使用-npm-的-alias-功能" class="headerlink" title="使用 npm 的 alias 功能"></a>使用 npm 的 alias 功能</h2><p>npm 从 6.9.0 版本开始支持别名功能，允许我们将同一个包的不同版本安装为不同的名称。语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install &lt;<span class="hljs-built_in">alias</span>&gt;@npm:&lt;package-name&gt;@&lt;version&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="实际示例"><a href="#实际示例" class="headerlink" title="实际示例"></a>实际示例</h3><p>针对我们的 Socket.IO 客户端需求，可以执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install socket.io-client-2@npm:socket.io-client@2<br>npm install socket.io-client-3@npm:socket.io-client@3<br>npm install socket.io-client-4@npm:socket.io-client@4<br></code></pre></td></tr></table></figure>
+
+<p>执行这些命令后，package.json 中会生成如下依赖：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;socket.io-client-2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npm:socket.io-client@^2.5.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;socket.io-client-3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npm:socket.io-client@^3.1.3&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;socket.io-client-4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npm:socket.io-client@^4.7.2&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>同时，node_modules 目录结构会类似于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs tree">node_modules/<br>├── socket.io-client-2/<br>│   └── node_modules/<br>│       └── socket.io-client/ (v2.x)<br>├── socket.io-client-3/<br>│   └── node_modules/<br>│       └── socket.io-client/ (v3.x)<br>└── socket.io-client-4/<br>    └── node_modules/<br>        └── socket.io-client/ (v4.x)<br></code></pre></td></tr></table></figure>
+
+<h2 id="在代码中使用不同版本"><a href="#在代码中使用不同版本" class="headerlink" title="在代码中使用不同版本"></a>在代码中使用不同版本</h2><p>安装完成后，我们就可以在代码中分别引入这些不同版本的包：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 引入不同版本的 socket.io-client</span><br><span class="hljs-keyword">const</span> io_v2 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-2&#x27;</span>);<br><span class="hljs-keyword">const</span> io_v3 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-3&#x27;</span>);<br><span class="hljs-keyword">const</span> io_v4 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>);<br><br><span class="hljs-comment">// 或者使用 ES6 imports</span><br><span class="hljs-keyword">import</span> io_v2 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;socket.io-client-2&#x27;</span>;<br><span class="hljs-keyword">import</span> io_v3 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;socket.io-client-3&#x27;</span>;<br><span class="hljs-keyword">import</span> io_v4 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>;<br><br><span class="hljs-comment">// 分别连接到不同版本的服务器</span><br><span class="hljs-keyword">const</span> socket_v2 = <span class="hljs-title function_">io_v2</span>(<span class="hljs-string">&#x27;http://localhost:3000&#x27;</span>);<br><span class="hljs-keyword">const</span> socket_v3 = <span class="hljs-title function_">io_v3</span>(<span class="hljs-string">&#x27;http://localhost:3001&#x27;</span>);<br><span class="hljs-keyword">const</span> socket_v4 = <span class="hljs-title function_">io_v4</span>(<span class="hljs-string">&#x27;http://localhost:3002&#x27;</span>);<br><br><span class="hljs-comment">// 为不同版本的 socket 设置不同的事件监听器</span><br>socket_v2.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;connect&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Connected to Socket.IO v2 server&#x27;</span>);<br>&#125;);<br><br>socket_v3.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;connect&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Connected to Socket.IO v3 server&#x27;</span>);<br>&#125;);<br><br>socket_v4.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;connect&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Connected to Socket.IO v4 server&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h2 id="yarn-和-pnpm-的类似功能"><a href="#yarn-和-pnpm-的类似功能" class="headerlink" title="yarn 和 pnpm 的类似功能"></a>yarn 和 pnpm 的类似功能</h2><p>除了 npm，yarn 和 pnpm 也提供了类似的别名功能：</p>
+<h3 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">yarn add socket.io-client-2@npm:socket.io-client@2<br>yarn add socket.io-client-3@npm:socket.io-client@3<br>yarn add socket.io-client-4@npm:socket.io-client@4<br></code></pre></td></tr></table></figure>
+
+<p>或者使用 yarn 的别名语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">yarn add socket.io-client-2@2<br>yarn add socket.io-client-3@3<br>yarn add socket.io-client-4@4<br></code></pre></td></tr></table></figure>
+
+<h3 id="pnpm"><a href="#pnpm" class="headerlink" title="pnpm"></a>pnpm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">pnpm add socket.io-client-2@npm:socket.io-client@2<br>pnpm add socket.io-client-3@npm:socket.io-client@3<br>pnpm add socket.io-client-4@npm:socket.io-client@4<br></code></pre></td></tr></table></figure>
+
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><h3 id="1-系统迁移过渡期"><a href="#1-系统迁移过渡期" class="headerlink" title="1. 系统迁移过渡期"></a>1. 系统迁移过渡期</h3><p>当你的系统需要从一个版本迁移到另一个版本时，可以同时维护两个版本的客户端，逐步迁移用户：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 根据用户配置或环境变量决定使用哪个版本</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">getClientByVersion</span> = (<span class="hljs-params">version</span>) =&gt; &#123;<br>  <span class="hljs-keyword">switch</span>(version) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v2&#x27;</span>:<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-2&#x27;</span>);<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v3&#x27;</span>:<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-3&#x27;</span>);<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v4&#x27;</span>:<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>);<br>    <span class="hljs-attr">default</span>:<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>); <span class="hljs-comment">// 默认使用最新版本</span><br>  &#125;<br>&#125;;<br><br><span class="hljs-keyword">const</span> io = <span class="hljs-title function_">getClientByVersion</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">SOCKET_VERSION</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-第三方服务集成"><a href="#2-第三方服务集成" class="headerlink" title="2. 第三方服务集成"></a>2. 第三方服务集成</h3><p>当你需要集成多个第三方服务，而这些服务使用了同一个库的不同版本时：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 集成服务 A（使用 Socket.IO v2）</span><br><span class="hljs-keyword">const</span> serviceA = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./services/serviceA&#x27;</span>);<br><span class="hljs-comment">// serviceA 内部使用 socket.io-client-2</span><br><br><span class="hljs-comment">// 集成服务 B（使用 Socket.IO v3）</span><br><span class="hljs-keyword">const</span> serviceB = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./services/serviceB&#x27;</span>);<br><span class="hljs-comment">// serviceB 内部使用 socket.io-client-3</span><br><br><span class="hljs-comment">// 集成服务 C（使用 Socket.IO v4）</span><br><span class="hljs-keyword">const</span> serviceC = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./services/serviceC&#x27;</span>);<br><span class="hljs-comment">// serviceC 内部使用 socket.io-client-4</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-微前端架构"><a href="#3-微前端架构" class="headerlink" title="3. 微前端架构"></a>3. 微前端架构</h3><p>在微前端架构中，不同的子应用可能依赖同一个库的不同版本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 主应用</span><br><span class="hljs-keyword">const</span> mainAppSocket = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>);<br><br><span class="hljs-comment">// 子应用 A</span><br><span class="hljs-keyword">const</span> subAppASocket = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-2&#x27;</span>);<br><br><span class="hljs-comment">// 子应用 B</span><br><span class="hljs-keyword">const</span> subAppBSocket = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-3&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="1-明确命名约定"><a href="#1-明确命名约定" class="headerlink" title="1. 明确命名约定"></a>1. 明确命名约定</h3><p>使用清晰的命名约定来区分不同版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 推荐</span><br>npm install socket.io-v2@npm:socket.io@2<br>npm install socket.io-v3@npm:socket.io@3<br><br><span class="hljs-comment"># 不推荐</span><br>npm install socv2@npm:socket.io@2<br>npm install socv3@npm:socket.io@3<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-封装版本差异"><a href="#2-封装版本差异" class="headerlink" title="2. 封装版本差异"></a>2. 封装版本差异</h3><p>创建一个统一的接口来封装不同版本之间的差异：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SocketIOManager</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">version</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">version</span> = version;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">io</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getClientByVersion</span>(version);<br>  &#125;<br>  <br>  <span class="hljs-title function_">_getClientByVersion</span>(<span class="hljs-params">version</span>) &#123;<br>    <span class="hljs-keyword">switch</span>(version) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v2&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-2&#x27;</span>);<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v3&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-3&#x27;</span>);<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v4&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;socket.io-client-4&#x27;</span>);<br>      <span class="hljs-attr">default</span>:<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Unsupported version: <span class="hljs-subst">$&#123;version&#125;</span>`</span>);<br>    &#125;<br>  &#125;<br>  <br>  <span class="hljs-title function_">connect</span>(<span class="hljs-params">url, options = &#123;&#125;</span>) &#123;<br>    <span class="hljs-comment">// 统一的连接方法，处理不同版本间的差异</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">version</span> === <span class="hljs-string">&#x27;v2&#x27;</span>) &#123;<br>      <span class="hljs-comment">// v2 特定的处理逻辑</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">io</span>(url, options);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-comment">// v3/v4 特定的处理逻辑</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">io</span>(url, options);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-及时清理不需要的版本"><a href="#3-及时清理不需要的版本" class="headerlink" title="3. 及时清理不需要的版本"></a>3. 及时清理不需要的版本</h3><p>一旦不再需要某个版本，应及时从项目中移除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm uninstall socket.io-client-2<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过 npm 的别名功能，我们可以轻松地在同一个 Node.js 项目中管理同一包的多个版本。这对于系统迁移、集成不同版本的第三方服务以及微前端架构等场景非常有用。</p>
+<p>然而，我们也需要注意这种方法带来的额外复杂性和潜在问题，包括包体积增加、维护成本提高等。在实际使用中，应该权衡利弊，只在确实需要时才使用这个功能。</p>
+<p>通过合理的命名约定和封装，我们可以最大限度地发挥这个功能的优势，同时减少其带来的负面影响。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/node-js/" class="print-no-link">#node.js</a>
+      
+        <a href="/tags/npm/" class="print-no-link">#npm</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Node.js 项目中管理同一包的多个版本</div>
+      <div>https://bubao.github.io/posts/3c6f826c.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/8ae7e6fb.html" title="使用 FER 库构建实时情绪检测系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用 FER 库构建实时情绪检测系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/fc1040f0.html" title="Redis 执行 Lua 脚本基本用法">
+                        <span class="hidden-mobile">Redis 执行 Lua 脚本基本用法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

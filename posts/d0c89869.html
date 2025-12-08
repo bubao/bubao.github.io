@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="我是上大学后才真正接触编程，那时候因为专业要搞单片机，大一第二学期就开了一门 C++ 的课。我很喜欢敲代码的，自己看书到了指针那一章时卡住了，而那时候老师还刚刚上两个星期的课。于是我就开始逃课在宿舍自学c，上机课才拿代码去问老师问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译原理和语言知识">
+<meta property="og:url" content="https://bubao.github.io/posts/d0c89869.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="我是上大学后才真正接触编程，那时候因为专业要搞单片机，大一第二学期就开了一门 C++ 的课。我很喜欢敲代码的，自己看书到了指针那一章时卡住了，而那时候老师还刚刚上两个星期的课。于是我就开始逃课在宿舍自学c，上机课才拿代码去问老师问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-ab788afe15827f513f4fbddc24e3f7a1_b.png">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-63c126a9ea1ece2ba5da17245edbbbc0_b.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-92d8993cfb8710d9d9c478555f5c770b_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-616e1fc357fab2bfbe2adad9d39e2ca6_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-b08ab5004af7f26682a40ba3620f89fa_b.jpg">
+<meta property="article:published_time" content="2017-07-22T04:58:45.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.884Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="编译">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pic2.zhimg.com/v2-ab788afe15827f513f4fbddc24e3f7a1_b.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>编译原理和语言知识 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="编译原理和语言知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-07-22 12:58" pubdate>
+          2017年7月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">编译原理和语言知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>我是上大学后才真正接触编程，那时候因为专业要搞单片机，大一第二学期就开了一门 C++ 的课。我很喜欢敲代码的，自己看书到了<code>指针</code>那一章时卡住了，而那时候老师还刚刚上两个星期的课。于是我就开始逃课在宿舍自学<code>c</code>，上机课才拿代码去问老师问题。</p>
+<span id="more"></span>
+
+<p>而当我越学越深的时候，我看到这世界上不止<code>c</code>，<code>c++</code>，还有很多我未曾见过的语言，我还经常上 <a target="_blank" rel="noopener" href="https://learnxinyminutes.com/">learn x in y minutes</a> 看看一些语言的语法。一直以来我都要一个很天真的想法，为什么不统一成一种语言干所有计算机上的事呢？直到我在知乎上看到 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27554023">大前端开发者需要了解的基础编译原理和语言知识</a>。</p>
+<!--more-->
+<h2 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h2><p>一说到编程，我们都会想到 C 语言，编程的第一个程序按照惯例都写<code>hello word</code>，那我们就从 C 语言的<code>hello word</code>程序说起。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">int</span> a = <span class="hljs-built_in">strlen</span>(<span class="hljs-string">&quot;Hello world&quot;</span>);  <span class="hljs-comment">// 字符串的长度是 11</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>要把上面的代码运行起来，我们需要预处理、词法分析、语法分析、生成中间代码，生成目标代码，汇编，链接 等步骤。</p>
+<h3 id="词法分析和语法分析"><a href="#词法分析和语法分析" class="headerlink" title="词法分析和语法分析"></a>词法分析和语法分析</h3><p>编译器开始干活了，它把前面五个步骤都完成了。它读取源码，把源码一句一句的拆分成词（让我想到了中文分词）。经过<strong>词法分析</strong>，编译器已经知道每个单词了，然而练成一句话是什么意思，还需要语法分析。语法树将字符串格式的源代码转化为树状的数据结构，更容易被计算机理解和处理。但它距离中间代码还有一定的距离。</p>
+<h3 id="生成中间码"><a href="#生成中间码" class="headerlink" title="生成中间码"></a>生成中间码</h3><p>以 GCC 为例，生成中间代码可以分为三个步骤：</p>
+<ul>
+<li>语法树转高端 gimple</li>
+<li>高端 gimple 转低端 gimple</li>
+<li>低端 gimple 经过 cfa 转 ssa 再转中间代码</li>
+</ul>
+<p>干了些什么就这么过了吧。下一个问题</p>
+<p><strong>为什么要生成中间码？</strong></p>
+<p>一方面中间码和语言无关，也和 CPU 与具体实现无关。可以理解为中间代码是一种非常抽象，又非常普适的代码。</p>
+<p>如果用编码格式来解释的话，我们在<code>UTF8</code>编码下打开<code>GBK</code>编码写的文件，就会出现乱码。直接转化是可以的，然而，如果是 3 种编码转化的话，每种编码都需要 2 种转化编码转化工具，如果是 N 中编码，那每种语言都需要 N-1 种转化工具。工作量很大呀。</p>
+<p>我们可以通过 <code>Unicode</code> 编码，作为中间码，文件编辑完成，转为 Unicode 编码，再需要转其他编码时，把<code>Unicode</code>编码转成其他编码。这样子每种编码只需要两种编码器就够了。</p>
+<p>那问题来了，是不是通过中间码，我们可以把所有的语言都转成相同的中间码，就实现其他语言的功能呢？这个问题后面再说。</p>
+<h3 id="目标代码"><a href="#目标代码" class="headerlink" title="目标代码"></a>目标代码</h3><p>目标代码也可以叫做汇编代码。由于中间代码已经非常接近于实际的汇编代码，它几乎可以直接被转化。主要的工作量在于兼容各种 CPU 以及填写模板。在最终生成的汇编代码中，不仅有汇编命令，也有一些对文件的说明。</p>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p>接下来就是汇编器干活的时候了，它从编译器手里接过用汇编代码进一步转成二进制码。二进制码是计算机认识的语言。我是电气专业的，自然是学过汇编语言。汇编其实很想我们命令行写的命令，让计算机去干活。写汇编码的时候能深深的感觉，到自己在手动执行计算机。</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>目标文件中不可能把所有的变量和函数都定义在文件内部。比如 strlen 函数就是一个被调用的外部函数，此时就需要把 main.o 这个目标文件和包含了 strlen 函数实现的目标文件链接起来。生成 main.o 的过程中，strlen() 函数的地址并不知道，所以只能先用 0 来代替，直到最后链接时，才会修改成真实的地址。</p>
+<p>链接器就是靠着重定位表来知道哪些地方需要被重定位的。每个可能存在重定位的段都会有对应的重定位表。在链接阶段，链接器会根据重定位表中，需要重定位的内容，去别的目标文件中找到地址并进行重定位。</p>
+<p>有时候我们还会听到动态链接这个名词，它表示重定位发生在运行时而非编译后。动态链接可以节省内存，但也会带来加载的性能问题，这里不详细解释，感兴趣的读者可以阅读《程序员的自我修养》这本书。</p>
+<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>最后简单描述一下预处理。预处理主要是处理一些宏定义，比如#define、#include、#if 等。预处理的实现有很多种，有的编译器会在词法分析前先进行预处理，替换掉所有 # 开头的宏，而有的编译器则是在词法分析的过程中进行预处理。当分析到 # 开头的单词时才进行替换。虽然先预处理再词法分析比较符合直觉，但在实际使用中，GCC 使用的却是一边词法分析，一边预处理的方案。</p>
+<h2 id="编译-VS-解释"><a href="#编译-VS-解释" class="headerlink" title="编译 VS 解释"></a>编译 VS 解释</h2><p>关于编译原理的基础知识虽然枯燥，但掌握这些知识有助于我们理解一些有用的，但不太容易理解的概念。接下来，我们简单看一下别的语言是如何运行的。</p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><p>Java 代码执行的步骤可以分为两部分，编译和执行。<code>*.java</code>编译成<code>*.class</code>，然后 Java 虚拟机执行<code>*.class</code>得到接过，和 c 语言是一样的。</p>
+<h3 id="解释型语言"><a href="#解释型语言" class="headerlink" title="解释型语言"></a>解释型语言</h3><p>一般来说我们也把解释型语言叫做脚本语言，比如 Python、Ruby、JavaScript 等等。这类语言的特点是，不需要编译，直接由解释器执行。换言之，运行流程变成了：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">源代码 -&gt; 解释器 -&gt; 运行结果<br></code></pre></td></tr></table></figure>
+
+<p>这里的解释器是一个黑箱子，各种实现方式。它的实现可以非常类似于 Java 的执行过程。至于虚拟机，它并不是什么黑科技，它的内部可以编译执行，也可以解释执行。如果是编译执行，那么它会把字节码编译成当前 CPU 下的机器码然后统一执行。如果是解释执行，它会逐条翻译字节码。</p>
+<p>有意思的是，如果虚拟机是编译执行的，那么这套流程和 C 语言几乎一样，都满足下面这个流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">源代码 -&gt; 中间代码 -&gt; 目标代码 -&gt; 运行结果<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>大块引用</p>
+<p>因此，解释型语言和编译型语言的根本区别在于，对于用户来说，到底是直接从源码开始执行，还是从中间代码开始执行。以 C 语言为例，所有的可执行程序都是二进制文件。而对于传统意义的 Python 或者 JavaScript，用户并没有拿到中间代码，他们直接从源码开始执行。从这个角度来看， Java 不可能是解释型语言，虽然 Java 虚拟机会解释字节码，但是对于用户来说，他们是从编译好的 .class 文件开始执行，而非源代码。</p>
+<p>实际上，在 x86 这种复杂架构下，二进制的机器码也不能被硬件直接执行，CPU 会把它翻译成更底层的指令。从这个角度来说，我们眼中的硬件其实也是一个虚拟机，执行了一些“抽象”指令，但我相信不会有人认为 C 语言是解释型语言。因此，有没有虚拟机，虚拟机是不是解释执行，会不会生成中间代码，这些都不重要，重要的是如果从中间代码开始执行，而且 AST 已经事先生成好，那就是编译型的语言。</p>
+<p>如果更本质一点看问题，根本就不存在解释型语言或者编译型语言这种说法。已经有人证明，如果一门语言是可以解释的，必然可以开发出这门语言的编译器。反过来说，如果一门语言是可编译的，我只要把它的编译器放到解释器里，把编译推迟到运行时，这么语言就可以是解释型的。事实上，早有人开发出了 C 语言的解释器：</p>
+<p>C 源代码 -&gt; C 语言解释器（运行时编译、汇编、链接） -&gt; 运行结果<br>我相信这一点很容易理解，规范和实现是两套分离的体系。我们平常说的 C 语言的语法，实际上是一套规范。理论上来说每个人都可以写出自己的编译器来实现 C 语言，只要你的编译器能够正确运行，最终的输出结果正确即可。而编译型和解释型说的其实是语言的实现方案，是提前编译以获得最大的性能提高，还是运行时去解析以获得灵活性，往往取决于语言的应用场景。所以说一门语言是编译型还是解释型的，这会非常可笑。一个标准怎么可能会有固定的实现呢？之所以给大家留下了 C 语言是编译型语言，Python 是解释型语言的印象，往往是因为这门语言的应用场景决定了它是主流实现是编译型还是解释型。</p>
+</blockquote>
+<h3 id="自举（引用）"><a href="#自举（引用）" class="headerlink" title="自举（引用）"></a>自举（引用）</h3><p>不知道有没有人思考过，C 语言的编译器是如何实现的？实际上它还是用 C 语言实现的。这种自己能编译自己的神奇能力被称为自举 (Bootstrap)。</p>
+<p>乍一看，自举是不可能的。因为 C 语言编译器，比如 GCC，要想运行起来，必定需要 GCC 的编译器将它编译成二进制的机器码。然而 GCC 的编译器又如何编译呢……</p>
+<p>解决问题的关键在于打破这个循环，我们可以先用一个比 C 语言低级的语言来实现一个 C 语言编译器。这件事是可能做到的，因为这个低级语言必然会比 C 语言简单，比如我们可以直接用汇编代码来写 C 语言的编译器。由于越低级的语言越简单，但表达能力越弱，所以用汇编来写可能太复杂这种情况下我们可以先用一个比 C 语言低级但比汇编高级的语言来实现 C 语言的编译器，同时用汇编来实现这门语言的编译器。总之就是不断用低级语言来写高级语言的编译器，虽然语言越低级，它的表达能力越弱，但是它要解析的语言也在不断变简单，所以这件事是可以做到的。</p>
+<p>有了低级语言写好的 C 语言编译器以后，这个编译器是二进制格式的。此时就可以删掉所有的低级语言，只留一个二进制格式的 C 语言编译器，接下来我们就可以用 C 语言写编译器，再用这个二进制格式的编译器去编译 C 语言实现的 C 语言编译器了，于是完成了自举。</p>
+<p>从这个角度来看，解释型语言是不可能自举的。以 Python 为例，自举要求它能用 Python 语言写出来 Python 的解释器，然而这个解释器如何运行呢，最终还是需要一个解释器。而解释器体系下， Python 都是从源码经过解释器执行，又不能留下什么可以直接被硬件执行的二进制形式的解释器文件，自然是没办法自举的。然而，就像前面说的，Python 完全可以实现一个编译器，这种情况下它就是可以自举的。</p>
+<p>所以一门语言能不能自举，主要取决于它的实现形式能否被编译并留下二进制格式的可执行文件。</p>
+<h2 id="运行时（引用）"><a href="#运行时（引用）" class="headerlink" title="运行时（引用）"></a>运行时（引用）</h2><p>以 C 语言为例，有非常多的操作最终都依赖于 glibc 这个动态链接库。包括但不限于字符串处理 (strlen、strcpy)、信号处理、socket、线程、IO、动态内存分屏 (malloc) 等等。这一点很好理解，如果回忆一下之前编译器的工作原理，我们会发现它仅仅是处理了语言的语法，比如变量定义，函数声明和调用等等。至于语言的功能， 比如内存管理，內建的类型，一些必要功能的实现等等。如果要对运行时库进行分类，大概有两类。一种是语言自身功能的实现，比如一些內建类型，内置的函数；另一种则是语言无关的基础功能，比如文件 IO，socket 等等。</p>
+<p>由于每个程序都依赖于运行时库，这些库一般都是动态链接的，比如 C 语言的 (g)libc。这样一来，运行时库可以存储在操作系统中，节省内存占用空间和应用程序大小。</p>
+<p>对于 Java 语言来说，它的垃圾回收功能，文件 IO 等都是在虚拟机中实现，并提供给 Java 层调用。从这个角度来看，虚拟机&#x2F;解释器也可以被看做语言的运行时环境（库）。</p>
+<h2 id="swift-运行时库"><a href="#swift-运行时库" class="headerlink" title="swift 运行时库"></a>swift 运行时库</h2><p>经过这样的解释，相信 swift 的运行时库就很容易理解了。一方面，swift 是绝对的静态语言，另一方面，swift 毫无疑问的带有自己的运行时库。举个最简单的例子，如果阅读 swift 源码就会发现某些类型，比如字符串 (String)，或者数组，再或者某些函数 (print) 都是用 swift 实现的，这些都是 swift 运行时库的一部分。按理说，运行时库应该内置于操作系统中并且和应用程序动态链接，然而坑爹的 Swift 在本文写作之时依然没有稳定 ABI，导致每个程序都必须自带运行时库，这也就是为什么目前 swift 开发的 app 普遍会增加几 Mb 包大小的原因。</p>
+<p>说到 ABI，它其实就是一个编译后的 API。简单来说，API 是描述了在应用程序级别，模块之间的调用约定。比如某个模块想要调用另一个模块的功能，就必须根据被调用模块提供的 API 来调用，因为 API 中规定了方法名、参数和返回结果的类型。而当源码被编译成二进制文件后，它们之间的调用也存在一些规则和约定。</p>
+<p>比如模块 A 有两个整数 a 和 b，它们的内存布局如下：</p>
+<p><img src="https://pic2.zhimg.com/v2-ab788afe15827f513f4fbddc24e3f7a1_b.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>这时候别的模块调用 A 模块的 b 变量，可以通过初始地址加偏移量的方式进行。</p>
+<p>如果后来模块 A 新增了一个整数 c，它的内存布局可能会变成：</p>
+<p><img src="https://pic1.zhimg.com/v2-63c126a9ea1ece2ba5da17245edbbbc0_b.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>如果调用方还是使用相同的偏移量，可以想见，这次拿到的就是变量 a 了。因此，每当模块 A 有更新，所有依赖于模块 A 的模块都必须重新编译才能正确工作。如果这里的模块 A 是 swift 的运行时库，它内置于操作系统并与其他模块（应用程序）动态链接会怎么样呢？结果就是每次更新系统后，所有的 app 都无法打开。显然这是无法接受的。</p>
+<p>当然，ABI 稳定还包括其他的一些要求，比如调用和被调用者遵守相同的调用约定（参数和返回值如何传递）等。</p>
+<h2 id="JavaScript-那些事"><a href="#JavaScript-那些事" class="headerlink" title="JavaScript 那些事"></a>JavaScript 那些事</h2><p>JavaScript 的宿主环境和其他语言不同，一般来说是浏览器，当然还有 Node。</p>
+<p>先看看浏览器，DOM 操作 ECMAScript 中并没有相应的 API，这是浏览器提供的。浏览器并没有给 JavaScript IO 接口读取系统文件，自然在浏览器上 JavaScript 是不具备 IO 能力的。而不同厂家的浏览器的实现不同，导致 JavaScript 有时候还要判断浏览器来选择代码去实现功能。和 JavaScript 一样干同一件事的还要 CSS。</p>
+<p>换成 Node 环境下，JavaScript 虽然不能操作 DOM 了（毕竟 DOM 是浏览器才有的东西），但是可以用<code>fs</code> 模块对系统文件进行操作。这时候，Node.js 就更像是一个标准的 JavaScript 解析器了。这也是为什么 Node.js 让 JavaScript 可以编写后端应用的原因。</p>
+<h3 id="JIT-优化（引用）"><a href="#JIT-优化（引用）" class="headerlink" title="JIT 优化（引用）"></a>JIT 优化（引用）</h3><p>解释执行效率低的主要原因之一在于，相同的语句被反复解释，因此优化的思路是动态的观察哪些代码是经常被调用的。对于那些被高频率调用的代码，可以用编译器把它编译成机器码并且缓存下来，下次执行的时候就不用重新解释，从而提升速度。这就是 JIT(Just-In-Time) 的技术原理。</p>
+<p>但凡基于缓存的优化，一定会涉及到缓存命中率的问题。在 JavaScript 中，即使是同一段代码，在不同上下文中生成的机器码也不一定相同。比如这个函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123;<br>    <span class="hljs-keyword">return</span> a + b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果这里的 a 和 b 都是整数，可以想见最终的代码一定是汇编中的 add 命令。如果类似的加法运算调用了很多次，解释器可能会认为它值得被优化，于是编译了这段代码。但如果下一次调用的是 add(“hello”, “world”)，之前的优化就无效了，因为字符串加法的实现和整数加法的实现完全不同。</p>
+<p>于是优化后的代码（二进制格式）还得被还原成原先的形式（字符串格式），这样的过程被称为去优化。反复的优化 -&gt; 去优化 -&gt; 优化 …… 非常耗时，大大降低了引入 JIT 带来的性能提升。</p>
+<p>JIT 理论上给传统的 JavaScript 带了了 20-40 倍的性能提升，但由于上述去优化的存在，在实际运行的过程中远远达不到这个理论上的性能天花板。</p>
+<h2 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h2><p>前文说过，JavaScript 实际上是由浏览器引擎负责解析并提供一些功能的。浏览器引擎可能是由 C++ 这样高效的语言实现的，那么为什么不用 C++ 来写网页呢？实际上我认为从技术角度来说并不存在问题，直接下发 C++ 代码，然后交给 C++ 解释器去执行，再调用浏览器的 C++ 组件，似乎更加符合直觉一些。</p>
+<p>之所以选择 JavaScript 而不是 C++，除了主流浏览器目前都只支持 JavaScript 而不支持 C++ 这个历史原因以外，更重要的一点是一门语言的高性能和简单性不可兼得。JavaScript 在运行速度方面做出了牺牲，但也具备了简单易开发的优点。作为通用编程语言，JavaScript 和 C++ 主要的性能差距就在于缺少类型标注，导致无法进行有效的提前编译。之前说过 JIT 这种基于缓存去猜测类型的方式存在瓶颈，那么最精确的方式肯定还是直接加上类型标注，这样就可以直接编译了，代表性的作品有 Mozilla 的 Asm.js。</p>
+<p>Asm.js 是 JavaScript 的一个子集，任何 JavaScript 解释器都可以解释它：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123;<br>    a = a | <span class="hljs-number">0</span>  <span class="hljs-comment">// 任何整数和自己做按位或运算的结果都是自己</span><br>    b = b | <span class="hljs-number">0</span>  <span class="hljs-comment">// 所以这个标记不改变运算结果，但是可以提示编译器 a、b 都是整数</span><br>    <span class="hljs-keyword">return</span> a + b | <span class="hljs-number">0</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果有 Asm.js 特定的解释器，完全可以把它提前编译出来。即使没有也没关系，因为它完全是 JavaScript 语法的子集，普通的解释器也可以解释。</p>
+<p>然而，回顾一下我们最初对解释器的定义：解释器是一个黑盒，输入源码，输出运行结果。Asm.js 其实是黑盒内部的一个优化，不同的黑盒（浏览器）无法共享这一优化。换句话说 Asm.js 写成的代码放到 Chrome 上面和普通的 JavaScript 毫无区别。</p>
+<p>于是，包括微软、谷歌和苹果在内的各大公司觉得，是时候搞个标准了，这个标准就是 WebAssembly 格式。它是介于中间代码和目标代码之间的一种二进制格式，借用 WebAssembly 系列（四）WebAssembly 工作原理 一文的插图来表示：</p>
+<p><img src="https://pic4.zhimg.com/v2-92d8993cfb8710d9d9c478555f5c770b_b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>通常从中间代码到机器码，需要经过平台具体化（转目标代码）和二进制化（汇编器把汇编代码变为二进制机器码）这两个步骤。而 WebAssembly 首先完成了第二个步骤，即已经是二进制格式的，但只是一系列虚拟的通用指令，还需要转换到各个 CPU 架构上。这样一来，从 WebAssembly 到机器码其实是透明且统一的，各个浏览器厂商只需要考虑如何从中间代码转换 WebAssembly 就行了。</p>
+<p>由于编译器的前端工具 Clang 可以把 C&#x2F;C++ 转换成中间代码，因此理论上它们都可以用来开发网页。然而谁会这么这么做呢，放着简单快捷，现在又高效的 JavaScript 不写，非要去啃 C++？</p>
+<h2 id="跨语言那些事儿"><a href="#跨语言那些事儿" class="headerlink" title="跨语言那些事儿"></a>跨语言那些事儿</h2><p>C++ 写网页这个脑洞虽然比较大，但它启发我思考一个问题：“对于一个常见的可以由某个语言完成的任务（比如 JavaScript 写网页），能不能换一个语言来实现（比如 C++)，如果不能，制约因素在哪里”。</p>
+<p>由于绝大多数主流语言都是 <a href="http://link.zhihu.com/?target=http://mp.weixin.qq.com/s?__biz=MzI0NzI1NzU5NA==&mid=2247483729&idx=1&sn=8903c833e88c0465e765f47b38dcc6d0&scene=21%23wechat_redirect"><strong>图灵完备的</strong></a>，也就是说一切可计算的问题，在这些语言层面都是等价的，都可以计算。那么制约语言能力的因素也就只剩下了运行时的环境是否提供了相应的功能。比如前文解释过的，虽然浏览器中的 JavaScript 不能读写文件，不能实现一个服务器，但这是浏览器（即运行时环境）不行，不是 JavaScript 不行，只要把运行环境换成 Node.js 就行了。</p>
+<h2 id="直接语法转换"><a href="#直接语法转换" class="headerlink" title="直接语法转换"></a>直接语法转换</h2><p>大部分读者应该接触过简单的逆向工程。比如编译后的 .o 目标文件和 .class 字节码都可以反编译成源代码，这种从中间代码倒推回源代码的技术也被叫做反编译 (decompile)，反编译器的工作流程基本上是编译器的倒序，只不过完美的反编译一般来说比较困难，这取决于中间代码的实现。像 Java 字节码这样的中间代码，由于信息比较全，所以反编译就相对容易、准确一些。C 代码在生成中间代码时丢失了很多信息，因此就几乎不可能 100% 准确的倒推回去，感兴趣的读者可以参考一下知名的反编译工具 Hex-Rays 的一篇博客。</p>
+<p>前文说过，编译器前端可以对多种语言进行词法分析和语法分析，并且生成一套语言无关的中间代码，因此理论上来说，如果某个编译器前端工具支持两个语言 A 和 B 的解析，那么 A 和 B 是可以互相转换的，流程如下：</p>
+<blockquote>
+<p>A 源码 &lt;–&gt; 语言无关的中间代码 &lt;–&gt; B 源码</p>
+</blockquote>
+<p>其中从源码转换到中间代码需要使用编译器，从中间代码转换到源码则使用反编译器。</p>
+<p>但在实际情况中，事情会略复杂一些，这是因为中间代码虽然是一套语言无关、CPU 也无关的指令集，但不代表不同语言生成的中间代码就可以通用。比如中间代码共有 1、2、3、……、6 这六个指令。A 语言生成的中间代码仅仅是所有指令的一个子集，比如是 1-5 这 5 个指令；B 语言生成的中间代码可能是所有指令的另一个子集，比如 2-6。这时候我们说的 B 语言的反编译器，实际上是从 2-6 的指令子集推导出 B 语言源码，它对指令 1 可能无能为力。</p>
+<p>以 GCC 的中间代码 RTL: Register Transfer Language 为例，官方文档 在对 RTL 的解释中，就明确的把 RTL 树分为了通用的、C&#x2F;C++ 特有的、Java 特有的等几个部分。</p>
+<p><img src="https://pic3.zhimg.com/v2-616e1fc357fab2bfbe2adad9d39e2ca6_b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>具体来说，我们知道 Java 并不能直接访问内存地址，这一点和浏览器上的 JavaScript 不能读写文件很类似，都是因为它们的运行环境（虚拟机）具备这种能力，但没有在语言层面提供。因此，含有指针四则运算的 C 代码无法直接被转换成 Java 代码，因为 Java 字节码层面并没有定义这样的抽象，一种简单的方案是申请一个超大的数组，然后自己模拟内存地址。</p>
+<p>所以，即使编译器前端同时支持两种语言的解析，要想进行转换，还必须处理两种语言在中间代码层面的一些小差异，实际流程应该是：</p>
+<blockquote>
+<p>A 源码 &lt;–&gt; 中间代码子集 (A) &lt;–适配器–&gt; 中间代码子集 (B) &lt;–&gt; B 源码</p>
+</blockquote>
+<p>这个思路已经不仅仅停留在理论上了，比如 Github 上有一个库：emscripten 就实现了将任何 Clang 支持的语言（比如 C&#x2F;C++ 等）转换成 JavaScript，再比如 lljvm 实现了 C 到 Java 字节码的转换。</p>
+<p>然而前文已经解释过，实现单纯语法的转换意义并不大。一方面，对于图灵完备的语言来说，换一种表示方法（语言）去解决相同的问题并没有意义。另一方面，语言的真正功能绝不仅仅是语法本身，而在于它的运行时环境提供了什么样的功能。比如 Objective-C 的 Foundation 库提供了字典类型 NSDictionary，它如果直接转换成 C 语言，将是一个找不到的符号。因为 C 语言的运行时环境根本就不提供对这种数据结构的支持。因此凡是在语言层面进行强制转换的，要么利用反编译器拿到一堆格式正确但无法运行的代码，要么就自行解析语法树并为转换后的语言添加对应的能力，来实现转换前语言的功能。</p>
+<p><img src="https://pic3.zhimg.com/v2-b08ab5004af7f26682a40ba3620f89fa_b.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>比如图中就是一个 C 语言转换 Java 的工具，为了实现 C 语言中的字符串申请和释放内存，这个工具不得不自己实现了 com.mtsystems.coot.String8 类。这样巨大的成本，显然不够普适，应用场景相对有限。</p>
+<p>总之，直接的语法转换是一个美好的想法，但实现起来难度大，收益有限，通常是为了移植已经用某个语言写好的框架，或者开个脑洞用于学习，但实际应用场景并不多。</p>
+<h2 id="胶水语言-Python"><a href="#胶水语言-Python" class="headerlink" title="胶水语言 Python"></a>胶水语言 Python</h2><p>Python 一个很强大的特点是胶水语言，可以把 Python 理解为各种语言的粘合剂。对于 Python 可以处理的逻辑，用 Python 代码即可完成。如果追求极致的性能或者调用已经实现的功能，也可以让 Python 调用已经由别的语言实现的模块，以 Python 和 C 语言的交互解释一下。</p>
+<p>首先，如果是 C 语言要执行 Python 代码，显然需要一个 Python 的解释器。由于在 Mac OS X 系统上，Python 解释器是一个动态链接库，所以只要导入一下头文件即可，下面这段代码可以成功输出 “Hello Python!!!”:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#import <span class="hljs-string">&lt;Python/Python.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> * argv[])</span> &#123;<br>    Py_SetProgramName(argv[<span class="hljs-number">0</span>]);<br>    Py_Initialize();<br>    PyRun_SimpleString(<span class="hljs-string">&quot;print &#x27;Hello Python!!!&#x27;\n&quot;</span>);<br>    Py_Finalize();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果是在 iOS 应用里，由于 iOS 系统没有对应的动态库，所以需要把 Python 的解释器打包成一个静态库并且链接到应用中，网上已经有人做好了：python-for-iphone，这就是为什么我们看到一些教育类的应用模拟了 Python 解释器，允许用户编写 Python 代码并得到输出。</p>
+<p>Python 调用 Objective-C&#x2F;C 也不复杂，只需要在 C 代码中指定要暴露的模块 A 和要暴露的方法 a，然后 Python 就可以直接调用了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> A<br>A.a()<br></code></pre></td></tr></table></figure>
+
+<p>详细的教程可以看这里：如何实现 C&#x2F;C++ 与 Python 的通信？</p>
+<p>有时候，如果能把自己熟悉的语言应用到一个陌生的领域，无疑会大大降低上手的难度。以 iOS 开发为例，开发者的日常其实是利用 Objective-C 语法来描述一些逻辑，最终利用 UIKit 等框架完成和应用的交互。 一种很自然而然的想法是，能不能用 Python 来实现逻辑，并且调用 Objective-C 的接口，比如 UIKit、Foundation 等。实际上前者是完全可以实现的，但是 Python 调用 Objective-C 远比调用 C 语言要复杂得多。</p>
+<p>一方面从之前的分析中也能看出，并不是所有的源码编译成目标文件都可以被 Python 引用；另一方面，最重要的是 Objective-C 方法调用的特性。我们知道方法调用实际上会被编译成 msg_Send 并交给 runtime 处理，最终找到函数指针并调用。这里 Objective-C 的 runtime 其实是一个用 C 语言实现动态链接库，它可以理解为 Objective-C 运行时环境的一部分。换句话说，没有 runtime 这个库，包含方法调用的 Objective-C 代码是不可能运行起来的，因为 msg_Send 这个符号无法被重定向，运行时将找不到 msg_Send 函数的地址。就连原生的 Objective-C 代码都需要依赖运行时，想让 Python 直接调用某个 Objective-C 编译出来的库就更不可能了。</p>
+<p>想用 Python 写开发 iOS 应用是有可能的，比如：PyObjc，但最终还是要依赖 Runtime。大概的思路是首先用 Python 拿到 runtime 这个库，然后通过这个库去和 runtime 交互，进而具备了调用 Objective-C 和各种框架的能力。比如我要实现 Python 中的 UIView 这个类，代码会变成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> objc<br><br><span class="hljs-comment"># 这个 objc 是动态加载 libobjc.dylib 得到的</span><br><span class="hljs-comment"># Python 会对 objc 做一些封装，提供调用 runtime 的能力</span><br><span class="hljs-comment"># 实际的工作还是交给 libobjc.dylib 完成</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UIView</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, param</span>):<br>        objc.msgSend(<span class="hljs-string">&quot;UIView&quot;</span>, <span class="hljs-string">&quot;init&quot;</span>, param)<br></code></pre></td></tr></table></figure>
+
+<p>这么做的性价比并不高，如果和 JSPatch 相比，JSPatch 使用了内置的 JavaScriptCore 作为 JavaScript 的解析器，而 PyObjc 就得自己带一个 libPython.a 解释器。此外，由于 iOS 系统的沙盒限制，非越狱机器并不能拿到 libobjc 库，所以这个工具只能在越狱手机上使用。</p>
+<h2 id="OCS"><a href="#OCS" class="headerlink" title="OCS"></a>OCS</h2><p>既然说到了 JSPatch 这一类动态化的 iOS 开发工具，我就斗胆猜测一下腾讯 OCS 的实现原理，目前介绍 OCS 的文章寥寥无几，由于苹果公司的要求，原文已经被删除，从新浪博客上摘录了一份：OCS ——史上最疯狂的 iOS 动态化方案。如果用一句话来概述，那么就是 OCS 是一个 Objective-C 解释器。</p>
+<p>首先，OCS 基于 clang 对下发的 Objective-C 代码做词法、语法分析，生成 AST 然后转化成自定义的一套中间码 (OSScript)。当然，原生的 Objective-C 可以运行，绝不仅仅是编译器的功劳。就像之前反复强调的那样，运行时环境也必不可少，比如负责 GCD 的 libdispatch 库，还有内存管理，多线程等等功能。这些功能原来都由系统的动态库实现，但现在必须由解释器实现，所以 OCS 的做法是开发了一套自己的虚拟机去解释执行中间码。这个运行原理就和 JVM 非常类似了。</p>
+<p>当然，最终还是要和 Objective-C 的 Runtime 打交道，这样才能调用 UIKit 等框架。由于对虚拟机的实现原理并不清楚，这里就不敢多讲了，希望在学习完 JVM 以后再做分享。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%87%AA%E7%94%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">自用笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%BC%96%E8%AF%91/" class="print-no-link">#编译</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>编译原理和语言知识</div>
+      <div>https://bubao.github.io/posts/d0c89869.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年7月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/b1420a79.html" title="React 表单组件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">React 表单组件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/8f7d7e58.html" title="做给自己用的命令行工具">
+                        <span class="hidden-mobile">做给自己用的命令行工具</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

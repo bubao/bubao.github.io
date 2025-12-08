@@ -1,0 +1,820 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="回广州工作，家里的 nas 没带过来。只带了一台笔记本、一块树莓派、几块硬盘和硬盘底座。 就用手头的有的东西搭一个私有云。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派上部署私有云">
+<meta property="og:url" content="https://bubao.github.io/posts/54d37429.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="回广州工作，家里的 nas 没带过来。只带了一台笔记本、一块树莓派、几块硬盘和硬盘底座。 就用手头的有的东西搭一个私有云。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://skillicons.dev/icons?i=raspberrypi">
+<meta property="article:published_time" content="2020-04-04T18:18:25.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.883Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="raspberrypi">
+<meta property="article:tag" content="pi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://skillicons.dev/icons?i=raspberrypi">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>树莓派上部署私有云 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://skillicons.dev/icons?i=raspberrypi') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="树莓派上部署私有云"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-04-05 02:18" pubdate>
+          2020年4月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">树莓派上部署私有云</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>回广州工作，家里的 nas 没带过来。只带了一台笔记本、一块树莓派、几块硬盘和硬盘底座。</p>
+<p>就用手头的有的东西搭一个私有云。</p>
+<span id="more"></span>
+
+<h2 id="所需设备"><a href="#所需设备" class="headerlink" title="所需设备"></a>所需设备</h2><p>一台笔电、一块树莓派、一块硬盘、一个硬盘座，当然还需要一个路由器</p>
+<p>首先需要把树莓派和笔记本都连上同一台路由器上，并能用 vnc 或者 ssh 登录上树莓派。把硬盘挂在树莓派上。</p>
+<p>这步操作不懂赶紧去看看慕课网的 linux 教程吧。</p>
+<h2 id="安装-samba"><a href="#安装-samba" class="headerlink" title="安装 samba"></a>安装 samba</h2><p>我之前的文章也有提到过 samba 的作用了（大概有），这里就不多说了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> apt install samba samba-common-bin<br></code></pre></td></tr></table></figure>
+
+<p>修改配置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> vi /etc/samba/smb.conf<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">[nas]<br>    path = /home/pi/disk/3<br>    <span class="hljs-built_in">read</span> only = no<br>    browsable = <span class="hljs-built_in">yes</span><br>    create mask = 0666<br>    force create mask = 0666<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装-php-和-nignx"><a href="#安装-php-和-nignx" class="headerlink" title="安装 php 和 nignx"></a>安装 php 和 nignx</h2><p>php 和 nginx 是为了提供页面服务的，php 不是硬性需求</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> apt install nginx php7.0fpm php7.0-cli php7.0-curl php7.0-gd php7.0-mcrypt php7.0<br></code></pre></td></tr></table></figure>
+
+<p>配置 nginx</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> vi /etc/nginx/sites-available/default<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sh">server &#123;<br>  listen 80 default_server;<br>  listen [::]:80 default_server;<br><br>  root /var/www/html;<br>  index index.html  index.htm index.nginx-debian.html;<br>  server_name _;<br>  localhost / &#123;<br>    index index.html  index.htm index.php default.html default.htm default.php;<br>  &#125;<br><br>  localhost ~ \.php$ &#123;<br>    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;<br>    fastcgi_param SCRIPT_FILENAME $document_root<span class="hljs-variable">$fastcgi_script_name</span>;<br>    include fastcgi_params;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装-aria2"><a href="#安装-aria2" class="headerlink" title="安装 aria2"></a>安装 aria2</h2><p>aria2 是下载工具，当然要安装了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> apt install aria2<br><span class="hljs-built_in">mkdir</span> /etc/aira2<br><span class="hljs-built_in">touch</span> /etc/aria2/aria2.conf<br><span class="hljs-built_in">touch</span> /etc/aria2/aria2.session<br></code></pre></td></tr></table></figure>
+
+<p>修改<code>/etc/aria2/aria2.conf</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">vi /etc/aria2/aria2.conf<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># </span><br><span class="hljs-comment">## &#x27;#&#x27;开头为注释内容，选项都有相应的注释说明，根据需要修改 ##</span><br><span class="hljs-comment">## 被注释的选项填写的是默认值，建议在需要修改时再取消注释  ##</span><br><br><span class="hljs-comment">## 文件保存相关 ##</span><br><br><span class="hljs-comment"># 文件的保存路径（可使用绝对路径或相对路径）, 默认：当前启动位置</span><br><span class="hljs-built_in">dir</span>=/home/pi/disk/3/pan<br><span class="hljs-comment"># 启用磁盘缓存，0 为禁用缓存，需 1.16 以上版本，默认：16M</span><br><span class="hljs-comment">#disk-cache=32M</span><br><span class="hljs-comment"># 文件预分配方式，能有效降低磁盘碎片，默认：prealloc</span><br><span class="hljs-comment"># 预分配所需时间：none &lt; falloc ? trunc &lt; prealloc</span><br><span class="hljs-comment"># falloc 和 trunc 则需要文件系统和内核支持</span><br><span class="hljs-comment"># NTFS 建议使用 falloc, EXT3/4 建议 trunc, MAC 下需要注释此项</span><br><span class="hljs-comment">#file-allocation=none</span><br><span class="hljs-comment"># 断点续传</span><br><span class="hljs-built_in">continue</span>=<span class="hljs-literal">true</span><br><br><span class="hljs-comment">## 下载连接相关 ##</span><br><br><span class="hljs-comment"># 最大同时下载任务数，运行时可修改，默认：5</span><br><span class="hljs-comment">#max-concurrent-downloads=5</span><br><span class="hljs-comment"># 同一服务器连接数，添加时可指定，默认：1</span><br>max-connection-per-server=5<br><span class="hljs-comment"># 最小文件分片大小，添加时可指定，取值范围 1M -1024M, 默认：20M</span><br><span class="hljs-comment"># 假定 size=10M, 文件为 20MiB 则使用两个来源下载；文件为 15MiB 则使用一个来源下载</span><br>min-split-size=10M<br><span class="hljs-comment"># 单个任务最大线程数，添加时可指定，默认：5</span><br><span class="hljs-comment">#split=5</span><br><span class="hljs-comment"># 整体下载速度限制，运行时可修改，默认：0</span><br><span class="hljs-comment">#max-overall-download-limit=0</span><br><span class="hljs-comment"># 单个任务下载速度限制，默认：0</span><br><span class="hljs-comment">#max-download-limit=0</span><br><span class="hljs-comment"># 整体上传速度限制，运行时可修改，默认：0</span><br><span class="hljs-comment">#max-overall-upload-limit=0</span><br><span class="hljs-comment"># 单个任务上传速度限制，默认：0</span><br><span class="hljs-comment">#max-upload-limit=0</span><br><span class="hljs-comment"># 禁用 IPv6, 默认：false</span><br><span class="hljs-comment">#disable-ipv6=true</span><br><span class="hljs-comment"># 连接超时时间，默认：60</span><br><span class="hljs-comment">#timeout=60</span><br><span class="hljs-comment"># 最大重试次数，设置为 0 表示不限制重试次数，默认：5</span><br><span class="hljs-comment">#max-tries=5</span><br><span class="hljs-comment"># 设置重试等待的秒数，默认：0</span><br><span class="hljs-comment">#retry-wait=0</span><br><br><span class="hljs-comment">## 进度保存相关 ##</span><br><br><span class="hljs-comment"># 从会话文件中读取下载任务</span><br>input-file=/etc/aria2/aria2.session<br><span class="hljs-comment"># 在 Aria2 退出时保存`错误/未完成`的下载任务到会话文件</span><br>save-session=/etc/aria2/aria2.session<br><span class="hljs-comment"># 定时保存会话，0 为退出时才保存，需 1.16.1 以上版本，默认：0</span><br><span class="hljs-comment">#save-session-interval=60</span><br><br><span class="hljs-comment">## RPC 相关设置 ##</span><br><br><span class="hljs-comment"># 启用 RPC, 默认：false</span><br>enable-rpc=<span class="hljs-literal">true</span><br><span class="hljs-comment"># 允许所有来源，默认：false</span><br>rpc-allow-origin-all=<span class="hljs-literal">true</span><br><span class="hljs-comment"># 允许非外部访问，默认：false</span><br>rpc-listen-all=<span class="hljs-literal">true</span><br><span class="hljs-comment"># 事件轮询方式，取值：[epoll, kqueue, port, poll, select], 不同系统默认值不同</span><br><span class="hljs-comment">#event-poll=select</span><br><span class="hljs-comment"># RPC 监听端口，端口被占用时可以修改，默认：6800</span><br><span class="hljs-comment">#rpc-listen-port=6800</span><br><span class="hljs-comment"># 设置的 RPC 授权令牌，v1.18.4 新增功能，取代 --rpc-user 和 --rpc-passwd 选项</span><br><span class="hljs-comment">#rpc-secret=&lt;TOKEN&gt;</span><br><span class="hljs-comment"># 设置的 RPC 访问用户名，此选项新版已废弃，建议改用 --rpc-secret 选项</span><br><span class="hljs-comment">#rpc-user=&lt;USER&gt;</span><br><span class="hljs-comment"># 设置的 RPC 访问密码，此选项新版已废弃，建议改用 --rpc-secret 选项</span><br><span class="hljs-comment">#rpc-passwd=&lt;PASSWD&gt;</span><br><span class="hljs-comment"># 是否启用 RPC 服务的 SSL/TLS 加密，</span><br><span class="hljs-comment"># 启用加密后 RPC 服务需要使用 https 或者 wss 协议连接</span><br><span class="hljs-comment">#rpc-secure=true</span><br><span class="hljs-comment"># 在 RPC 服务中启用 SSL/TLS 加密时的证书文件，</span><br><span class="hljs-comment"># 使用 PEM 格式时，您必须通过 --rpc-private-key 指定私钥</span><br><span class="hljs-comment">#rpc-certificate=/path/to/certificate.pem</span><br><span class="hljs-comment"># 在 RPC 服务中启用 SSL/TLS 加密时的私钥文件</span><br><span class="hljs-comment">#rpc-private-key=/path/to/certificate.key</span><br><br><span class="hljs-comment">## BT/PT 下载相关 ##</span><br><br><span class="hljs-comment"># 当下载的是一个种子（以。torrent 结尾）时，自动开始 BT 任务，默认：true</span><br><span class="hljs-comment">#follow-torrent=true</span><br><span class="hljs-comment"># BT 监听端口，当端口被屏蔽时使用，默认：6881-6999</span><br>listen-port=51413<br><span class="hljs-comment"># 单个种子最大连接数，默认：55</span><br><span class="hljs-comment">#bt-max-peers=55</span><br><span class="hljs-comment"># 打开 DHT 功能，PT 需要禁用，默认：true</span><br>enable-dht=<span class="hljs-literal">false</span><br><span class="hljs-comment"># 打开 IPv6 DHT 功能，PT 需要禁用</span><br><span class="hljs-comment">#enable-dht6=false</span><br><span class="hljs-comment"># DHT 网络监听端口，默认：6881-6999</span><br><span class="hljs-comment">#dht-listen-port=6881-6999</span><br><span class="hljs-comment"># 本地节点查找，PT 需要禁用，默认：false</span><br><span class="hljs-comment">#bt-enable-lpd=false</span><br><span class="hljs-comment"># 种子交换，PT 需要禁用，默认：true</span><br>enable-peer-exchange=<span class="hljs-literal">false</span><br><span class="hljs-comment"># 每个种子限速，对少种的 PT 很有用，默认：50K</span><br><span class="hljs-comment">#bt-request-peer-speed-limit=50K</span><br><span class="hljs-comment"># 客户端伪装，PT 需要</span><br>peer-id-prefix=-TR2770-<br>user-agent=Transmission/2.77<br><span class="hljs-comment"># 当种子的分享率达到这个数时，自动停止做种，0 为一直做种，默认：1.0</span><br>seed-ratio=0<br><span class="hljs-comment"># 强制保存会话，即使任务已经完成，默认：false</span><br><span class="hljs-comment"># 较新的版本开启后会在任务完成后依然保留。aria2 文件</span><br><span class="hljs-comment">#force-save=false</span><br><span class="hljs-comment"># BT 校验相关，默认：true</span><br><span class="hljs-comment">#bt-hash-check-seed=true</span><br><span class="hljs-comment"># 继续之前的 BT 任务时，无需再次校验，默认：false</span><br>bt-seed-unverified=<span class="hljs-literal">true</span><br><span class="hljs-comment"># 保存磁力链接元数据为种子文件 (.torrent 文件）, 默认：false</span><br>bt-save-metadata=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="获取服务"><a href="#获取服务" class="headerlink" title="获取服务"></a>获取服务</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> /var/www/html<br>git <span class="hljs-built_in">clone</span> https://github.com/spoonysonny/pi-dashboard.git <span class="hljs-comment"># pi 的看板，感觉没什么用，如果要安装就需要前面的 php 也安装了。</span><br>git <span class="hljs-built_in">clone</span> https://github.com/mayswind/AriaNg.git aria2 <span class="hljs-comment"># 有界面的 aria2，需要前面安装的 aira2</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="安装-npm-和-node"><a href="#安装-npm-和-node" class="headerlink" title="安装 npm 和 node"></a>安装 npm 和 node</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#npm</span><br>curl -L https://www.npmjs.com/install.sh | sh<br>npm i --registry=https://registry.npm.taobao.org gulp -g<br><span class="hljs-built_in">cd</span> /var/www/html/aria2<br>npm i<br>gulp  clean build <br><span class="hljs-comment"># 把 dist 文件的内容复制一份到 /var/www/html/dl</span><br><span class="hljs-built_in">cp</span> -r /var/www/html/aria/dist /var/www/html/dl<br></code></pre></td></tr></table></figure>
+
+<p>这样就能通过树莓派 ip&#x2F;dl 来进入到下载器的页面了</p>
+<h2 id="将-aira2-设置为开机自启"><a href="#将-aira2-设置为开机自启" class="headerlink" title="将 aira2 设置为开机自启"></a>将 aira2 设置为开机自启</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> vi /lib/systemd/system/aria2.service<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">[Unit]<br>Description= aria2<br>After=network.target<br> <br>[Service]<br><span class="hljs-comment">#PIDFile=/run/aria2.pid</span><br>ExecStart=aria2c -c --conf-path=/etc/aria2/aria2.conf &amp;<br>ExecStop=/bin/kill <span class="hljs-variable">$MAINPID</span><br>RestartSec=always<br> <br>[Install]<br>WantedBy=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">systemctl <span class="hljs-built_in">enable</span> aria2<br>systemctl start aria2<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/" class="print-no-link">#linux</a>
+      
+        <a href="/tags/nginx/" class="print-no-link">#nginx</a>
+      
+        <a href="/tags/raspberrypi/" class="print-no-link">#raspberrypi</a>
+      
+        <a href="/tags/pi/" class="print-no-link">#pi</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>树莓派上部署私有云</div>
+      <div>https://bubao.github.io/posts/54d37429.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年4月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/99204414.html" title="VSCode 插件整理与设置">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">VSCode 插件整理与设置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/91b3e2c2.html" title="Centos 安装 redis">
+                        <span class="hidden-mobile">Centos 安装 redis</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

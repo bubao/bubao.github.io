@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="之前在 cnodejs.org 回复过一个答案。最近 cnodejs.org 无法访问，只能找快照把代码拷贝出来。果然还是自己的服务器靠谱一点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js 文字转图片">
+<meta property="og:url" content="https://bubao.github.io/posts/576aa3eb.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="之前在 cnodejs.org 回复过一个答案。最近 cnodejs.org 无法访问，只能找快照把代码拷贝出来。果然还是自己的服务器靠谱一点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-17T19:16:24.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.879Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="node.js">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>node.js 文字转图片 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="node.js 文字转图片"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-18 03:16" pubdate>
+          2020年10月18日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          882 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">node.js 文字转图片</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>之前在 <a target="_blank" rel="noopener" href="https://cnodejs.org/">cnodejs.org</a> 回复过一个答案。最近 <a target="_blank" rel="noopener" href="https://cnodejs.org/">cnodejs.org</a> 无法访问，只能找快照把代码拷贝出来。果然还是自己的服务器靠谱一点。</p>
+<span id="more"></span>
+
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在日常开发中，我们经常需要将文字转换为图片，比如生成海报、邀请函、证书等。本文将介绍如何使用 Node.js 结合 <a target="_blank" rel="noopener" href="https://github.com/shrhdk/text-to-svg">TextToSVG</a> 和 <a target="_blank" rel="noopener" href="https://github.com/lovell/sharp">Sharp</a> 库来实现高质量的文字转图片功能。</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>整个过程分为以下几个步骤：</p>
+<ol>
+<li>使用 TextToSVG 将文字转换为 SVG 格式</li>
+<li>使用 Sharp 库加载背景图片和 SVG 文字</li>
+<li>计算文字在背景图上的位置并合成</li>
+<li>输出最终的 PNG 图片</li>
+</ol>
+<h2 id="完整代码实现"><a href="#完整代码实现" class="headerlink" title="完整代码实现"></a>完整代码实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">TextToSVG</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;text-to-svg&#x27;</span>);<br><span class="hljs-keyword">const</span> sharp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;sharp&#x27;</span>);<br><br><span class="hljs-comment">// 计时开始</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">time</span>(<span class="hljs-string">&quot;png&quot;</span>);<br><br><span class="hljs-comment">// 加载字体文件</span><br><span class="hljs-keyword">const</span> textToSVG = <span class="hljs-title class_">TextToSVG</span>.<span class="hljs-title function_">loadSync</span>(<span class="hljs-string">&#x27;./DENG.TTF&#x27;</span>);<br><br><span class="hljs-comment">// 创建三段不同样式的文字 SVG</span><br><span class="hljs-keyword">const</span> svg1 = textToSVG.<span class="hljs-title function_">getSVG</span>(<span class="hljs-string">&#x27;魏长青-人人讲 App&#x27;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">fontSize</span>: <span class="hljs-number">24</span>,<br>    <span class="hljs-attr">anchor</span>: <span class="hljs-string">&#x27;top&#x27;</span>,<br>&#125;);<br><br><span class="hljs-keyword">const</span> svg2 = textToSVG.<span class="hljs-title function_">getSVG</span>(<span class="hljs-string">&#x27;邀请您参加&#x27;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">fontSize</span>: <span class="hljs-number">16</span>,<br>    <span class="hljs-attr">anchor</span>: <span class="hljs-string">&#x27;top&#x27;</span>,<br>&#125;);<br><br><span class="hljs-keyword">const</span> svg3 = textToSVG.<span class="hljs-title function_">getSVG</span>(<span class="hljs-string">&#x27;人人讲课程&#x27;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">fontSize</span>: <span class="hljs-number">32</span>,<br>    <span class="hljs-attr">anchor</span>: <span class="hljs-string">&#x27;top&#x27;</span>,<br>&#125;);<br><br><span class="hljs-comment">// 异步处理图片合成</span><br>(<span class="hljs-title function_">async</span> () =&gt; &#123;<br>    <span class="hljs-comment">// 加载背景图和文字 SVG</span><br>    <span class="hljs-keyword">const</span> sourceImg = <span class="hljs-title function_">sharp</span>(<span class="hljs-string">&#x27;./bg.png&#x27;</span>);<br>    <span class="hljs-keyword">const</span> target1Img = <span class="hljs-title function_">sharp</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(svg1));<br>    <span class="hljs-keyword">const</span> target2Img = <span class="hljs-title function_">sharp</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(svg2));<br>    <span class="hljs-keyword">const</span> target3Img = <span class="hljs-title function_">sharp</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(svg3));<br>    <br>    <span class="hljs-comment">// 并行获取所有图片的元数据</span><br>    <span class="hljs-keyword">const</span> [<br>        &#123;<span class="hljs-attr">width</span>:sWidth , <span class="hljs-attr">height</span>:sHeight &#125;,<br>        &#123;<span class="hljs-attr">width</span>:t1Width , <span class="hljs-attr">height</span>:t1Height &#125;,<br>        &#123;<span class="hljs-attr">width</span>:t2Width , <span class="hljs-attr">height</span>:t2Height &#125;,<br>        &#123;<span class="hljs-attr">width</span>:t3Width , <span class="hljs-attr">height</span>:t3Height &#125;<br>    ] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([<br>            sourceImg.<span class="hljs-title function_">metadata</span>(),<br>            target1Img.<span class="hljs-title function_">metadata</span>(),<br>            target2Img.<span class="hljs-title function_">metadata</span>(),<br>            target3Img.<span class="hljs-title function_">metadata</span>()<br>        ]);<br><br>    <span class="hljs-comment">// 计算每段文字的位置（居中对齐）</span><br>    <span class="hljs-keyword">const</span> offsetX1 = <span class="hljs-built_in">parseInt</span>((sWidth - t1Width) / <span class="hljs-number">2</span>);<br>    <span class="hljs-keyword">const</span> offsetY1 = <span class="hljs-number">200</span>;<br>    <br>    <span class="hljs-keyword">const</span> offsetX2 = <span class="hljs-built_in">parseInt</span>((sWidth - t2Width) / <span class="hljs-number">2</span>);<br>    <span class="hljs-keyword">const</span> offsetY2 = <span class="hljs-number">240</span>;<br>    <br>    <span class="hljs-keyword">const</span> offsetX3 = <span class="hljs-built_in">parseInt</span>((sWidth - t3Width) / <span class="hljs-number">2</span>);<br>    <span class="hljs-keyword">const</span> offsetY3 = <span class="hljs-number">270</span>;<br><br>    <span class="hljs-comment">// 并行转换 SVG 为图片缓冲区</span><br>    <span class="hljs-keyword">const</span> [target1Buffer, target2Buffer, target3Buffer] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([<br>        target1Img.<span class="hljs-title function_">toBuffer</span>(),<br>        target2Img.<span class="hljs-title function_">toBuffer</span>(),<br>        target3Img.<span class="hljs-title function_">toBuffer</span>()<br>    ]);<br><br>    <span class="hljs-comment">// 合成图片并输出</span><br>    <span class="hljs-keyword">await</span> sourceImg<br>        .<span class="hljs-title function_">composite</span>([<br>            &#123;<span class="hljs-attr">input</span>: target1Buffer, <span class="hljs-attr">left</span>: offsetX1, <span class="hljs-attr">top</span>: offsetY1&#125;,<br>            &#123;<span class="hljs-attr">input</span>: target2Buffer, <span class="hljs-attr">left</span>: offsetX2, <span class="hljs-attr">top</span>: offsetY2&#125;,<br>            &#123;<span class="hljs-attr">input</span>: target3Buffer, <span class="hljs-attr">left</span>: offsetX3, <span class="hljs-attr">top</span>: offsetY3&#125;<br>        ])<br>        .<span class="hljs-title function_">sharpen</span>()<br>        .<span class="hljs-title function_">withMetadata</span>()<br>        .<span class="hljs-title function_">png</span>()<br>        .<span class="hljs-title function_">toFile</span>(<span class="hljs-string">&#x27;./card.png&#x27;</span>);<br>    <br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;图片生成成功：./card.png&#x27;</span>);<br>&#125;)()<br><br><span class="hljs-comment">// 输出执行时间</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">timeEnd</span>(<span class="hljs-string">&quot;png&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h2><h3 id="1-依赖库介绍"><a href="#1-依赖库介绍" class="headerlink" title="1. 依赖库介绍"></a>1. 依赖库介绍</h3><ul>
+<li><strong>TextToSVG</strong>：将文字转换为 SVG 路径的库，支持自定义字体</li>
+<li><strong>Sharp</strong>：高性能的 Node.js 图像处理库，支持多种图像格式</li>
+</ul>
+<h3 id="2-关键步骤说明"><a href="#2-关键步骤说明" class="headerlink" title="2. 关键步骤说明"></a>2. 关键步骤说明</h3><ol>
+<li><strong>字体加载</strong>：<code>TextToSVG.loadSync(&#39;./DENG.TTF&#39;)</code> 加载本地中文字体文件</li>
+<li><strong>SVG 生成</strong>：通过 <code>getSVG()</code> 方法将文字转换为 SVG 格式</li>
+<li><strong>并行处理</strong>：使用 <code>Promise.all()</code> 并行获取图片元数据，提升性能</li>
+<li><strong>位置计算</strong>：通过 <code>（背景图宽度 - 文字宽度） / 2</code> 实现水平居中</li>
+<li><strong>图片合成</strong>：使用 Sharp 的 <code>composite()</code> 方法将文字叠加到背景图上</li>
+</ol>
+<h2 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h2><ol>
+<li><strong>错误处理</strong>：添加适当的错误处理机制</li>
+<li><strong>参数配置</strong>：将文字内容、字体大小等提取为配置参数</li>
+<li><strong>字体管理</strong>：建立字体管理系统，支持多种字体切换</li>
+<li><strong>内存优化</strong>：对于大量图片处理，注意内存管理和释放</li>
+</ol>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ol>
+<li><p>安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install text-to-svg sharp<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>准备字体文件和背景图（DENG.TTF 和 bg.png）</p>
+</li>
+<li><p>运行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">node text-to-image.js<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过 TextToSVG 和 Sharp 的组合，我们可以轻松实现高质量的文字转图片功能。这种方法具有以下优势：</p>
+<ul>
+<li>支持自定义字体，解决中文显示问题</li>
+<li>利用 Sharp 的高性能图像处理能力</li>
+<li>通过并行处理提升执行效率</li>
+<li>灵活的位置控制和样式设置</li>
+</ul>
+<p>这种方法适用于生成各种类型的图片，如海报、证书、邀请函等场景。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%87%AA%E7%94%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">自用笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/node-js/" class="print-no-link">#node.js</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>node.js 文字转图片</div>
+      <div>https://bubao.github.io/posts/576aa3eb.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/8d1e2c79.html" title="网易云音乐打卡脚本">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网易云音乐打卡脚本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/7adf45e1.html" title="vscode 插件开发之代码高亮与代码模板">
+                        <span class="hidden-mobile">vscode 插件开发之代码高亮与代码模板</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

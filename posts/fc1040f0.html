@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Redis 不仅是一个高性能的键值存储系统，还支持通过 Lua 脚本执行复杂的原子操作。通过在 Redis 中执行 Lua 脚本，我们可以将多个命令打包成一个原子操作，避免竞态条件，同时减少网络往返次数。本文将详细介绍 Redis 中执行 Lua 脚本的基本用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 执行 Lua 脚本基本用法">
+<meta property="og:url" content="https://bubao.github.io/posts/fc1040f0.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="Redis 不仅是一个高性能的键值存储系统，还支持通过 Lua 脚本执行复杂的原子操作。通过在 Redis 中执行 Lua 脚本，我们可以将多个命令打包成一个原子操作，避免竞态条件，同时减少网络往返次数。本文将详细介绍 Redis 中执行 Lua 脚本的基本用法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lua.org/images/logo.gif">
+<meta property="article:published_time" content="2025-12-06T14:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.878Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Lua">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lua.org/images/logo.gif">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Redis 执行 Lua 脚本基本用法 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://www.lua.org/images/logo.gif') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Redis 执行 Lua 脚本基本用法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-06 22:00" pubdate>
+          2025年12月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Redis 执行 Lua 脚本基本用法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Redis 不仅是一个高性能的键值存储系统，还支持通过 Lua 脚本执行复杂的原子操作。通过在 Redis 中执行 Lua 脚本，我们可以将多个命令打包成一个原子操作，避免竞态条件，同时减少网络往返次数。本文将详细介绍 Redis 中执行 Lua 脚本的基本用法。</p>
+<span id="more"></span>
+
+<h2 id="为什么使用-Lua-脚本？"><a href="#为什么使用-Lua-脚本？" class="headerlink" title="为什么使用 Lua 脚本？"></a>为什么使用 Lua 脚本？</h2><p>在分布式系统中，经常需要将多个 Redis 命令组合执行，但在高并发环境下，这些操作可能会引发竞态条件。传统的解决方案如 Redis 事务（MULTI&#x2F;EXEC）虽然能保证原子性，但缺乏流程控制能力，而 Lua 脚本正好弥补了这一缺陷。</p>
+<p>使用 Lua 脚本的主要优势包括：</p>
+<ol>
+<li><strong>原子性保证</strong>：整个脚本在 Redis 中以原子方式执行，执行过程中不会被其他命令打断</li>
+<li><strong>减少网络开销</strong>：多个操作只需一次网络往返</li>
+<li><strong>灵活的逻辑控制</strong>：支持条件判断、循环等复杂逻辑</li>
+<li><strong>高性能</strong>：脚本在服务器端预编译，执行效率高</li>
+</ol>
+<h2 id="EVAL-命令基础用法"><a href="#EVAL-命令基础用法" class="headerlink" title="EVAL 命令基础用法"></a>EVAL 命令基础用法</h2><p>Redis 提供了 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/eval/">EVAL</a> 命令来执行 Lua 脚本，其语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs redis">EVAL script numkeys key [key ...] arg [arg ...]<br></code></pre></td></tr></table></figure>
+
+<p>各参数含义：</p>
+<ul>
+<li><code>script</code>：要执行的 Lua 脚本代码</li>
+<li><code>numkeys</code>：指定键名参数的数量</li>
+<li><code>key [key ...]</code>：脚本中用到的 Redis 键名，通过<code>KEYS</code>数组在 Lua 中访问</li>
+<li><code>arg [arg ...]</code>：附加参数，通过<code>ARGV</code>数组在 Lua 中访问</li>
+</ul>
+<h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><p>让我们从一个简单的例子开始：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;return &#x27;Hello, World!&#x27;&quot;</span> 0<br></code></pre></td></tr></table></figure>
+
+<p>这个脚本不涉及任何 Redis 键，直接返回一个字符串。注意到 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/eval/">numkeys</a> 参数为 0，因为我们没有使用任何键。</p>
+<h3 id="使用键和参数"><a href="#使用键和参数" class="headerlink" title="使用键和参数"></a>使用键和参数</h3><p>在脚本中访问 Redis 键和参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;return &#123;KEYS[1], KEYS[2], ARGV[1], ARGV[2]&#125;&quot;</span> 2 key1 key2 first second<br></code></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs redis">1) &quot;key1&quot;<br>2) &quot;key2&quot;<br>3) &quot;first&quot;<br>4) &quot;second&quot;<br></code></pre></td></tr></table></figure>
+
+<p>在 Lua 脚本中，可以通过<code>KEYS</code>和<code>ARGV</code>两个全局数组分别访问键名和参数。</p>
+<h3 id="Redis-命令调用"><a href="#Redis-命令调用" class="headerlink" title="Redis 命令调用"></a>Redis 命令调用</h3><p>在 Lua 脚本中，可以通过<code>redis.call()</code>和<code>redis.pcall()</code>函数调用 Redis 命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;return redis.call(&#x27;SET&#x27;, KEYS[1], ARGV[1])&quot;</span> 1 mykey <span class="hljs-string">&quot;Hello Redis&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个脚本相当于执行了<code>SET mykey &quot;Hello Redis&quot;</code>命令。</p>
+<p>另一个示例，获取键值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;return redis.call(&#x27;GET&#x27;, KEYS[1])&quot;</span> 1 mykey<br></code></pre></td></tr></table></figure>
+
+<h2 id="EVALSHA-命令优化"><a href="#EVALSHA-命令优化" class="headerlink" title="EVALSHA 命令优化"></a>EVALSHA 命令优化</h2><p>当脚本较长或需要频繁执行时，每次都通过 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/eval/">EVAL</a> 命令传输整个脚本会浪费网络带宽。Redis 提供了 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/evalsha/">EVALSHA</a> 命令，通过脚本的 SHA1 摘要来执行脚本。</p>
+<p>首先使用<code>SCRIPT LOAD</code>命令加载脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">SCRIPT LOAD <span class="hljs-string">&quot;return redis.call(&#x27;SET&#x27;, KEYS[1], ARGV[1])&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>该命令返回脚本的 SHA1 摘要，例如：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">&quot;a6b4d2b0a70c7c7a8a8a8a8a8a8a8a8a8a8a8a8&quot;<br></code></pre></td></tr></table></figure>
+
+<p>然后使用 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/evalsha/">EVALSHA</a> 执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVALSHA a6b4d2b0a70c7c7a8a8a8a8a8a8a8a8a8a8a8a8 1 mykey <span class="hljs-string">&quot;Hello Redis&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/evalsha/">EVALSHA</a> 的优点：</p>
+<ol>
+<li>减少网络传输量</li>
+<li>提升执行性能（脚本已在服务器端缓存）</li>
+</ol>
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><h3 id="原子计数器操作"><a href="#原子计数器操作" class="headerlink" title="原子计数器操作"></a>原子计数器操作</h3><p>实现一个带有上限检查的计数器：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> current = redis.call(<span class="hljs-string">&#x27;GET&#x27;</span>, KEYS[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> current <span class="hljs-keyword">then</span><br>    current = <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">tonumber</span>(current) &lt; <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>]) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">local</span> new_value = redis.call(<span class="hljs-string">&#x27;INCR&#x27;</span>, KEYS[<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">1</span>, new_value&#125;  <span class="hljs-comment">-- 成功，返回状态和新值</span><br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">0</span>, current&#125;    <span class="hljs-comment">-- 达到上限，返回状态和当前值</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;-- Lua script here --&quot;</span> 1 counter 10<br></code></pre></td></tr></table></figure>
+
+<h3 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h3><p>实现一个简单的分布式锁：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- 获取锁</span><br><span class="hljs-keyword">if</span> redis.call(<span class="hljs-string">&#x27;SETNX&#x27;</span>, KEYS[<span class="hljs-number">1</span>], ARGV[<span class="hljs-number">1</span>]) == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span><br>    redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, KEYS[<span class="hljs-number">1</span>], ARGV[<span class="hljs-number">2</span>])<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;-- Lua script here --&quot;</span> 1 my_lock unique_value 30<br></code></pre></td></tr></table></figure>
+
+<p>释放锁时也要确保只能由加锁的客户端释放：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- 释放锁</span><br><span class="hljs-keyword">if</span> redis.call(<span class="hljs-string">&#x27;GET&#x27;</span>, KEYS[<span class="hljs-number">1</span>]) == ARGV[<span class="hljs-number">1</span>] <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">return</span> redis.call(<span class="hljs-string">&#x27;DEL&#x27;</span>, KEYS[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="限流器实现"><a href="#限流器实现" class="headerlink" title="限流器实现"></a>限流器实现</h3><p>实现一个基于时间窗口的限流器：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> key = KEYS[<span class="hljs-number">1</span>]<br><span class="hljs-keyword">local</span> limit = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">local</span> window = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">2</span>])<br><span class="hljs-keyword">local</span> current_time = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">3</span>])<br><br><span class="hljs-comment">-- 移除时间窗口外的记录</span><br>redis.call(<span class="hljs-string">&#x27;ZREMRANGEBYSCORE&#x27;</span>, key, <span class="hljs-number">0</span>, current_time - window)<br><br><span class="hljs-comment">-- 检查当前请求数</span><br><span class="hljs-keyword">local</span> current_requests = redis.call(<span class="hljs-string">&#x27;ZCARD&#x27;</span>, key)<br><br><span class="hljs-keyword">if</span> current_requests &lt; limit <span class="hljs-keyword">then</span><br>    <span class="hljs-comment">-- 添加当前请求</span><br>    redis.call(<span class="hljs-string">&#x27;ZADD&#x27;</span>, key, current_time, current_time)<br>    <span class="hljs-comment">-- 设置过期时间</span><br>    redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, key, window)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- 允许请求</span><br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment">-- 拒绝请求</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>在 Lua 脚本中，有两种调用 Redis 命令的方式：</p>
+<ol>
+<li><code>redis.call()</code>：执行命令，出错时抛出异常并停止脚本执行</li>
+<li><code>redis.pcall()</code>：执行命令，出错时返回描述错误的表</li>
+</ol>
+<p>使用<code>redis.pcall()</code>的安全示例：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> result = redis.<span class="hljs-built_in">pcall</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, KEYS[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(result) == <span class="hljs-string">&#x27;table&#x27;</span> <span class="hljs-keyword">and</span> result.err <span class="hljs-keyword">then</span><br>    <span class="hljs-comment">-- 处理错误</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;Error: &#x27;</span> .. result.err<br><span class="hljs-keyword">else</span><br>    <span class="hljs-comment">-- 处理正常结果</span><br>    <span class="hljs-keyword">return</span> result<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="1-保持脚本简洁"><a href="#1-保持脚本简洁" class="headerlink" title="1. 保持脚本简洁"></a>1. 保持脚本简洁</h3><p>Lua 脚本应在 Redis 主线程中执行，长时间运行会阻塞其他命令。应避免在脚本中进行复杂计算或大循环操作。</p>
+<h3 id="2-合理使用键"><a href="#2-合理使用键" class="headerlink" title="2. 合理使用键"></a>2. 合理使用键</h3><p>在集群模式下，确保所有键都在同一个 hash slot 中，可以使用 hash tags：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">EVAL <span class="hljs-string">&quot;return redis.call(&#x27;GET&#x27;, KEYS[1])&quot;</span> 1 &#123;user1000&#125;.balance<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-使用-EVALSHA-优化性能"><a href="#3-使用-EVALSHA-优化性能" class="headerlink" title="3. 使用 EVALSHA 优化性能"></a>3. 使用 EVALSHA 优化性能</h3><p>对于频繁执行的脚本，使用<code>SCRIPT LOAD</code>加载后通过 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/evalsha/">EVALSHA</a> 执行。</p>
+<h3 id="4-脚本可读性和维护性"><a href="#4-脚本可读性和维护性" class="headerlink" title="4. 脚本可读性和维护性"></a>4. 脚本可读性和维护性</h3><p>为复杂脚本添加注释，合理命名变量，避免过于复杂的逻辑。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Redis 的 Lua 脚本功能为我们提供了一种强大而灵活的方式来执行原子操作。通过 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/eval/">EVAL</a> 和 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/commands/evalsha/">EVALSHA</a> 命令，我们可以在 Redis 中执行复杂的逻辑，同时保证操作的原子性和数据一致性。</p>
+<p>合理使用 Lua 脚本可以极大地提升 Redis 应用的性能和可靠性，特别是在需要处理并发和复杂业务逻辑的场景中。但也要注意避免编写过于复杂的脚本，以免影响 Redis 的整体性能。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://redis.io/topics/lua">Redis 官方 Lua 脚本文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://redis.io/commands">Redis 命令参考</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lua.org/manual/5.1/">Lua 5.1 参考手册</a></li>
+<li><a target="_blank" rel="noopener" href="https://redis.io/commands/script-load">Redis 脚本命令详解</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Redis/" class="print-no-link">#Redis</a>
+      
+        <a href="/tags/Lua/" class="print-no-link">#Lua</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Redis 执行 Lua 脚本基本用法</div>
+      <div>https://bubao.github.io/posts/fc1040f0.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/3c6f826c.html" title="Node.js 项目中管理同一包的多个版本">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Node.js 项目中管理同一包的多个版本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/5a942160.html" title="深入理解 Lua-C 交互：详解 Lua C API 各个接口用途">
+                        <span class="hidden-mobile">深入理解 Lua-C 交互：详解 Lua C API 各个接口用途</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

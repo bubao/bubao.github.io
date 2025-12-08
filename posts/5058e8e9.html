@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="受朋友之托，写一个小脚本，断断续续做了两天，写一下两天的收获。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中文分词之类的东西">
+<meta property="og:url" content="https://bubao.github.io/posts/5058e8e9.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="受朋友之托，写一个小脚本，断断续续做了两天，写一下两天的收获。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-13T14:42:25.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.880Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="nlp">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>中文分词之类的东西 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="中文分词之类的东西"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-07-13 22:42" pubdate>
+          2017年7月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">中文分词之类的东西</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>受朋友之托，写一个小脚本，断断续续做了两天，写一下两天的收获。</p>
+<span id="more"></span>
+
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>有个朋友说专业文档很枯燥难懂，需要一个能把全文的关键词找出来并排序的东西，找不到现成的，问我能不能做一个。我前些天也听车神说有关分词的东西，用这个机会认识一下中文分词也不错。本来还想弄下 <code>PDF 2 TXT</code>的，不过没找到合适的工具，先弄这个吧。</p>
+<p>要实现把全文的关键词找出来并排序，就需要识别文中的词而不是字，有了词才能进行排序。中文和其他语言不同，没有明确的词分界，不像英语有空格作为词边界。分词算法什么的我实在弄不出来了，所以用别人的吧。上百度和 Github 找工具，最后确定用结巴分词，因为结巴分词有 JavaScript 版，分词还是很 OK 的。</p>
+<h2 id="开干"><a href="#开干" class="headerlink" title="开干"></a>开干</h2><p><strong>分词统计并排序</strong>：</p>
+<p>之前是用 JavaScript 版的结巴分词写的，不过在分词统计的时候没想起来 JavaScript 有什么能排序的模块，就换 Python 版的结巴分词写了。</p>
+<p>因为那个朋友的资料是繁体的，为了兼容繁体，我引入了繁体字典，不过加载好像有问题，我直接把繁体字典当用户字典加载了。</p>
+<p>说这么多干嘛，上源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># index.py</span><br><span class="hljs-comment">#encoding=utf-8</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">/*@version: 0.1</span><br><span class="hljs-string"> * @author: Bubao</span><br><span class="hljs-string"> * @contact: asd565586630@gmail.com</span><br><span class="hljs-string"> * @time: 2017-07-13 00:22:00</span><br><span class="hljs-string"> */</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-keyword">import</span> jieba<br><span class="hljs-keyword">import</span> jieba.posseg <span class="hljs-keyword">as</span> pseg<br><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter<br><span class="hljs-comment"># 用户字典 可自行添加专业名词 防止被 jieba 分错了</span><br>jieba.load_userdict(<span class="hljs-string">&#x27;dict/user.dict&#x27;</span>)<br><span class="hljs-comment"># jieba.load_userdict(&#x27;dict/dict.txt.big&#x27;)</span><br><span class="hljs-comment"># 简体&amp;繁体字典 这个不用修改，所以我让他当用户字典加载了</span><br><span class="hljs-comment">#jieba.set_dictionary(&#x27;dict/dict.txt.big&#x27;)</span><br><span class="hljs-comment"># &#x27;./源文件。txt&#x27;为想打开的文件</span><br>file_object = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;./源文件。txt&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)<br><span class="hljs-comment">## 定义一个 list</span><br>L =<span class="hljs-built_in">list</span>()<br><span class="hljs-comment">## 获取带词性的词对象（没学过 py 不知道得到的是什么）</span><br>words = pseg.cut(file_object.read())<br>i=<span class="hljs-number">0</span><br><span class="hljs-comment">## 遍历这个词对象</span><br><span class="hljs-keyword">for</span> word, flag <span class="hljs-keyword">in</span> words:<br>    <span class="hljs-comment">## 如果词性 (flag) 或者词 (word) 属于这个范围就直接跳过 自己填写</span><br>    <span class="hljs-keyword">if</span> flag==<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-keyword">or</span> flag==<span class="hljs-string">&quot;p&quot;</span>  <span class="hljs-keyword">or</span> flag==<span class="hljs-string">&quot;uj&quot;</span> <span class="hljs-keyword">or</span> word==<span class="hljs-string">&quot;年&quot;</span><span class="hljs-keyword">or</span> word==<span class="hljs-string">&quot;月&quot;</span><span class="hljs-keyword">or</span> word==<span class="hljs-string">&quot;日&quot;</span> :<br>        <span class="hljs-keyword">continue</span><br>    <span class="hljs-comment">## 打印计数 为了区分程序是不是挂了</span><br>    i=i+<span class="hljs-number">1</span><br>    <span class="hljs-built_in">print</span>(i)<br>    <span class="hljs-comment">##把词追加到 list 中</span><br>    L.append(word)<br><span class="hljs-comment">## 计算出现次数</span><br>getObj = Counter(L)<br><span class="hljs-comment">## 写到。/getObj.json 文件里</span><br>f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;./getObj.json&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)<br>f.write(<span class="hljs-built_in">str</span>(getObj).replace(<span class="hljs-string">&quot;Counter(&quot;</span>,<span class="hljs-string">&quot;&quot;</span>).replace(<span class="hljs-string">&quot;)&quot;</span>,<span class="hljs-string">&quot;&quot;</span>).replace(<span class="hljs-string">&quot;&#x27;&quot;</span>,<span class="hljs-string">&#x27;&quot;&#x27;</span>))<br>f.close()<br>file_object.close()<br><span class="hljs-comment">## end</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>查询关键词频</strong>：</p>
+<p>弄完分词，朋友又说能不能加一个关键词查找，可以到想要的词出现的频率。我毕竟 Python 是边学边写的，还是用 node 写这个功能把。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/* Search.js*/</span><br><span class="hljs-comment">/*@version: 0.1</span><br><span class="hljs-comment"> * @author: Bubao</span><br><span class="hljs-comment"> * @contact: asd565586630@gmail.com</span><br><span class="hljs-comment"> * @time: 2017-07-13 00:22:00</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * [keyWord description]</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@type</span> &#123;<span class="hljs-type">Array</span>&#125;</span><br><span class="hljs-comment"> * 把想搜索的词用 “&quot;关键词&quot;,”  这种方式写在 “[  ]”  中间，</span><br><span class="hljs-comment"> * 记得关键词引号后面有英文逗号</span><br><span class="hljs-comment"> * 引号也是引文的</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> keyWord = [<br>    <span class="hljs-string">&quot;本行&quot;</span>,<br>    <span class="hljs-string">&quot;人民币&quot;</span>,<br>];<br><br><span class="hljs-keyword">var</span> json = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&#x27;./getObj.json&#x27;</span>));<br><span class="hljs-keyword">var</span> <span class="hljs-title class_">Arr</span> = []<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; keyWord.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-keyword">let</span> get = keyWord[i] + <span class="hljs-string">&#x27;:&#x27;</span> + json[keyWord[i]]<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(get)<br>    <span class="hljs-title class_">Arr</span>.<span class="hljs-title function_">push</span>(get)<br>&#125;<br><span class="hljs-comment">//你要的关键词在这里</span><br>fs.<span class="hljs-title function_">writeFileSync</span>(<span class="hljs-string">&#x27;keyWord.txt&#x27;</span>, <span class="hljs-title class_">Arr</span>.<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;\n&#x27;</span>), <span class="hljs-string">&#x27;utf8&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>自动化脚本</strong>：</p>
+<p>因为用了两种语言，运行要分段，我这么懒的人，这么会等第一段运行完再运行第二段呢，一言不合写<code>sh</code>。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># main.sh</span><br><span class="hljs-comment">#/*@version: 0.1</span><br><span class="hljs-comment"># * @author: Bubao</span><br><span class="hljs-comment"># * @contact: asd565586630@gmail.com</span><br><span class="hljs-comment"># * @time: 2017-07-13 00:22:00</span><br><span class="hljs-comment"># */</span><br>python index.py<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;----------------关键词-------------------&quot;</span><br>node Search.js<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;----------------------------------------</span><br><span class="hljs-string">排序在 getObj.json 文件</span><br><span class="hljs-string">关键词搜索在 keyWord.txt 文件&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h3><ol>
+<li>把要转换的文件放在在当前文件夹，并改名为<code>源文件。txt</code>，运行<code>sudo easy_install jieba</code></li>
+<li>终端下运行 <code>python index.py</code>，等待完成，等待完成期间可以在<code>Search.js</code>文件里把想要搜索的关键字填在数组里，保存好。</li>
+<li>完成第二步，接着执行<code>node  Search.js</code>，等待完成。</li>
+<li>关键字搜索结果在<code>keyWord.txt</code>文件里</li>
+<li>或者写个脚本自动化，<code>sh main.sh</code></li>
+</ol>
+<h2 id="额外收获"><a href="#额外收获" class="headerlink" title="额外收获"></a>额外收获</h2><p>毕竟是自己摸索写的东西，收获还是不错的。为了以后想用的时候能找得到，便也记录下来。</p>
+<h3 id="分词工具"><a href="#分词工具" class="headerlink" title="分词工具"></a>分词工具</h3><p><strong>jieba</strong>：这个工具挺好用的，这个是 python 版的，还有很多种版本</p>
+<p><strong>codecs</strong>：一个 python 库，用来转码的</p>
+<p><strong>Counter</strong>：一个 python 库工具，用来做统计的</p>
+<h3 id="一些杂脚本"><a href="#一些杂脚本" class="headerlink" title="一些杂脚本"></a>一些杂脚本</h3><p><strong>gbk2utf8</strong>：</p>
+<p>网上下载些文本文件，很多都是在 win 上写的，win 上一般默认保存为<code>gbk</code>。这样在 Linux 上打开都是乱码，所以上网找了段代码自己改。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#encoding=utf-8</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">/*@version: 0.1</span><br><span class="hljs-string"> * @author: Bubao</span><br><span class="hljs-string"> * @contact: asd565586630@gmail.com</span><br><span class="hljs-string"> * @time: 2017-07-13 00:22:00</span><br><span class="hljs-string"> */</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-keyword">import</span> codecs<br><span class="hljs-comment"># gbk 转 utf8 脚本</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ReadFile</span>(<span class="hljs-params">filePath,encoding=<span class="hljs-string">&quot;gb18030&quot;</span></span>):<br>    <span class="hljs-keyword">with</span> codecs.<span class="hljs-built_in">open</span>(filePath,<span class="hljs-string">&quot;r&quot;</span>,encoding) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-keyword">return</span> f.read()<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">WriteFile</span>(<span class="hljs-params">filePath,u,encoding=<span class="hljs-string">&quot;utf-8&quot;</span></span>):<br>    <span class="hljs-keyword">with</span> codecs.<span class="hljs-built_in">open</span>(filePath,<span class="hljs-string">&quot;w&quot;</span>,encoding) <span class="hljs-keyword">as</span> f:<br>        f.write(u)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">UTF8_2_GBK</span>(<span class="hljs-params">src,dst</span>):<br>    content = ReadFile(src,encoding=<span class="hljs-string">&quot;gb18030&quot;</span>)<br>    WriteFile(dst,content,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>)<br><br>UTF8_2_GBK(<span class="hljs-string">&quot;./in.txt&quot;</span>,<span class="hljs-string">&quot;./out.txt&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/yanyiwu/nodejieba"><strong>nodejiba</strong></a></p>
+<p>之前是用 node 版的结巴写的分词，后来因为 py 比较容易写统计，就换 py 写分词了。留下这段代码以后需要再看看咯</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*@version: 0.1</span><br><span class="hljs-comment"> * @author: Bubao</span><br><span class="hljs-comment"> * @contact: asd565586630@gmail.com</span><br><span class="hljs-comment"> * @time: 2017-07-13 00:22:00</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> nodejieba = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;nodejieba&quot;</span>)<br><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>)<br><span class="hljs-keyword">var</span> data = fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&quot;./4.txt&quot;</span>, <span class="hljs-string">&quot;utf-8&quot;</span>)<br>nodejieba.<span class="hljs-title function_">load</span>(&#123;<br>    <span class="hljs-attr">userDict</span>: <span class="hljs-string">&#x27;./dict.utf8&#x27;</span>,<br>&#125;)<br><span class="hljs-keyword">var</span> result = nodejieba.<span class="hljs-title function_">extract</span>(data, <span class="hljs-number">100</span>);<br><span class="hljs-keyword">var</span> a = &#123;<br>    <span class="hljs-string">&quot;fen&quot;</span>: []<br>&#125;<br><span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; result.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-keyword">if</span> (result[i].<span class="hljs-property">tag</span> !== <span class="hljs-string">&quot;uj&quot;</span> &amp;&amp; result[i].<span class="hljs-property">tag</span> !== <span class="hljs-string">&quot;zg&quot;</span> &amp;&amp; result[i].<span class="hljs-property">tag</span> !== <span class="hljs-string">&quot;x&quot;</span>) &#123;<br>        a.<span class="hljs-property">fen</span>[j] = &#123;<br>            <span class="hljs-string">&quot;word&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>            <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;2&quot;</span><br>        &#125;;<br>        a.<span class="hljs-property">fen</span>[j].<span class="hljs-property">word</span> = result[i].<span class="hljs-property">word</span>;<br>        a.<span class="hljs-property">fen</span>[j].<span class="hljs-property">tag</span> = result[i].<span class="hljs-property">tag</span>;<br>        fs.<span class="hljs-title function_">writeFileSync</span>(<span class="hljs-string">&quot;./5.txt&quot;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(a), <span class="hljs-string">&#x27;utf8&#x27;</span>)<br>        j++<br>    &#125;<br>&#125;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a);<br></code></pre></td></tr></table></figure>
+
+<p><strong><a target="_blank" rel="noopener" href="https://github.com/qiuwei/sogou_hotwords_yong">scel2txt</a></strong></p>
+<p>因为弄分词的原因，想找一下专业名词，就跑到搜狗输入法的词库下载词包，发现这个格式我解码不了，上 github 找了别人的脚本（其实我并不知道这段代码是谁写的）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python  </span><br><span class="hljs-comment"># -*- coding: utf-8 -*-  </span><br>  <br><span class="hljs-keyword">import</span> struct  <br><span class="hljs-keyword">import</span> sys  <br><span class="hljs-keyword">import</span> binascii<br><span class="hljs-keyword">import</span> pdb  <br><span class="hljs-comment">#搜狗的 scel 词库就是保存的文本的 unicode 编码，每两个字节一个字符（中文汉字或者英文字母）  </span><br><span class="hljs-comment">#找出其每部分的偏移位置即可  </span><br><span class="hljs-comment">#主要两部分  </span><br><span class="hljs-comment">#1. 全局拼音表，貌似是所有的拼音组合，字典序  </span><br><span class="hljs-comment">#       格式为 (index,len,pinyin) 的列表  </span><br><span class="hljs-comment">#       index: 两个字节的整数 代表这个拼音的索引  </span><br><span class="hljs-comment">#       len: 两个字节的整数 拼音的字节长度  </span><br><span class="hljs-comment">#       pinyin: 当前的拼音，每个字符两个字节，总长 len  </span><br><span class="hljs-comment">#</span><br><span class="hljs-comment">#2. 汉语词组表  </span><br><span class="hljs-comment">#       格式为 (same,py_table_len,py_table,&#123;word_len,word,ext_len,ext&#125;) 的一个列表  </span><br><span class="hljs-comment">#       same: 两个字节 整数 同音词数量  </span><br><span class="hljs-comment">#       py_table_len:  两个字节 整数  </span><br><span class="hljs-comment">#       py_table: 整数列表，每个整数两个字节，每个整数代表一个拼音的索引  </span><br><span class="hljs-comment">#  </span><br><span class="hljs-comment">#       word_len: 两个字节 整数 代表中文词组字节数长度  </span><br><span class="hljs-comment">#       word: 中文词组，每个中文汉字两个字节，总长度 word_len  </span><br><span class="hljs-comment">#       ext_len: 两个字节 整数 代表扩展信息的长度，好像都是 10  </span><br><span class="hljs-comment">#       ext: 扩展信息 前两个字节是一个整数（不知道是不是词频） 后八个字节全是 0  </span><br><span class="hljs-comment">#  </span><br><span class="hljs-comment">#      &#123;word_len,word,ext_len,ext&#125; 一共重复 same 次 同音词 相同拼音表  </span><br>  <br><span class="hljs-comment">#拼音表偏移，  </span><br>startPy = <span class="hljs-number">0x1540</span>;  <br>  <br><span class="hljs-comment">#汉语词组表偏移  </span><br>startChinese = <span class="hljs-number">0x2628</span>;  <br>  <br><span class="hljs-comment">#全局拼音表  </span><br>  <br>GPy_Table =&#123;&#125;  <br>  <br><span class="hljs-comment">#解析结果  </span><br><span class="hljs-comment">#元组（词频，拼音，中文词组）的列表  </span><br>GTable = []  <br>  <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">byte2str</span>(<span class="hljs-params">data</span>):  <br>    <span class="hljs-string">&#x27;&#x27;&#x27;&#x27;&#x27;将原始字节码转为字符串&#x27;&#x27;&#x27;</span>  <br>    i = <span class="hljs-number">0</span>;  <br>    length = <span class="hljs-built_in">len</span>(data)  <br>    ret = <span class="hljs-string">u&#x27;&#x27;</span>  <br>    <span class="hljs-keyword">while</span> i &lt; length:  <br>        x = data[i] + data[i+<span class="hljs-number">1</span>]  <br>        t = unichr(struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,x)[<span class="hljs-number">0</span>])  <br>        <span class="hljs-keyword">if</span> t == <span class="hljs-string">u&#x27;\r&#x27;</span>:  <br>            ret += <span class="hljs-string">u&#x27;\n&#x27;</span>  <br>        <span class="hljs-keyword">elif</span> t != <span class="hljs-string">u&#x27; &#x27;</span>:  <br>            ret += t  <br>        i += <span class="hljs-number">2</span>  <br>    <span class="hljs-keyword">return</span> ret  <br><span class="hljs-comment">#获取拼音表  </span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">getPyTable</span>(<span class="hljs-params">data</span>):  <br>  <br>    <span class="hljs-keyword">if</span> data[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>] != <span class="hljs-string">&quot;\x9D\x01\x00\x00&quot;</span>:  <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <br>    data = data[<span class="hljs-number">4</span>:]  <br>    pos = <span class="hljs-number">0</span>  <br>    length = <span class="hljs-built_in">len</span>(data)  <br>    <span class="hljs-keyword">while</span> pos &lt; length:  <br>        index = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        <span class="hljs-comment">#print index,  </span><br>        pos += <span class="hljs-number">2</span>  <br>        l = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        <span class="hljs-comment">#print l,  </span><br>        pos += <span class="hljs-number">2</span>  <br>        py = byte2str(data[pos:pos+l])  <br>        <span class="hljs-comment">#print py  </span><br>        GPy_Table[index]=py  <br>        pos += l  <br>  <br><span class="hljs-comment">#获取一个词组的拼音  </span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">getWordPy</span>(<span class="hljs-params">data</span>):  <br>    pos = <span class="hljs-number">0</span>  <br>    length = <span class="hljs-built_in">len</span>(data)  <br>    ret = <span class="hljs-string">u&#x27;&#x27;</span>  <br>    <span class="hljs-keyword">while</span> pos &lt; length:  <br><br>        index = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        ret += GPy_Table[index]  <br>        pos += <span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> ret  <br>  <br><span class="hljs-comment">#获取一个词组  </span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">getWord</span>(<span class="hljs-params">data</span>):  <br>    pos = <span class="hljs-number">0</span>  <br>    length = <span class="hljs-built_in">len</span>(data)  <br>    ret = <span class="hljs-string">u&#x27;&#x27;</span>  <br>    <span class="hljs-keyword">while</span> pos &lt; length:  <br><br>        index = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        ret += GPy_Table[index]  <br>        pos += <span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> ret  <br>  <br><span class="hljs-comment">#读取中文表</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">getChinese</span>(<span class="hljs-params">data</span>):  <br>    <span class="hljs-comment">#import pdb  </span><br>    <span class="hljs-comment">#pdb.set_trace()  </span><br><br>    pos = <span class="hljs-number">0</span>  <br>    length = <span class="hljs-built_in">len</span>(data)  <br>    <span class="hljs-keyword">while</span> pos &lt; length:  <br>        <span class="hljs-comment">#同音词数量  </span><br>        same = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        <span class="hljs-comment">#print &#x27;[same]:&#x27;,same,  </span><br><br>        <span class="hljs-comment">#拼音索引表长度  </span><br>        pos += <span class="hljs-number">2</span>  <br>        py_table_len = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>        <span class="hljs-comment">#拼音索引表  </span><br>        pos += <span class="hljs-number">2</span>  <br>        py = getWordPy(data[pos: pos+py_table_len])  <br>  <br>        <span class="hljs-comment">#中文词组  </span><br>        pos += py_table_len  <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> xrange(same):  <br>            <span class="hljs-comment">#中文词组长度  </span><br>            c_len = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>            <span class="hljs-comment">#中文词组  </span><br>            pos += <span class="hljs-number">2</span><br>            word = byte2str(data[pos: pos + c_len])  <br>            <span class="hljs-comment">#扩展数据长度  </span><br>            pos += c_len<br>            ext_len = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>            <span class="hljs-comment">#词频  </span><br>            pos += <span class="hljs-number">2</span>  <br>            count  = struct.unpack(<span class="hljs-string">&#x27;H&#x27;</span>,data[pos]+data[pos+<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>]  <br>  <br>            <span class="hljs-comment">#保存  </span><br>            GTable.append((count,py,word))  <br><br>            <span class="hljs-comment">#到下个词的偏移位置  </span><br>            pos +=  ext_len  <br>  <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">deal</span>(<span class="hljs-params">file_name</span>):  <br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">60</span>  <br>    f = <span class="hljs-built_in">open</span>(file_name,<span class="hljs-string">&#x27;rb&#x27;</span>)  <br>    data = f.read()  <br>    f.close()<br><br>    <span class="hljs-keyword">if</span> data[<span class="hljs-number">0</span>:<span class="hljs-number">12</span>] !=<span class="hljs-string">&quot;\x40\x15\x00\x00\x44\x43\x53\x01\x01\x00\x00\x00&quot;</span>:  <br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;确认你选择的是搜狗 (.scel) 词库？&quot;</span>  <br>        sys.exit(<span class="hljs-number">0</span>)  <br>    <span class="hljs-comment">#pdb.set_trace()  </span><br><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;词库名：&quot;</span> ,byte2str(data[<span class="hljs-number">0x130</span>:<span class="hljs-number">0x338</span>])<span class="hljs-comment">#.encode(&#x27;GB18030&#x27;)  </span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;词库类型：&quot;</span> ,byte2str(data[<span class="hljs-number">0x338</span>:<span class="hljs-number">0x540</span>])<span class="hljs-comment">#.encode(&#x27;GB18030&#x27;)  </span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;描述信息：&quot;</span> ,byte2str(data[<span class="hljs-number">0x540</span>:<span class="hljs-number">0xd40</span>])<span class="hljs-comment">#.encode(&#x27;GB18030&#x27;)  </span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;词库示例：&quot;</span>,byte2str(data[<span class="hljs-number">0xd40</span>:startPy])<span class="hljs-comment">#.encode(&#x27;GB18030&#x27;)  </span><br><br>    getPyTable(data[startPy:startChinese])  <br>    getChinese(data[startChinese:])  <br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:  <br>  <br>    <span class="hljs-comment">#将要转换的词库添加在这里就可以了  </span><br>    o = [<span class="hljs-string">&#x27;1.scel&#x27;</span>,]<br>    <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> o:  <br>        deal(f)  <br><br>    <span class="hljs-comment">#保存结果</span><br>    f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sougou.txt&#x27;</span>,<span class="hljs-string">&#x27;w&#x27;</span>)  <br>    <span class="hljs-keyword">for</span> count,py,word <span class="hljs-keyword">in</span> GTable:  <br>        <span class="hljs-comment">#GTable 保存着结果，是一个列表，每个元素是一个元组（词频，拼音，中文词组），有需要的话可以保存成自己需要个格式  </span><br>        <span class="hljs-comment">#我没排序，所以结果是按照上面输入文件的顺序  </span><br>        f.write( unicode(<span class="hljs-string">&#x27;&#123;%(count)s&#125;&#x27;</span> %&#123;<span class="hljs-string">&#x27;count&#x27;</span>:count&#125;+py+<span class="hljs-string">&#x27; &#x27;</span>+ word).encode(<span class="hljs-string">&#x27;utf8&#x27;</span>) )<span class="hljs-comment">#最终保存文件的编码 GB18030，可以自给改  </span><br>        f.write(<span class="hljs-string">&#x27;\n&#x27;</span>)  <br>    f.close()<br></code></pre></td></tr></table></figure>
+
+<p><strong><a target="_blank" rel="noopener" href="https://github.com/tisyang/emoji-scel2txt">emoji-scel2txt</a></strong></p>
+<p>这是 Ruby 写的，颜文字导出</p>
+<p><strong><a target="_blank" rel="noopener" href="https://github.com/archerhu/scel2mmseg">scel2mmseg</a></strong></p>
+<p>这是 python 写的，到处成 mmseg 格式，据说这个可以用来做中文分词，以后再看看吧。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://github.com/E-Neo/scel2pyim">scel2pyim</a></strong><br>一个将搜狗输入法 scel 细胞词库转换为 emacs chinese-pyim 文本词库的小工具。因为我最近在学 emacs，就收藏了。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://github.com/gamelife1314/scel2txt">scel2txt</a></strong></p>
+<p>还是个 scel2txt 小工具。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" class="category-chain-item">开发笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/nlp/" class="print-no-link">#nlp</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>中文分词之类的东西</div>
+      <div>https://bubao.github.io/posts/5058e8e9.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年7月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/8f7d7e58.html" title="做给自己用的命令行工具">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">做给自己用的命令行工具</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/913e3792.html" title="Emacs 中英对齐">
+                        <span class="hidden-mobile">Emacs 中英对齐</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

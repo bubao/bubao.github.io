@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="React 的各个组件是彼此相互独立的，所以组件与组件间的通信是很重要的。从嵌套关系上看，就会有三种不同的通信方式：  父组件向子组件通信 子组件向父组件通信 没有嵌套关系的组件通信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React 组件间通信">
+<meta property="og:url" content="https://bubao.github.io/posts/d2113aae.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="React 的各个组件是彼此相互独立的，所以组件与组件间的通信是很重要的。从嵌套关系上看，就会有三种不同的通信方式：  父组件向子组件通信 子组件向父组件通信 没有嵌套关系的组件通信">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-29T09:06:38.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.878Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>React 组件间通信 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="React 组件间通信"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-07-29 17:06" pubdate>
+          2017年7月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">React 组件间通信</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>React 的各个组件是彼此相互独立的，所以组件与组件间的通信是很重要的。从嵌套关系上看，就会有三种不同的通信方式：</p>
+<ol>
+<li>父组件向子组件通信</li>
+<li>子组件向父组件通信</li>
+<li>没有嵌套关系的组件通信</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="父组件向子组件通信"><a href="#父组件向子组件通信" class="headerlink" title="父组件向子组件通信"></a>父组件向子组件通信</h2><p>React 的数据流动是单向的，父组件向子组件通信也是最常见的方式。父组件通过<code>props</code>向子组件传递需要的信息。祭源码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Welcome</span>(<span class="hljs-params">props</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello, &#123;props.name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> element = <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Welcome</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Sara&quot;</span> /&gt;</span></span>;<br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<br>  element,<br>  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;root&#x27;</span>)<br>);<br></code></pre></td></tr></table></figure>
+
+<p>简单粗暴了一点，因为用了无状态组件，没有<code>Class</code>没有<code>constructor</code>，也没有生命周期。关于无状态组件和类组件，可以去官网看看。</p>
+<p>解释一下：在使用<code>Welcome</code>组件时，在<code>Welcome</code>标签中像 HTML 标签写属性一样，把<code>&quot;Sara&quot;</code>传递给<code>Welcome</code>组件的<code>name</code>属性。<code>Welcome</code>组件通过<code>props.name</code>拿到<code>&quot;Sara&quot;</code>这个值。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">Component</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; render &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ListTitle</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../components/ListTitle.js&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ListItem</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../components/listItem.js&#x27;</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> &#123;<br>    <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">let</span> title = <span class="hljs-string">&#x27;父组件向子组件通信&#x27;</span>;<br>        <span class="hljs-keyword">let</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>];<br><br>        <span class="hljs-keyword">return</span> (<br>            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">ListTitle</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&#123;</span> <span class="hljs-attr">title</span> &#125; /&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">                    &#123;</span><br><span class="language-xml">                        list.map((item, index) =&gt; &#123;</span><br><span class="language-xml">                            return (</span><br><span class="language-xml">                                <span class="hljs-tag">&lt;<span class="hljs-name">ListItem</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;</span> <span class="hljs-attr">index</span> &#125; <span class="hljs-attr">value</span>=<span class="hljs-string">&#123;</span> <span class="hljs-attr">item</span> &#125; /&gt;</span></span><br><span class="language-xml">                            )</span><br><span class="language-xml">                        &#125;)</span><br><span class="language-xml">                    &#125;</span><br><span class="language-xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">List</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;root&#x27;</span>));<br></code></pre></td></tr></table></figure>
+
+<p>去 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010336868">segmentfault</a> 找了个代码贴上，类组件也有了</p>
+<h2 id="子组件向父组件通信"><a href="#子组件向父组件通信" class="headerlink" title="子组件向父组件通信"></a>子组件向父组件通信</h2><p>有时候我们想子组件返回些值给父组件，我们会有两种方式实现：</p>
+<ol>
+<li>利用回调函数：这是 JavaScript 的灵活方便之处，这样就可以拿到运行时状态。</li>
+<li>利用自定义事件机制：这种方法更通用，使用也更广泛，设计组件时，可以考虑加入事件机制往往可以达到简化组件的 API 的目的。</li>
+</ol>
+<p>在简单的场景下使用自定义时间显然过于复杂，为了达到目的，一般选择较为简单的方法。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ListItem</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> &#123;<br>    <span class="hljs-keyword">static</span> defaultProps = &#123;<br>        <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>        <span class="hljs-attr">checked</span>: <span class="hljs-literal">false</span>,<br>    &#125;;<br><br>    <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">input</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">checked</span>=<span class="hljs-string">&#123;this.props.checked&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">onChange</span>=<span class="hljs-string">&#123;this.props.onChange&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                /&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;this.props.value&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> &#123;<br>    <span class="hljs-keyword">static</span> defaultProps = &#123;<br>        list = [],<br>        <span class="hljs-attr">handleItemChange</span>: <span class="hljs-function">() =&gt;</span> &#123;&#125;<br>    &#125;;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>) &#123;<br>        <span class="hljs-variable language_">super</span>(props)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = &#123;<br>            <span class="hljs-attr">list</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">list</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> (&#123;<span class="hljs-attr">text</span>: entry.<span class="hljs-property">text</span>, <span class="hljs-attr">checked</span>: entry.<span class="hljs-property">checked</span>&#125;)),<br>        &#125;;<br>    &#125;<br><br>    <span class="hljs-title function_">onItemeChange</span>(<span class="hljs-params">entry</span>) &#123;<br>        <span class="hljs-keyword">const</span> &#123;list&#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(&#123;<br>            <span class="hljs-attr">list</span>: list.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">prevEntry</span> =&gt;</span> (&#123;<br>                <span class="hljs-attr">text</span>: prevEntry.<span class="hljs-property">text</span>,<br>                <span class="hljs-attr">checked</span>: entry.<span class="hljs-property">text</span> === prevEntry.<span class="hljs-property">text</span><br>                    ? !prevEntry.<span class="hljs-property">checked</span><br>                    : prevEntry.<span class="hljs-property">checked</span><br>            &#125;)),<br>        &#125;);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">handleItemChange</span>(entry)<br>    &#125;<br>    <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">                &#123;</span><br><span class="language-xml">                    this.state.list.map((entry, index)=&gt;&#123;</span><br><span class="language-xml">                        <span class="hljs-tag">&lt;<span class="hljs-name">ListItem</span></span></span><br><span class="hljs-tag"><span class="language-xml">                            <span class="hljs-attr">key</span> = <span class="hljs-string">&#123;</span>`<span class="hljs-attr">list-</span>$&#123;<span class="hljs-attr">index</span>&#125;`&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">                            <span class="hljs-attr">value</span> = <span class="hljs-string">&#123;entry.text&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                            <span class="hljs-attr">checked</span> = <span class="hljs-string">&#123;entry.checked&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                            <span class="hljs-attr">onChange</span> = <span class="hljs-string">&#123;this.onItemeChange.bind(this,</span> <span class="hljs-attr">entry</span>)&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">                        /&gt;</span></span><br><span class="language-xml">                    &#125;)</span><br><span class="language-xml">                &#125;</span><br><span class="language-xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面的栗子中，我们在 List 组件中构建了 handleItemChange 方法，这样在使用 List 组件时，就可以在运行是拿到改变的项对应的值。比如，</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123;<span class="hljs-title class_">Component</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>)&#123;<br>        <span class="hljs-variable language_">super</span>(props);<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">handleItemChange</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">handleItemChange</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>);<br>    &#125;<br>    <span class="hljs-title function_">handleItemChange</span>(<span class="hljs-params">item</span>)&#123;<br>        <span class="hljs-comment">// console.log(item)</span><br>    &#125;<br><br>    <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> (<br>            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">List</span> </span></span><br><span class="hljs-tag"><span class="language-xml">                <span class="hljs-attr">list</span>=<span class="hljs-string">&#123;[&#123;text:1&#125;,&#123;text:2&#125;]&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                <span class="hljs-attr">handleItemChange</span>=<span class="hljs-string">&#123;this.handleItemChange&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            /&gt;</span></span><br>        );<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们看到<code>setState</code>一般与回调函数均会成对出现，这是因为回调函数即是转换内部状态时的函数传统。</p>
+<p>上面的栗子太难看懂？又去抄了一份代码：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs jsx">onItemChange = <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123; list &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(&#123;<br>        <span class="hljs-attr">list</span>: list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">prevItem</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> &#123;<br>                <span class="hljs-attr">text</span>: prevItem.<span class="hljs-property">text</span>,<br>                <span class="hljs-attr">checked</span>: prevItem.<span class="hljs-property">text</span> === item.<span class="hljs-property">text</span> ? !prevItem.<span class="hljs-property">checked</span> : prevItem.<span class="hljs-property">checked</span><br>            &#125;<br>        &#125;)<br>    &#125;);<br>&#125;<br>onTitleChange = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(&#123;<br>        <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;利用回掉函数，子组件向父组件通信&#x27;</span><br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="跨级组件通信"><a href="#跨级组件通信" class="headerlink" title="跨级组件通信"></a>跨级组件通信</h3><p>如果我们有多层嵌套，传递用 props 就显得很不优雅了，甚至有些冗余。例如：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Button</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;&#123;background:</span> <span class="hljs-attr">this.props.color</span>&#125;&#125;&gt;</span></span><br><span class="language-xml">        &#123;this.props.children&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Message</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        &#123;this.props.text&#125; <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&#123;this.props.color&#125;</span>&gt;</span>Delete<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> color = <span class="hljs-string">&quot;purple&quot;</span>;<br>    <span class="hljs-keyword">const</span> children = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">messages</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span><br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Message</span> <span class="hljs-attr">text</span>=<span class="hljs-string">&#123;message.text&#125;</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&#123;color&#125;</span> /&gt;</span></span><br>    );<br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>&#123;children&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>context</code>是这样做的：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">const</span> <span class="hljs-title class_">PropTypes</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;prop-types&#x27;</span>);<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Button</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;&#123;background:</span> <span class="hljs-attr">this.context.color</span>&#125;&#125;&gt;</span></span><br><span class="language-xml">        &#123;this.props.children&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-title class_">Button</span>.<span class="hljs-property">contextTypes</span> = &#123;<br>  <span class="hljs-attr">color</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">string</span><br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Message</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        &#123;this.props.text&#125; <span class="hljs-tag">&lt;<span class="hljs-name">Button</span>&gt;</span>Delete<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>  <span class="hljs-title function_">getChildContext</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">color</span>: <span class="hljs-string">&quot;purple&quot;</span>&#125;;<br>  &#125;<br><br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> children = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">messages</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span><br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Message</span> <span class="hljs-attr">text</span>=<span class="hljs-string">&#123;message.text&#125;</span> /&gt;</span></span><br>    );<br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>&#123;children&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-title class_">MessageList</span>.<span class="hljs-property">childContextTypes</span> = &#123;<br>  <span class="hljs-attr">color</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">string</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>警告：React 官方并不推荐大量使用<code>context</code>，虽然它可以减少逐层传递，但当组件结构复杂的时候，我们并不知道<code>context</code>是从哪里传过来的。<code>Context</code>就像一个全局变量，而全局变量正是导致应用走向混乱的罪魁祸首之一，给组件带来了外部依赖的副作用。使用<code>context</code>比较好的场景正真意义上的全局信息且不会改变。例如界面主题，用户信息等。</p>
+</blockquote>
+<p>Redux 作者总结了一个非常有意思的 cheatsheet：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">shouldIUseReactContextFeature</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-title function_">amILirarayAuthor</span>()&amp;&amp; <span class="hljs-title function_">doINeedToPassSomeThingDownDeeply</span>())&#123;<br>        <span class="hljs-comment">// 一个自定义的 &lt;option&gt; 组件可能想于它的 &lt;select&gt; 对话</span><br>        <span class="hljs-comment">// 这是可以的，弹药记住，这是一个实验性的 API，如果在一些情况下不能成功。</span><br>        <span class="hljs-comment">// 那么需要回滚改变它</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">amIFindWith</span>(<span class="hljs-variable constant_">API_CHANGES</span> &amp;&amp; <span class="hljs-variable constant_">BUGGY_UDATES</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(myUseCase === <span class="hljs-string">&#x27;thening&#x27;</span>|| myUseCase === <span class="hljs-string">&#x27;localization&#x27;</span>)&#123;<br>        <span class="hljs-comment">// 在应用中， context 一般用于不会改变的全局变量</span><br>        <span class="hljs-comment">// 如果你坚持使用它，建议提供一个高阶函数</span><br>        <span class="hljs-comment">// 当我们要改变这个 API 的时候，只需要改变一个地方就可以了</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">iPromiseToWriteHOCInsteadOfUsingDisrecly</span>();<br>    &#125;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-title function_">librarayAskMeToUseContext</span>())&#123;<br>        <span class="hljs-comment">//向它提供一个高阶组件</span><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;File an issue with this library.&#x27;</span>)<br>    &#125;<br><br>    <span class="hljs-comment">// 祝你好运</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">yolo</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="没有嵌套关系的组件通信"><a href="#没有嵌套关系的组件通信" class="headerlink" title="没有嵌套关系的组件通信"></a>没有嵌套关系的组件通信</h2><ol>
+<li>没有嵌套关系的，那只能通过可以影响全局的一些机制去考虑，自定义事件机制不失为一种上佳的方法。</li>
+<li>在 componentDidMount 事件中，如果组件完成挂载，再订阅事件。<br>当组件卸载的时候，在 componentWillUnmount 事件中取消事件的订阅。</li>
+</ol>
+<blockquote>
+<p>笔记参考来源：<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010336868">React 组件间通信</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ituring.com.cn/book/1898">深入 React 技术栈</a></p>
+<p><a target="_blank" rel="noopener" href="https://discountry.github.io/">React 中文文档</a></p>
+<p>end</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%87%AA%E7%94%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">自用笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/" class="print-no-link">#笔记</a>
+      
+        <a href="/tags/React/" class="print-no-link">#React</a>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>React 组件间通信</div>
+      <div>https://bubao.github.io/posts/d2113aae.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年7月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/73a303cb.html" title="React 与 Redux 中的数组处理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">React 与 Redux 中的数组处理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/b1420a79.html" title="React 表单组件">
+                        <span class="hidden-mobile">React 表单组件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

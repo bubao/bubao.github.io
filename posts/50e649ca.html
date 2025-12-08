@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="很久之前就了解过雪花算法，一直没在意。最近看到一个比较有趣的类雪花算法————雪花飘移算法，号称比传统的雪花算法还要好。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs 实现雪花飘移算法">
+<meta property="og:url" content="https://bubao.github.io/posts/50e649ca.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="很久之前就了解过雪花算法，一直没在意。最近看到一个比较有趣的类雪花算法————雪花飘移算法，号称比传统的雪花算法还要好。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-27T14:18:41.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.877Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="node.js">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Nodejs 实现雪花飘移算法 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Nodejs 实现雪花飘移算法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-04-27 22:18" pubdate>
+          2021年4月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Nodejs 实现雪花飘移算法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>很久之前就了解过雪花算法，一直没在意。最近看到一个比较有趣的类雪花算法————<a target="_blank" rel="noopener" href="https://github.com/yitter/IdGenerator">雪花飘移算法</a>，号称比传统的雪花算法还要好。</p>
+<span id="more"></span>
+
+<h2 id="雪花算法"><a href="#雪花算法" class="headerlink" title="雪花算法"></a>雪花算法</h2><p>雪花算法是由 twitter 创建，传统的雪花算法里，第一段是 41bit 的时间戳，第二段是 10bit 的服务 id+机器 id，剩下 12bit 用来放计算机生成的序列号。这导致雪花算法得到的 id 数字长达 64 位之多。</p>
+<p>这在 nodejs 的项目中是很痛苦的，因为 js 的 Number 最大值就只有<code>9007199254740992</code>，根本容不下这么长的数字 id，只能把 id 转为字符串。目前也有开源的模块支持生成雪花算法的 id，如 <a target="_blank" rel="noopener" href="https://github.com/Welogix-Tech/node-snowflake">https://github.com/Welogix-Tech/node-snowflake</a>。</p>
+<p>还有没有更好的方法？</p>
+<h2 id="雪花飘移算法"><a href="#雪花飘移算法" class="headerlink" title="雪花飘移算法"></a>雪花飘移算法</h2><p>这个算法和雪花算法的区别是，通过减少 Seq 位数来压缩长度，在缩减长度的同时，能保证生成速度不变。</p>
+<p>下面的算法是从 <a target="_blank" rel="noopener" href="https://github.com/yitter/IdGenerator/blob/master/Go/source/idgen/SnowWorkerM1.go">go 版本</a> 直接转义过来的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br></pre></td><td class="code"><pre><code class="hljs js"><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Genid</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *Creates an instance of Genid.</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@author</span> <span class="hljs-variable">bubao</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@date</span> 2021-04-27</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">&#123;</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     Method: 1, // 雪花计算方法，（1-漂移算法|2-传统算法），默认 1</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     BaseTime: 1577836800000,  // 基础时间（ms 单位），不能超过当前系统时间</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     WorkerId: Number, // 机器码，必须由外部设定，最大值 2^WorkerIdBitLength-1</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     WorkerIdBitLength: 6,   // 机器码位长，默认值 6，取值范围 [1, 15](要求：序列数位长+机器码位长不超过 22)</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     SeqBitLength: 6,   // 序列数位长，默认值 6，取值范围 [3, 21](要求：序列数位长+机器码位长不超过 22)</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     MaxSeqNumber: 5, // 最大序列数（含），设置范围 [MinSeqNumber, 2^SeqBitLength-1]，默认值 0，表示最大序列数取最大值（2^SeqBitLength-1]）</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     MinSeqNumber: 5, // 最小序列数（含），默认值 5，取值范围 [5, MaxSeqNumber]，每毫秒的前 5 个序列数对应编号 0-4 是保留位，其中 1-4 是时间回拨相应预留位，0 是手工新值预留位</span></span><br><span class="hljs-type"><span class="hljs-comment">     *     TopOverCostCount: 2000// 最大漂移次数（含），默认 2000，推荐范围 500-10000（与计算能力有关）</span></span><br><span class="hljs-type"><span class="hljs-comment">     * </span>&#125;&#125; options</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@memberof</span> <span class="hljs-variable">Genid</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options</span>) &#123;<br>        <span class="hljs-keyword">if</span> (options.<span class="hljs-property">WorkerId</span> === <span class="hljs-literal">undefined</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;lost WorkerId&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// 1.BaseTime</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-title class_">BaseTime</span> = <span class="hljs-number">1577836800000</span>;<br>        <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">BaseTime</span> || options.<span class="hljs-property">BaseTime</span> &lt; <span class="hljs-number">0</span>) &#123;<br>            options.<span class="hljs-property">BaseTime</span> = <span class="hljs-title class_">BaseTime</span>;<br>        &#125;<br>        <span class="hljs-comment">// 2.WorkerIdBitLength</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-title class_">WorkerIdBitLength</span> = <span class="hljs-number">6</span>;<br>        <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">WorkerIdBitLength</span> || options.<span class="hljs-property">WorkerIdBitLength</span> &lt; <span class="hljs-number">0</span>) &#123;<br>            options.<span class="hljs-property">WorkerIdBitLength</span> = <span class="hljs-title class_">WorkerIdBitLength</span>;<br>        &#125;<br><br>        <span class="hljs-comment">// 4.SeqBitLength</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-title class_">SeqBitLength</span> = <span class="hljs-number">6</span>;<br>        <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">SeqBitLength</span> || options.<span class="hljs-property">SeqBitLength</span> &lt; <span class="hljs-number">0</span>) &#123;<br>            options.<span class="hljs-property">SeqBitLength</span> = <span class="hljs-title class_">SeqBitLength</span>;<br>        &#125;<br>        <span class="hljs-comment">// 5.MaxSeqNumber</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-title class_">MaxSeqNumber</span> = (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-title class_">SeqBitLength</span>) - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span> (options.<span class="hljs-property">MaxSeqNumber</span> &lt;= <span class="hljs-number">0</span> || options.<span class="hljs-property">MaxSeqNumber</span> === <span class="hljs-literal">undefined</span>) &#123;<br>            options.<span class="hljs-property">MaxSeqNumber</span> = <span class="hljs-title class_">MaxSeqNumber</span>;<br>        &#125;<br>        <span class="hljs-comment">// 6.MinSeqNumber</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-title class_">MinSeqNumber</span> = <span class="hljs-number">5</span>;<br>        <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">MinSeqNumber</span> || options.<span class="hljs-property">MinSeqNumber</span> &lt; <span class="hljs-number">0</span>) &#123;<br>            options.<span class="hljs-property">MinSeqNumber</span> = <span class="hljs-title class_">MinSeqNumber</span>;<br>        &#125;<br>        <span class="hljs-comment">// 7.Others</span><br>        <span class="hljs-keyword">const</span> topOverCostCount = <span class="hljs-number">2000</span>;<br>        <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">TopOverCostCount</span> || options.<span class="hljs-property">TopOverCostCount</span> &lt; <span class="hljs-number">0</span>) &#123;<br>            options.<span class="hljs-property">TopOverCostCount</span> = topOverCostCount;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (options.<span class="hljs-property">Method</span> !== <span class="hljs-number">2</span>) &#123;<br>            options.<span class="hljs-property">Method</span> = <span class="hljs-number">1</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            options.<span class="hljs-property">Method</span> = <span class="hljs-number">2</span>;<br>        &#125;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">Method</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">Method</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">BaseTime</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">BaseTime</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">WorkerId</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">WorkerId</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">WorkerIdBitLength</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">WorkerIdBitLength</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">SeqBitLength</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">SeqBitLength</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">MaxSeqNumber</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">MaxSeqNumber</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">MinSeqNumber</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">TopOverCostCount</span> = <span class="hljs-title class_">BigInt</span>(options.<span class="hljs-property">TopOverCostCount</span>);<br><br>        <span class="hljs-keyword">const</span> timestampShift = <span class="hljs-variable language_">this</span>.<span class="hljs-property">WorkerIdBitLength</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">SeqBitLength</span>;<br>        <span class="hljs-keyword">const</span> currentSeqNumber = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TimestampShift</span> = timestampShift;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = currentSeqNumber;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span> = <span class="hljs-number">0</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span> = <span class="hljs-number">0</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackIndex</span> = <span class="hljs-number">0</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span> = <span class="hljs-literal">false</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span> = <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// DoGenIDAction .</span><br>    <span class="hljs-title class_">DoGenIdAction</span>(<span class="hljs-title class_">OverCostActionArg</span>) &#123; &#125;<br><br>    <span class="hljs-title class_">BeginOverCostAction</span>(useTimeTick) &#123; &#125;<br><br>    <span class="hljs-title class_">EndOverCostAction</span>(useTimeTick) &#123;<br>        <span class="hljs-comment">// if m1._TermIndex &gt; 10000 &#123;</span><br>        <span class="hljs-comment">//     m1._TermIndex = 0</span><br>        <span class="hljs-comment">// &#125;</span><br>    &#125;<br><br>    <span class="hljs-title class_">BeginTurnBackAction</span>(useTimeTick) &#123; &#125;<br><br>    <span class="hljs-title class_">EndTurnBackAction</span>(useTimeTick) &#123; &#125;<br><br>    <span class="hljs-title class_">NextOverCostId</span>() &#123;<br>        <span class="hljs-keyword">const</span> currentTimeTick = <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">GetCurrentTimeTick</span>();<br>        <span class="hljs-keyword">if</span> (currentTimeTick &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>) &#123;<br>            <span class="hljs-comment">// this.EndOverCostAction(currentTimeTick)</span><br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span> = currentTimeTick;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span> = <span class="hljs-literal">false</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span> = <span class="hljs-number">0</span>;<br>            <span class="hljs-comment">// this._GenCountInOneTerm = 0</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span> &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">TopOverCostCount</span>) &#123;<br>            <span class="hljs-comment">// this.EndOverCostAction(currentTimeTick)</span><br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">GetNextTimeTick</span>();<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span> = <span class="hljs-literal">false</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span> = <span class="hljs-number">0</span>;<br>            <span class="hljs-comment">// this._GenCountInOneTerm = 0</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">MaxSeqNumber</span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>++;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span> = <span class="hljs-literal">true</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span>++;<br>            <span class="hljs-comment">// this._GenCountInOneTerm++</span><br><br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// this._GenCountInOneTerm++</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>    &#125;<br><br>    <span class="hljs-title class_">NextNormalId</span>() &#123;<br>        <span class="hljs-keyword">const</span> currentTimeTick = <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">GetCurrentTimeTick</span>();<br>        <span class="hljs-keyword">if</span> (currentTimeTick &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>) &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span> &lt; <span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span> - <span class="hljs-number">1</span>;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackIndex</span>++;<br>                <span class="hljs-comment">// 每毫秒序列数的前 5 位是预留位，0 用于手工新值，1-4 是时间回拨次序</span><br>                <span class="hljs-comment">// 支持 4 次回拨次序（避免回拨重叠导致 ID 重复），可无限次回拨（次序循环使用）。</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackIndex</span> &gt; <span class="hljs-number">4</span>) &#123;<br>                    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackIndex</span> = <span class="hljs-number">1</span>;<br>                &#125;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">BeginTurnBackAction</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span>);<br>            &#125;<br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcTurnBackId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span>);<br>        &#125;<br>        <span class="hljs-comment">// 时间追平时，_TurnBackTimeTick 清零</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span> &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">EndTurnBackAction</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span>);<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span> = <span class="hljs-number">0</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (currentTimeTick &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span> = currentTimeTick;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">MaxSeqNumber</span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">BeginOverCostAction</span>(currentTimeTick);<br>            <span class="hljs-comment">// this._TermIndex++</span><br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>++;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">MinSeqNumber</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span> = <span class="hljs-literal">true</span>;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_OverCostCountInOneTerm</span> = <span class="hljs-number">1</span>;<br>            <span class="hljs-comment">// this._GenCountInOneTerm = 1</span><br><br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">CalcId</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>);<br>    &#125;<br><br>    <span class="hljs-title class_">CalcId</span>(useTimeTick) &#123;<br>        <span class="hljs-keyword">const</span> result = <span class="hljs-title class_">BigInt</span>(useTimeTick &lt;&lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TimestampShift</span>) + <span class="hljs-title class_">BigInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">WorkerId</span> &lt;&lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">SeqBitLength</span>) + <span class="hljs-title class_">BigInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_CurrentSeqNumber</span>++;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-title class_">CalcTurnBackId</span>(useTimeTick) &#123;<br>        <span class="hljs-keyword">const</span> result = <span class="hljs-title class_">BigInt</span>(useTimeTick &lt;&lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TimestampShift</span>) + <span class="hljs-title class_">BigInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">WorkerId</span> &lt;&lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">SeqBitLength</span>) + <span class="hljs-title class_">BigInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackIndex</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_TurnBackTimeTick</span>--;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-title class_">GetCurrentTimeTick</span>() &#123;<br>        <span class="hljs-keyword">const</span> millis = <span class="hljs-title class_">BigInt</span>((<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()).<span class="hljs-title function_">valueOf</span>());<br>        <span class="hljs-keyword">return</span> millis - <span class="hljs-variable language_">this</span>.<span class="hljs-property">BaseTime</span>;<br>    &#125;<br><br>    <span class="hljs-title class_">GetNextTimeTick</span>() &#123;<br>        <span class="hljs-keyword">let</span> tempTimeTicker = <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">GetCurrentTimeTick</span>();<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(tempTimeTicker);<br>        <span class="hljs-keyword">while</span> (tempTimeTicker &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">_LastTimeTick</span>) &#123;<br>            tempTimeTicker = <span class="hljs-variable language_">this</span>.<span class="hljs-title class_">GetCurrentTimeTick</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> tempTimeTicker;<br>    &#125;<br><br>    <span class="hljs-title class_">NextId</span>() &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_IsOverCost</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title class_">NextOverCostId</span>());<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title class_">NextNormalId</span>());<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title class_">Genid</span>;<br></code></pre></td></tr></table></figure>
+
+<p>另外，也有人写过类似的算法，CSDN 博主「狼丶宇先生」的 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33270001/article/details/108800547">nodejs 雪花算法生成 long 型主键 ID 默认 16 位</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 雪花 ID 生成器</span><br><span class="hljs-comment"> * Date: 2020 年 9 月 25 日 14:20:21</span><br><span class="hljs-comment"> * Version: 1.0.0</span><br><span class="hljs-comment"> * A function for converting hex &lt;-&gt; dec w/o loss of precision.</span><br><span class="hljs-comment"> * By Dan Vanderkam http://www.danvk.org/hex2dec.html</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span> js Number 最大长度不超过 17 位，否则会出现精度丢失的问题</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SnowflakeID</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options</span>) &#123;<br>        options = options || &#123;&#125;;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span> = <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">//机器 id 或任何随机数。如果您是在分布式系统中生成 id，强烈建议您提供一个适合不同机器的 mid。</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">mid</span> = (options.<span class="hljs-property">mid</span> || <span class="hljs-number">1</span>) % <span class="hljs-number">1023</span>;<br>        <span class="hljs-comment">//这是一个时间偏移量，它将从当前时间中减去以获得 id 的前 42 位。这将有助于生成更小的 id。</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">offset</span> = options.<span class="hljs-property">offset</span> || (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getFullYear</span>() - <span class="hljs-number">1970</span>) * <span class="hljs-number">31536000</span> * <span class="hljs-number">1000</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastTime</span> = <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-title function_">generate</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> time = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();<br>        <span class="hljs-keyword">const</span> bTime = (time - <span class="hljs-variable language_">this</span>.<span class="hljs-property">offset</span>).<span class="hljs-title function_">toString</span>(<span class="hljs-number">2</span>);<br>        <span class="hljs-comment">// get the sequence number</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">lastTime</span> == time) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span>++;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span> &gt; <span class="hljs-number">4095</span>) &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span> = <span class="hljs-number">0</span>;<br>                <span class="hljs-comment">// make system wait till time is been shifted by one millisecond</span><br>                <span class="hljs-keyword">while</span> (<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() &lt;= time) &#123;&#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span> = <span class="hljs-number">0</span>;<br>        &#125;<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastTime</span> = time;<br><br>        <span class="hljs-keyword">let</span> bSeq = <span class="hljs-variable language_">this</span>.<span class="hljs-property">seq</span>.<span class="hljs-title function_">toString</span>(<span class="hljs-number">2</span>);<br>        <span class="hljs-keyword">let</span> bMid = <span class="hljs-variable language_">this</span>.<span class="hljs-property">mid</span>.<span class="hljs-title function_">toString</span>(<span class="hljs-number">2</span>);<br><br>        <span class="hljs-comment">// create sequence binary bit</span><br>        <span class="hljs-keyword">while</span> (bSeq.<span class="hljs-property">length</span> &lt; <span class="hljs-number">12</span>) bSeq = <span class="hljs-string">&#x27;0&#x27;</span> + bSeq;<br><br>        <span class="hljs-keyword">while</span> (bMid.<span class="hljs-property">length</span> &lt; <span class="hljs-number">10</span>) bMid = <span class="hljs-string">&#x27;0&#x27;</span> + bMid;<br><br>        <span class="hljs-keyword">const</span> bid = bTime + bMid + bSeq;<br>        <span class="hljs-keyword">let</span> id = <span class="hljs-string">&#x27;&#x27;</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = bid.<span class="hljs-property">length</span>; i &gt; <span class="hljs-number">0</span>; i -= <span class="hljs-number">4</span>) &#123;<br>            id = <span class="hljs-built_in">parseInt</span>(bid.<span class="hljs-title function_">substring</span>(i - <span class="hljs-number">4</span>, i), <span class="hljs-number">2</span>).<span class="hljs-title function_">toString</span>(<span class="hljs-number">16</span>) + id;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hexToDec</span>(id);<br>    &#125;<br><br>    <span class="hljs-title function_">add</span>(<span class="hljs-params">x, y, base</span>) &#123;<br>        <span class="hljs-keyword">let</span> z = [];<br>        <span class="hljs-keyword">let</span> n = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(x.<span class="hljs-property">length</span>, y.<span class="hljs-property">length</span>);<br>        <span class="hljs-keyword">let</span> carry = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (i &lt; n || carry) &#123;<br>            <span class="hljs-keyword">let</span> xi = i &lt; x.<span class="hljs-property">length</span> ? x[i] : <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">let</span> yi = i &lt; y.<span class="hljs-property">length</span> ? y[i] : <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">let</span> zi = carry + xi + yi;<br>            z.<span class="hljs-title function_">push</span>(zi % base);<br>            carry = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(zi / base);<br>            i++;<br>        &#125;<br>        <span class="hljs-keyword">return</span> z;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 乘以数字</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">num</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">x</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">base</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">multiplyByNumber</span>(<span class="hljs-params">num, x, base</span>) &#123;<br>        <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">if</span> (num == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> [];<br><br>        <span class="hljs-keyword">let</span> result = [];<br>        <span class="hljs-keyword">let</span> power = x;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            <span class="hljs-keyword">if</span> (num &amp; <span class="hljs-number">1</span>) &#123;<br>                result = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">add</span>(result, power, base);<br>            &#125;<br>            num = num &gt;&gt; <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span> (num === <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<br>            power = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">add</span>(power, power, base);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 解析为数组</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">str</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">base</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">parseToDigitsArray</span>(<span class="hljs-params">str, base</span>) &#123;<br>        <span class="hljs-keyword">let</span> digits = str.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;&#x27;</span>);<br>        <span class="hljs-keyword">let</span> ary = [];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = digits.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>            <span class="hljs-keyword">let</span> n = <span class="hljs-built_in">parseInt</span>(digits[i], base);<br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(n)) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>            ary.<span class="hljs-title function_">push</span>(n);<br>        &#125;<br>        <span class="hljs-keyword">return</span> ary;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 转换</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">str</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">fromBase</span></span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">toBase</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">convertBase</span>(<span class="hljs-params">str, fromBase, toBase, legnth</span>) &#123;<br>        <span class="hljs-keyword">let</span> digits = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">parseToDigitsArray</span>(str, fromBase);<br>        <span class="hljs-keyword">if</span> (digits === <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">let</span> outArray = [];<br>        <span class="hljs-keyword">let</span> power = [<span class="hljs-number">1</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; digits.<span class="hljs-property">length</span>; i++) &#123;<br>            <span class="hljs-comment">// inletiant: at this point, fromBase^i = power</span><br>            <span class="hljs-keyword">if</span> (digits[i]) &#123;<br>                outArray = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">add</span>(<br>                    outArray,<br>                    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">multiplyByNumber</span>(digits[i], power, toBase),<br>                    toBase<br>                );<br>            &#125;<br>            power = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">multiplyByNumber</span>(fromBase, power, toBase);<br>        &#125;<br>        <span class="hljs-keyword">let</span> out = <span class="hljs-string">&#x27;&#x27;</span>;<br>        <span class="hljs-comment">//设置了这里-3 会返回 16 位的字符，如果是设置为 outArray.length - 1 会返回 18 位的字符</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = outArray.<span class="hljs-property">length</span> - <span class="hljs-number">3</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>            out += outArray[i].<span class="hljs-title function_">toString</span>(toBase);<br>        &#125;<br>        <span class="hljs-keyword">return</span> out;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 16 进制=&gt; 10 进制</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">hexStr</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">hexToDec</span>(<span class="hljs-params">hexStr</span>) &#123;<br>        <span class="hljs-keyword">if</span> (hexStr.<span class="hljs-title function_">substring</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>) === <span class="hljs-string">&#x27;0x&#x27;</span>) hexStr = hexStr.<span class="hljs-title function_">substring</span>(<span class="hljs-number">2</span>);<br>        hexStr = hexStr.<span class="hljs-title function_">toLowerCase</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">convertBase</span>(hexStr, <span class="hljs-number">16</span>, <span class="hljs-number">10</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">//下面是测试代码部分，不需要的可以直接移除</span><br><span class="hljs-keyword">const</span> snid = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SnowflakeID</span>(&#123;<br>    <span class="hljs-attr">mid</span>: +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()<br>&#125;);<br><span class="hljs-keyword">let</span> id = snid.<span class="hljs-title function_">generate</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(id, id.<span class="hljs-property">length</span>);<br><span class="hljs-keyword">let</span> arr = [];<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; <span class="hljs-number">10000</span>; index++) &#123;<br>    id = snid.<span class="hljs-title function_">generate</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(id);<br>    arr.<span class="hljs-title function_">push</span>(snid.<span class="hljs-title function_">generate</span>(), +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>&#125;<br><span class="hljs-comment">//测试是否会有重复的 id, 目前的测试情况来看，不会有重复的</span><br><span class="hljs-comment">// console.log(arr, arr.length, Array.from(new Set(arr)).length);</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title class_">SnowflakeID</span>;<br><span class="hljs-comment">// ————————————————</span><br><span class="hljs-comment">// 版权声明：本文为 CSDN 博主「狼丶宇先生」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。</span><br><span class="hljs-comment">// 原文链接：https://blog.csdn.net/qq_33270001/article/details/108800547</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="类雪花算法的优缺点"><a href="#类雪花算法的优缺点" class="headerlink" title="类雪花算法的优缺点"></a>类雪花算法的优缺点</h2><p>雪花算法的出现，其实是为了解决数据库的主键使用非自增 id 的情况下，使用类似 guid 或者 uuid，在数据量大的情况下查询慢的情况。而雪花算法是工具时间戳生成的，序列号有一定的递增顺序，可用来排序。</p>
+<p>但是依然还是存在一些缺点，根据时间戳生成的 id，有个致命的缺点就是时间回拨。一旦发生时间回拨，就会产生重复的 id，而雪花飘移算法通过配置参数在一定程度上可解决时间回拨的问题。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A7%91%E6%99%AE/" class="category-chain-item">科普</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%A7%91%E6%99%AE/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">系统设计</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/mysql/" class="print-no-link">#mysql</a>
+      
+        <a href="/tags/node-js/" class="print-no-link">#node.js</a>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+        <a href="/tags/go/" class="print-no-link">#go</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nodejs 实现雪花飘移算法</div>
+      <div>https://bubao.github.io/posts/50e649ca.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年4月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/f249d00f.html" title="观《寻汉计》">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">观《寻汉计》</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/df426b2c.html" title="按 ASCII 排序的 stringify">
+                        <span class="hidden-mobile">按 ASCII 排序的 stringify</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

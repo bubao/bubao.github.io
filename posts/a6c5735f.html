@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近想要使用 arango 代替以前的 mongo 数据库，但是一直安装不成功。原因是 AUR 的PKGBUILD中的sha256sums错误了，而且还是比较旧的版本。 最后自己手动安装搞定的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Archlinux 安装软件之 Arango">
+<meta property="og:url" content="https://bubao.github.io/posts/a6c5735f.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="最近想要使用 arango 代替以前的 mongo 数据库，但是一直安装不成功。原因是 AUR 的PKGBUILD中的sha256sums错误了，而且还是比较旧的版本。 最后自己手动安装搞定的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-11T06:33:24.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.876Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="archlinux">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Archlinux 安装软件之 Arango - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Archlinux 安装软件之 Arango"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-12-11 14:33" pubdate>
+          2019年12月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          645 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Archlinux 安装软件之 Arango</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近想要使用 arango 代替以前的 mongo 数据库，但是一直安装不成功。原因是 AUR 的<code>PKGBUILD</code>中的<code>sha256sums</code>错误了，而且还是比较旧的版本。</p>
+<p>最后自己手动安装搞定的</p>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1-创建一个项目文件夹"><a href="#1-创建一个项目文件夹" class="headerlink" title="1. 创建一个项目文件夹"></a>1. 创建一个项目文件夹</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">mkdir</span> arango &amp;&amp; <span class="hljs-built_in">cd</span> arango<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-获取-deb-包"><a href="#2-获取-deb-包" class="headerlink" title="2. 获取 deb 包"></a>2. 获取 deb 包</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">aria2c -x15 -j15 -s5 -c https://download.arangodb.com/arangodb35/DEBIAN/amd64/arangodb3_3.5.3-1_amd64.deb --all-proxy=<span class="hljs-string">&quot;http://127.0.0.1:12333&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-获取-sha256sums"><a href="#3-获取-sha256sums" class="headerlink" title="3. 获取 sha256sums"></a>3. 获取 sha256sums</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sha256sum</span> arangodb3_3.5.3-1_amd64.deb<br></code></pre></td></tr></table></figure>
+
+<p>编写 PKGBUILD</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Maintainer: dilipvamsi &lt;m.dilipvamsi at gmail dot com&gt;</span><br><br>_pkgname=<span class="hljs-string">&#x27;arangodb&#x27;</span><br>pkgname=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;_pkgname&#125;</span>-bin&quot;</span><br>pkgdesc=<span class="hljs-string">&quot;Arangodb binary from deb.&quot;</span><br>pkgver=3.5.3<br>pkgrel=1<br>_pkgver=<span class="hljs-string">&#x27;3.5.3-1&#x27;</span><br><span class="hljs-built_in">arch</span>=(<span class="hljs-string">&#x27;x86_64&#x27;</span>)<br>url=<span class="hljs-string">&quot;https://www.arangodb.com/&quot;</span><br>license=(<span class="hljs-string">&#x27;APACHE&#x27;</span>)<br>provides=(<span class="hljs-variable">$&#123;_pkgname&#125;</span>)<br>conflicts=(<br>    <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;_pkgname&#125;</span>&quot;</span><br>    <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;_pkgname&#125;</span>-client-bin&quot;</span><br>)<br><span class="hljs-built_in">source</span>=(<br>    https://download.arangodb.com/arangodb34/Community/Linux/arangodb3_<span class="hljs-variable">$&#123;_pkgver&#125;</span>_amd64.deb<br>)<br>validpgpkeys=(<span class="hljs-string">&quot;CD8CB0F1E0AD5B52E93F41E7EA93F5E56E751E9B&quot;</span>) <span class="hljs-comment"># Frank Celler (ArangoDB Debian Repository) &lt;info@arangodb.com&gt;</span><br><span class="hljs-comment"># 手动生成一次 sha256sum</span><br>sha256sums=(<br>    25b63ff6cd9dc97c270d46dfce0ca621c0de82d1d2cd03b20260c424418f3ad3<br>)<br><br>install=arangodb.install<br><span class="hljs-function"><span class="hljs-title">package</span></span>() &#123;<br>    msg2 <span class="hljs-string">&quot;Extracting the data.tar.gz...&quot;</span><br>    tar -xf <span class="hljs-string">&quot;data.tar.gz&quot;</span> -C <span class="hljs-variable">$pkgdir</span><br><br>    msg2 <span class="hljs-string">&quot;Removing /etc/init.d&quot;</span><br>    <span class="hljs-built_in">rm</span> -r <span class="hljs-variable">$pkgdir</span>/etc/init.d<br><br>    msg2 <span class="hljs-string">&quot;Moving all binaries from /usr/sbin to /usr/bin and then removing it&quot;</span><br>    <span class="hljs-built_in">mv</span> <span class="hljs-variable">$pkgdir</span>/usr/sbin/* <span class="hljs-variable">$pkgdir</span>/usr/bin<br>    <span class="hljs-built_in">rmdir</span> <span class="hljs-variable">$pkgdir</span>/usr/sbin<br><br>    msg2 <span class="hljs-string">&quot;Changing /usr/sbin to /usr/bin in arangodb3.service&quot;</span><br>    sed -i <span class="hljs-string">&#x27;s/\/usr\/sbin/\/usr\/bin/g&#x27;</span> <span class="hljs-variable">$pkgdir</span>/lib/systemd/system/arangodb3.service<br><br>    msg2 <span class="hljs-string">&quot;Moving /lib to /usr/lib&quot;</span><br>    <span class="hljs-built_in">mv</span> <span class="hljs-variable">$pkgdir</span>/lib <span class="hljs-variable">$pkgdir</span>/usr<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编写<code>arangodb.install</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-function"><span class="hljs-title">pre_install</span></span>() &#123;<br><br>    <span class="hljs-built_in">set</span> -e<br>    getent group arangodb &gt;/dev/null || groupadd -r arangodb<br>    getent passwd arangodb &gt;/dev/null || useradd -r -g arangodb -d /usr/share/arangodb3 -s /bin/false -c <span class="hljs-string">&quot;ArangoDB Application User&quot;</span> arangodb<br><br>    <span class="hljs-comment"># check if the arangodb group was added locally in /etc/group</span><br>    <span class="hljs-comment"># if not, then the arangod binary will very likely try to open a socket</span><br>    <span class="hljs-comment"># connection to nscd to query the group information from there.</span><br>    <span class="hljs-comment"># if there is no nscd running, starting the arangod binary will fail</span><br>    (grep -q <span class="hljs-string">&quot;^arangodb:&quot;</span> /etc/passwd &amp;&amp; grep -q <span class="hljs-string">&quot;^arangodb:&quot;</span> /etc/group) || (nscd -g &gt;/dev/null 2&gt;&amp;1) || <span class="hljs-built_in">cat</span> 1&gt;&amp;2 &lt;&lt;<span class="hljs-string">EOF</span><br><span class="hljs-string">################################################################################</span><br><span class="hljs-string">Unable to query nscd service for user or group &#x27;arangodb&#x27;. As a consequence, it</span><br><span class="hljs-string">is very likely that installing or starting the arangod server will fail because</span><br><span class="hljs-string">it can neither find user/group &#x27;arangodb&#x27; in /etc/passwd or /etc/group nor via</span><br><span class="hljs-string">an nscd group lookup.</span><br><span class="hljs-string"></span><br><span class="hljs-string">Please install &#x27;nscd&#x27; before installing the arangodb package.</span><br><span class="hljs-string">################################################################################</span><br><span class="hljs-string">EOF</span><br><br>    install -o arangodb -g arangodb -m 755 -d /var/lib/arangodb3<br>    install -o arangodb -g arangodb -m 755 -d /var/lib/arangodb3-apps<br>    install -o arangodb -g arangodb -m 755 -d /var/log/arangodb3<br><br>&#125;<br><br><span class="hljs-function"><span class="hljs-title">post_install</span></span>() &#123;<br><br>    <span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Welcome to ArangoDB.</span><br><span class="hljs-string"></span><br><span class="hljs-string">  To get started you will need to tell systemd to reload it&#x27;s unit</span><br><span class="hljs-string">  files, then enable and start the service:</span><br><span class="hljs-string"></span><br><span class="hljs-string">   sudo systemctl daemon-reload</span><br><span class="hljs-string">   sudo systemctl enable arangodb3.service</span><br><span class="hljs-string">   sudo systemctl start arangodb3.service</span><br><span class="hljs-string"></span><br><span class="hljs-string">  ArangoDB 3 ships with authentication enabled. To use it you will need</span><br><span class="hljs-string">  to start the server with &#x27;authentication = false&#x27; in the following</span><br><span class="hljs-string">  files:</span><br><span class="hljs-string"></span><br><span class="hljs-string">    /etc/arangodb3/arangosh.conf</span><br><span class="hljs-string">    /etc/arangodb3/arangod.conf</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Then set the passwords and create the users you need:</span><br><span class="hljs-string"></span><br><span class="hljs-string">    $&gt; arangosh</span><br><span class="hljs-string">    127.0.0.1:8529@_system&gt; require(&quot;org/arangodb/users&quot;).update(&quot;root&quot;,</span><br><span class="hljs-string">    &quot;mypassword&quot;)</span><br><span class="hljs-string">    127.0.0.1:8529@_system&gt; require(&quot;org/arangodb/users&quot;).save(&quot;myuser&quot;,</span><br><span class="hljs-string">    &quot;mypassword&quot;);</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Set the &#x27;authentication = true&#x27; and then restart ArangoDB:</span><br><span class="hljs-string"></span><br><span class="hljs-string">   sudo systemctl restart arangodb3.service</span><br><span class="hljs-string"></span><br><span class="hljs-string">  You can now use your username and password to access the</span><br><span class="hljs-string">  administrative interface at:</span><br><span class="hljs-string"></span><br><span class="hljs-string">    http://localhost:8529</span><br><span class="hljs-string"></span><br><span class="hljs-string">  ArangoDB now works with logrotate:</span><br><span class="hljs-string"></span><br><span class="hljs-string">     sudo logrotate /etc/logrotate.d/arangodb3</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Getting help:</span><br><span class="hljs-string">    http://stackoverflow.com/questions/tagged/arangodb</span><br><span class="hljs-string">    https://arangodb-community.slack.com</span><br><span class="hljs-string">    https://docs.arangodb.com/cookbook</span><br><span class="hljs-string">    https://docs.arangodb.com</span><br><span class="hljs-string"></span><br><span class="hljs-string">EOF</span><br><br>&#125;<br><br><span class="hljs-function"><span class="hljs-title">post_upgrade</span></span>() &#123;<br><br>    <span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"></span><br><span class="hljs-string">  ArangoDB has been upgraded to $1.</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Take a look at the Changelog to see what is new:</span><br><span class="hljs-string">  https://github.com/arangodb/arangodb/blob/devel/CHANGELOG</span><br><span class="hljs-string"></span><br><span class="hljs-string">EOF</span><br><br>&#125;<br><br><span class="hljs-function"><span class="hljs-title">pre_remove</span></span>() &#123;<br>    systemctl stop arangodb3.service<br>&#125;<br><br><span class="hljs-function"><span class="hljs-title">post_remove</span></span>() &#123;<br><br>    <span class="hljs-built_in">cat</span> &lt;&lt;<span class="hljs-string">EOF</span><br><span class="hljs-string"></span><br><span class="hljs-string">  ArangoDB has been uninstalled.</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Any data you had stored in ArangoDB is still available in /var/lib/arangodb3.</span><br><span class="hljs-string">  Installed Foxx applications are still available in /var/lib/arangodb3-apps.</span><br><span class="hljs-string">  Log files are left in /var/log/arangodb3.</span><br><span class="hljs-string"></span><br><span class="hljs-string">EOF</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">makepkg -si<br></code></pre></td></tr></table></figure>
+
+<p><code>/etc/arangodb3/arangosh.conf</code>和<code>/etc/arangodb3/arangod.conf</code>中的<code>authentication = true</code>给为<code>authentication = false</code>，进行免验证登录</p>
+<p>设置密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">$<span class="hljs-operator">&gt;</span> arangosh<br><span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">8529</span>@_system<span class="hljs-operator">&gt;</span> require(&quot;org/arangodb/users&quot;).<span class="hljs-keyword">update</span>(&quot;root&quot;,&quot;mypassword&quot;)<br><span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">8529</span>@_system<span class="hljs-operator">&gt;</span> require(&quot;org/arangodb/users&quot;).save(&quot;myuser&quot;,&quot;mypassword&quot;);<br></code></pre></td></tr></table></figure>
+
+<p>将<code>authentication = false</code>改回<code>authentication = true</code>，并重启一下服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> systemctl restart arangodb3.service<br></code></pre></td></tr></table></figure>
+
+<p>再次使用<code>arangosh</code>登录即可</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/" class="print-no-link">#linux</a>
+      
+        <a href="/tags/archlinux/" class="print-no-link">#archlinux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Archlinux 安装软件之 Arango</div>
+      <div>https://bubao.github.io/posts/a6c5735f.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年12月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/8e5102f6.html" title="浅谈 js 异步">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">浅谈 js 异步</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/9a8cff68.html" title="calibre web 默认密码">
+                        <span class="hidden-mobile">calibre web 默认密码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

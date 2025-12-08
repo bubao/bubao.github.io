@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="插件.gitignore Generator作用：自动生成 .gitignore 文件 使用：ctrl + shift + p 输入 generate .gitignore file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 插件整理与设置">
+<meta property="og:url" content="https://bubao.github.io/posts/99204414.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="插件.gitignore Generator作用：自动生成 .gitignore 文件 使用：ctrl + shift + p 输入 generate .gitignore file">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/piotrpalarz/vscode-gitignore-generator/raw/master/images/readme/1.gif">
+<meta property="og:image" content="https://github.com/helixquar/asciidecorator/raw/master/images/demo-font-select.gif">
+<meta property="og:image" content="https://user-images.githubusercontent.com/9987486/40583705-7105dda8-61c6-11e8-935a-3c5d475a1eb1.gif">
+<meta property="og:image" content="https://github.com/aaron-bond/better-comments/raw/master/images/better-comments.PNG">
+<meta property="og:image" content="https://github.com/CoenraadS/Bracket-Pair-Colorizer-2/raw/master/images/example.png">
+<meta property="og:image" content="https://github.com/auchenberg/vscode-browser-preview/raw/master/resources/demo.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/kisstkondoros/codemetrics/master/images/metric_details.png">
+<meta property="og:image" content="https://i.ibb.co/LzRwxp4/Frame.jpg">
+<meta property="og:image" content="https://i.imgur.com/OxN7fJe.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/fanyi-vscode.gif">
+<meta property="og:image" content="https://marketplace.visualstudio.com/items?itemName=oouo-diogo-perdigao.docthis">
+<meta property="og:image" content="https://github.com/joelday/vscode-docthis/raw/master/images/demo.gif">
+<meta property="og:image" content="https://github.com/mikestead/vscode-dotenv/raw/master/images/screenshot.png">
+<meta property="og:image" content="https://github.com/hediet/vscode-drawio/raw/master/docs/demo.gif">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB166ZODuGSBuNjSspbXXciipXa-800-631.gif">
+<meta property="og:image" content="https://github.com/eggjs/vscode-eggjs/raw/master/snapshot/snippet.gif">
+<meta property="og:image" content="https://github.com/Perkovec/Emoji/raw/master/example.gif">
+<meta property="og:image" content="https://cldup.com/_Y52O-UfkK.jpg">
+<meta property="og:image" content="https://github.com/maixiaojie/git-emoji-zh/raw/master/images/features.gif">
+<meta property="og:image" content="https://github.com/mhutchie/vscode-git-graph/raw/master/resources/demo.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/gitLogv3.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/eamodio/vscode-gitlens/master/images/docs/gitlens-preview.gif">
+<meta property="og:image" content="https://file-wkbcnlcvbn.now.sh/import-cost.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/oderwat/vscode-indent-rainbow/master/assets/example.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/OBKoro1/koro1FileHeader/master/images/example.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/mkloubert/vscode-kanban/master/img/demo1.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/OBKoro1/koro1FileHeader/master/images/example.gif">
+<meta property="og:image" content="https://github.com/yzhang-gh/vscode-markdown/raw/master/images/gifs/toggle-bold.gif">
+<meta property="og:image" content="https://github.com/yzhang-gh/vscode-markdown/raw/master/images/gifs/toggle-bold.gif">
+<meta property="og:image" content="https://user-images.githubusercontent.com/1908863/28495106-30b3b15e-6f09-11e7-8eb6-ca4ca001ab15.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/master/images/fileIcons.png">
+<meta property="og:image" content="https://i.ibb.co/LzRwxp4/Frame.jpg">
+<meta property="og:image" content="https://i.ibb.co/fdDRkWb/Frame.jpg">
+<meta property="og:image" content="https://github.com/bengreenier/vscode-node-readme/raw/master/images/example-import.gif">
+<meta property="og:image" content="https://github.com/leizongmin/vscode-node-module-intellisense/raw/master/images/auto_complete.gif">
+<meta property="og:image" content="https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/js.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/joshpeng/One-Dark/master/images/onedark.gif">
+<meta property="og:image" content="https://github.com/octref/polacode/raw/master/demo/usage.gif">
+<meta property="og:image" content="http://www.2gua.info/static/uploads/20160509171502.gif">
+<meta property="og:image" content="https://microsoft.github.io/vscode-remote-release/images/remote-containers-readme.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/Huachao/vscode-restclient/master/images/usage.gif">
+<meta property="og:image" content="https://shanalikhan.github.io/img/login-with-github.png">
+<meta property="og:image" content="https://s1.ax1x.com/2018/09/19/ieyEBd.gif">
+<meta property="og:image" content="https://github.com/lishu/vscode-svg2/raw/master/images/f1s.gif">
+<meta property="og:image" content="https://github.com/cwxyz007/vscode-hexo-utils/raw/master/docs-images/feature.gif">
+<meta property="og:image" content="https://images.redream.cn/upic/2019/20200520001558-ohsPIa.jpg">
+<meta property="og:image" content="https://camo.githubusercontent.com/7ee4ec2fd6cac35f5ff52436aa148c34c4e15b7b/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f36356164376435616c79316735757866663938786a6a323162783075306538312e6a7067">
+<meta property="article:published_time" content="2020-06-08T11:04:00.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.878Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="vscode">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.com/piotrpalarz/vscode-gitignore-generator/raw/master/images/readme/1.gif">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>VSCode 插件整理与设置 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="VSCode 插件整理与设置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-06-08 19:04" pubdate>
+          2020年6月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">VSCode 插件整理与设置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><h3 id="gitignore-Generator"><a href="#gitignore-Generator" class="headerlink" title=".gitignore Generator"></a>.gitignore Generator</h3><p>作用：自动生成 <code>.gitignore</code> 文件</p>
+<p>使用：<code>ctrl + shift + p</code> 输入 <code>generate .gitignore file</code></p>
+<p><img src="https://github.com/piotrpalarz/vscode-gitignore-generator/raw/master/images/readme/1.gif" srcset="/img/loading.gif" lazyload alt="vscode-gitignore-generator"></p>
+<span id="more"></span>
+<h3 id="ASCIIDecorator"><a href="#ASCIIDecorator" class="headerlink" title="ASCIIDecorator"></a>ASCIIDecorator</h3><p>作用：生成 ASCII 文字</p>
+<p>使用：<code>ctrl + shift + p</code> 输入 <code>generate .gitignore file</code></p>
+<p><img src="https://github.com/helixquar/asciidecorator/raw/master/images/demo-font-select.gif" srcset="/img/loading.gif" lazyload alt="ASCIIDecorator"></p>
+<h3 id="background"><a href="#background" class="headerlink" title="background"></a>background</h3><p>作用：自定背景</p>
+<p>使用：</p>
+<p><img src="https://user-images.githubusercontent.com/9987486/40583705-7105dda8-61c6-11e8-935a-3c5d475a1eb1.gif" srcset="/img/loading.gif" lazyload alt="githubusercontent"></p>
+<h3 id="Better-Comments"><a href="#Better-Comments" class="headerlink" title="Better Comments"></a>Better Comments</h3><p>作用：更加友好的注释</p>
+<p>使用：</p>
+<p><img src="https://github.com/aaron-bond/better-comments/raw/master/images/better-comments.PNG" srcset="/img/loading.gif" lazyload alt="better-comments"></p>
+<p>配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &lt;&lt; better-comments 自定义颜色</span><br>    <span class="hljs-attr">&quot;better-comments.tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;!&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#FF2D00&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;?&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#3498DB&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;//&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#474747&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;todo&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#FF8C00&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#98C379&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;info&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#99FB37&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&lt;&lt;&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#F2D660&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;tag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&gt;&gt;&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;color&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#60D6F2&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;strikethrough&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;backgroundColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transparent&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// &gt;&gt; better-comments</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Bracket-Pair-Colorizer-2"><a href="#Bracket-Pair-Colorizer-2" class="headerlink" title="Bracket Pair Colorizer 2"></a>Bracket Pair Colorizer 2</h3><p>作用：更加友好的括号提示</p>
+<p>使用：</p>
+<p><img src="https://github.com/CoenraadS/Bracket-Pair-Colorizer-2/raw/master/images/example.png" srcset="/img/loading.gif" lazyload alt="Bracket-Pair-Colorizer-2"></p>
+<h3 id="Browser-Preview"><a href="#Browser-Preview" class="headerlink" title="Browser Preview"></a>Browser Preview</h3><p>作用：在 vscode 中打开浏览器</p>
+<p>使用：</p>
+<p><img src="https://github.com/auchenberg/vscode-browser-preview/raw/master/resources/demo.gif" srcset="/img/loading.gif" lazyload alt="vscode-browser-preview"></p>
+<h3 id="Check-Updates-of-NPM-Packages"><a href="#Check-Updates-of-NPM-Packages" class="headerlink" title="Check Updates of NPM Packages"></a>Check Updates of NPM Packages</h3><p>作用：检查 package.json 中的依赖包版本</p>
+<p>使用：</p>
+<p>打开 package.json 即可</p>
+<h3 id="Chinese-Simplified-Language-Pack-for-Visual-Studio-Code"><a href="#Chinese-Simplified-Language-Pack-for-Visual-Studio-Code" class="headerlink" title="Chinese (Simplified) Language Pack for Visual Studio Code"></a>Chinese (Simplified) Language Pack for Visual Studio Code</h3><p>作用：适用于 VS Code 的中文（简体）语言包</p>
+<h3 id="Code-Runner"><a href="#Code-Runner" class="headerlink" title="Code Runner"></a>Code Runner</h3><p>作用：在 vscode 中运行一个文件或者一部分选中的代码</p>
+<h3 id="CodeMetrics"><a href="#CodeMetrics" class="headerlink" title="CodeMetrics"></a>CodeMetrics</h3><p>作用：在 TypeScript &#x2F; JavaScript &#x2F; Lua 文件中计算复杂度。</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/kisstkondoros/codemetrics/master/images/metric_details.png" srcset="/img/loading.gif" lazyload alt="codemetrics"></p>
+<h3 id="Comment-Translate"><a href="#Comment-Translate" class="headerlink" title="Comment Translate"></a>Comment Translate</h3><p>作用：VSCode 注释翻译</p>
+<h3 id="Community-Material-Theme"><a href="#Community-Material-Theme" class="headerlink" title="Community Material Theme"></a>Community Material Theme</h3><p>作用：主题</p>
+<p>使用：</p>
+<p><img src="https://i.ibb.co/LzRwxp4/Frame.jpg" srcset="/img/loading.gif" lazyload alt="Frame"></p>
+<h3 id="Darcula-IntelliJ-Theme"><a href="#Darcula-IntelliJ-Theme" class="headerlink" title="Darcula IntelliJ Theme"></a>Darcula IntelliJ Theme</h3><p>作用：主题</p>
+<p>使用：</p>
+<p><img src="https://i.imgur.com/OxN7fJe.png" srcset="/img/loading.gif" lazyload alt="Darcula IntelliJ Theme"></p>
+<h3 id="dictionary"><a href="#dictionary" class="headerlink" title="dictionary"></a>dictionary</h3><p>作用：汉英英汉词典 for vscode</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/fanyi-vscode.gif" srcset="/img/loading.gif" lazyload alt="dictionary"></p>
+<h3 id="Document-This"><a href="#Document-This" class="headerlink" title="Document This"></a>Document This</h3><p>作用：Document This 方法头</p>
+<p>配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &lt;&lt; docthis</span><br>    <span class="hljs-attr">&quot;docthis.includeAuthorTag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span> <span class="hljs-comment">//出现@Author</span><br>    <span class="hljs-attr">&quot;docthis.authorName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bubao&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;docthis.includeDateTag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;docthis.includeDescriptionTag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span> <span class="hljs-comment">//出现@Description</span><br>    <span class="hljs-comment">// &gt;&gt; docthis</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<p><img src="https://marketplace.visualstudio.com/items?itemName=oouo-diogo-perdigao.docthis" srcset="/img/loading.gif" lazyload alt="Document This"></p>
+<p><img src="https://github.com/joelday/vscode-docthis/raw/master/images/demo.gif" srcset="/img/loading.gif" lazyload alt="vscode-docthis"></p>
+<h2 id="DotENV"><a href="#DotENV" class="headerlink" title="DotENV"></a>DotENV</h2><p>VSCode .env syntax highlighting</p>
+<p><img src="https://github.com/mikestead/vscode-dotenv/raw/master/images/screenshot.png" srcset="/img/loading.gif" lazyload alt="DotENV"></p>
+<h3 id="Draw-io-Integration"><a href="#Draw-io-Integration" class="headerlink" title="Draw.io Integration"></a>Draw.io Integration</h3><p>This unofficial extension integrates Draw.io (also known as diagrams.net) into VS Code.</p>
+<p><img src="https://github.com/hediet/vscode-drawio/raw/master/docs/demo.gif" srcset="/img/loading.gif" lazyload alt="Draw.io Integration"></p>
+<h3 id="egg-jump-definition"><a href="#egg-jump-definition" class="headerlink" title="egg-jump-definition"></a>egg-jump-definition</h3><p>作用：egg.js 开发工具</p>
+<p>使用：</p>
+<p><img src="https://img.alicdn.com/tfs/TB166ZODuGSBuNjSspbXXciipXa-800-631.gif" srcset="/img/loading.gif" lazyload alt="vscode-docthis"></p>
+<h3 id="Egg-js-dev-tools"><a href="#Egg-js-dev-tools" class="headerlink" title="Egg.js dev tools"></a>Egg.js dev tools</h3><p>作用：Egg.js dev tools Egg.js 开发辅助插件</p>
+<h3 id="eggjs"><a href="#eggjs" class="headerlink" title="eggjs"></a>eggjs</h3><p>作用：egg.js 开发工具</p>
+<p><img src="https://github.com/eggjs/vscode-eggjs/raw/master/snapshot/snippet.gif" srcset="/img/loading.gif" lazyload alt="vscode-eggjs"></p>
+<h3 id="Emoji"><a href="#Emoji" class="headerlink" title="Emoji"></a>Emoji</h3><p>作用：emoji 输入</p>
+<p>使用：</p>
+<p><img src="https://github.com/Perkovec/Emoji/raw/master/example.gif" srcset="/img/loading.gif" lazyload alt="Emoji"></p>
+<h3 id="ESLint"><a href="#ESLint" class="headerlink" title="ESLint"></a>ESLint</h3><p>作用：ES 格式化工具</p>
+<p>配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &lt;&lt; eslint</span><br>    <span class="hljs-attr">&quot;eslint.enable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;eslint.alwaysShowStatus&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// &gt;&gt; eslint</span><br>    <span class="hljs-comment">// &lt;&lt; editor</span><br>    <span class="hljs-attr">&quot;editor.codeActionsOnSave&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;source.fixAll.eslint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="filesize"><a href="#filesize" class="headerlink" title="filesize"></a>filesize</h3><p>作用：文件大小</p>
+<p>使用：</p>
+<p><img src="https://cldup.com/_Y52O-UfkK.jpg" srcset="/img/loading.gif" lazyload alt="filesize"></p>
+<h3 id="Fix-VSCode-Checksums"><a href="#Fix-VSCode-Checksums" class="headerlink" title="Fix VSCode Checksums"></a>Fix VSCode Checksums</h3><p>作用：修复 vscode</p>
+<p>使用：<code>ctrl + shift + p</code> 输入 <code>Fix Checksums: Apply</code></p>
+<h3 id="Git-Emoji-Commit-中文版"><a href="#Git-Emoji-Commit-中文版" class="headerlink" title="Git Emoji Commit 中文版"></a>Git Emoji Commit 中文版</h3><p>作用：提交 git 的时候，加上 emoji 前缀！</p>
+<p>使用：</p>
+<p><img src="https://github.com/maixiaojie/git-emoji-zh/raw/master/images/features.gif" srcset="/img/loading.gif" lazyload alt="git-emoji-zh"></p>
+<h3 id="Git-Graph"><a href="#Git-Graph" class="headerlink" title="Git Graph"></a>Git Graph</h3><p>作用：view a Git Graph of your repository, and perform Git actions from the graph.</p>
+<p>使用：</p>
+<p><img src="https://github.com/mhutchie/vscode-git-graph/raw/master/resources/demo.gif" srcset="/img/loading.gif" lazyload alt="Git Graph"></p>
+<h3 id="Git-History"><a href="#Git-History" class="headerlink" title="Git History"></a>Git History</h3><p>作用：View git log, file history, compare branches or commits</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/gitLogv3.gif" srcset="/img/loading.gif" lazyload alt="Git History"></p>
+<h3 id="GitHub-Pull-Requests-and-Issues"><a href="#GitHub-Pull-Requests-and-Issues" class="headerlink" title="GitHub Pull Requests and Issues"></a>GitHub Pull Requests and Issues</h3><p>作用：GitHub 扩展</p>
+<h3 id="GitLens-—-Git-supercharged"><a href="#GitLens-—-Git-supercharged" class="headerlink" title="GitLens — Git supercharged"></a>GitLens — Git supercharged</h3><p>作用：Supercharge the Git capabilities built into Visual Studio Code — Visualize code authorship at a glance via Git blame annotations and code lens, seamlessly navigate and explore Git repositories, gain valuable insights via powerful comparison commands, and so much more</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/eamodio/vscode-gitlens/master/images/docs/gitlens-preview.gif" srcset="/img/loading.gif" lazyload alt="gitlens-preview"></p>
+<h3 id="hexo-one"><a href="#hexo-one" class="headerlink" title="hexo-one"></a>hexo-one</h3><p>作用：Making hexo easier to use</p>
+<h3 id="Import-Cost"><a href="#Import-Cost" class="headerlink" title="Import Cost"></a>Import Cost</h3><p>作用：导入文件大小</p>
+<p>使用：</p>
+<p><img src="https://file-wkbcnlcvbn.now.sh/import-cost.gif" srcset="/img/loading.gif" lazyload alt="import-cost"></p>
+<h3 id="indent-rainbow"><a href="#indent-rainbow" class="headerlink" title="indent-rainbow"></a>indent-rainbow</h3><p>作用：indent-rainbow</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/oderwat/vscode-indent-rainbow/master/assets/example.png" srcset="/img/loading.gif" lazyload alt="indent-rainbow"></p>
+<h3 id="koroFileHeader"><a href="#koroFileHeader" class="headerlink" title="koroFileHeader"></a>koroFileHeader</h3><p>在 vscode 中用于生成文件头部注释和函数注释的插件，经过多版迭代后，插件：支持所有主流语言，灵活方便，文档齐全，食用简单！觉得插件不错的话，就给个 Star⭐️吧~</p>
+<p><img src="https://raw.githubusercontent.com/OBKoro1/koro1FileHeader/master/images/example.gif" srcset="/img/loading.gif" lazyload alt="koroFileHeader"></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &lt;&lt; koro 头部注释配置</span><br>    <span class="hljs-attr">&quot;fileheader.customMade&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bubao&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Date&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Do not edit&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;LastEditors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bubao&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;LastEditTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Do not edit&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-comment">// &quot;config&quot;: &#123;</span><br>        <span class="hljs-comment">//     &quot;prohibitAutoAdd&quot;: [</span><br>        <span class="hljs-comment">//         &quot;json&quot;,</span><br>        <span class="hljs-comment">//         &quot;md&quot;,</span><br>        <span class="hljs-comment">//         &quot;html&quot;</span><br>        <span class="hljs-comment">//     ]</span><br>        <span class="hljs-comment">// &#125;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <br>    <span class="hljs-attr">&quot;fileheader.configObj&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;prohibitAutoAdd&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;json&quot;</span><br>        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// 禁止。json 文件，自动添加头部注释</span><br>        <span class="hljs-attr">&quot;prohibitItemAutoAdd&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;blog&quot;</span><br>        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// 禁止 blog 项目自动添加头部注释</span><br>        <span class="hljs-attr">&quot;specialOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;Date&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;date&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;Author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;author&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;LastEditTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;last edit time&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;LastEditors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;last author&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;Description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;description&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;FilePath&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;文件相对于项目的路径&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                <span class="hljs-attr">&quot;head&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/**&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;middle&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot; * @&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;end&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot; */&quot;</span><br>            <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;vue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                <span class="hljs-attr">&quot;head&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&lt;!--&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;middle&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot; * @&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;end&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot; --&gt;&quot;</span><br>            <span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// &gt;&gt; koro 注释格式配置</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Kanban"><a href="#Kanban" class="headerlink" title="Kanban"></a>Kanban</h3><p>作用：看板</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/mkloubert/vscode-kanban/master/img/demo1.gif" srcset="/img/loading.gif" lazyload alt="vscode-kanban"></p>
+<h3 id="koroFileHeader-1"><a href="#koroFileHeader-1" class="headerlink" title="koroFileHeader"></a>koroFileHeader</h3><p>作用：在 vscode 中用于生成文件头部注释和函数注释的插件，经过多版迭代后，插件：支持所有主流语言，功能强大，灵活方便，文档齐全，食用简单！</p>
+<p>使用：</p>
+<p><img src="https://raw.githubusercontent.com/OBKoro1/koro1FileHeader/master/images/example.gif" srcset="/img/loading.gif" lazyload alt="koro1FileHeader"></p>
+<h3 id="licenser"><a href="#licenser" class="headerlink" title="licenser"></a>licenser</h3><p>作用：声明生成器</p>
+<p>使用：<code>ctrl + shift + p</code> 输入 <code>licenser: Create LICENSE file</code></p>
+<h3 id="Markdown-All-in-One"><a href="#Markdown-All-in-One" class="headerlink" title="Markdown All in One"></a>Markdown All in One</h3><p>作用：Markdown</p>
+<p><img src="https://github.com/yzhang-gh/vscode-markdown/raw/master/images/gifs/toggle-bold.gif" srcset="/img/loading.gif" lazyload alt="Markdown All in One"></p>
+<h3 id="Markdown-Checkbox"><a href="#Markdown-Checkbox" class="headerlink" title="Markdown Checkbox"></a>Markdown Checkbox</h3><p>作用：Markdown Checkbox</p>
+<p><img src="https://github.com/yzhang-gh/vscode-markdown/raw/master/images/gifs/toggle-bold.gif" srcset="/img/loading.gif" lazyload alt="Markdown Checkbox"></p>
+<h3 id="Markdown-Preview-Enhanced"><a href="#Markdown-Preview-Enhanced" class="headerlink" title="Markdown Preview Enhanced"></a>Markdown Preview Enhanced</h3><p>作用：Markdown Preview Enhanced</p>
+<p><img src="https://user-images.githubusercontent.com/1908863/28495106-30b3b15e-6f09-11e7-8eb6-ca4ca001ab15.png" srcset="/img/loading.gif" lazyload alt="Markdown Preview Enhanced"></p>
+<h3 id="markdownlint"><a href="#markdownlint" class="headerlink" title="markdownlint"></a>markdownlint</h3><p>作用：markdownlint 格式化</p>
+<h3 id="Material-Icon-Theme"><a href="#Material-Icon-Theme" class="headerlink" title="Material Icon Theme"></a>Material Icon Theme</h3><p>作用：Theme Icon</p>
+<p><img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/master/images/fileIcons.png" srcset="/img/loading.gif" lazyload alt="vscode-material-icon-theme"></p>
+<h3 id="Material-Theme"><a href="#Material-Theme" class="headerlink" title="Material Theme"></a>Material Theme</h3><p>作用：Theme</p>
+<p><img src="https://i.ibb.co/LzRwxp4/Frame.jpg" srcset="/img/loading.gif" lazyload alt="vscode-material-theme"></p>
+<h3 id="Material-Theme-Icons"><a href="#Material-Theme-Icons" class="headerlink" title="Material Theme Icons"></a>Material Theme Icons</h3><p>作用：Theme Icon</p>
+<p><img src="https://i.ibb.co/fdDRkWb/Frame.jpg" srcset="/img/loading.gif" lazyload alt="Material Theme Icons"></p>
+<h3 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h3><p>作用：nginx.conf 高亮和提示</p>
+<h3 id="node-readme"><a href="#node-readme" class="headerlink" title="node-readme"></a>node-readme</h3><p>作用：node 模块 readme</p>
+<p><img src="https://github.com/bengreenier/vscode-node-readme/raw/master/images/example-import.gif" srcset="/img/loading.gif" lazyload alt="Material Theme Icons"></p>
+<h3 id="Node-js-Modules-Intellisense"><a href="#Node-js-Modules-Intellisense" class="headerlink" title="Node.js Modules Intellisense"></a>Node.js Modules Intellisense</h3><p>作用：在导入语句中自动完成 Node.js 模块</p>
+<p><img src="https://github.com/leizongmin/vscode-node-module-intellisense/raw/master/images/auto_complete.gif" srcset="/img/loading.gif" lazyload alt="Node.js Modules Intellisense"></p>
+<h3 id="npm-import-package-version"><a href="#npm-import-package-version" class="headerlink" title="npm-import-package-version"></a>npm-import-package-version</h3><p>作用：导入模块的版本</p>
+<p><img src="https://github.com/axetroy/vscode-npm-import-package-version/raw/master/screenshot/js.png" srcset="/img/loading.gif" lazyload alt="vscode-npm-import-package-version"></p>
+<h3 id="One-Dark-Sublime-Babel"><a href="#One-Dark-Sublime-Babel" class="headerlink" title="One Dark (Sublime Babel)"></a>One Dark (Sublime Babel)</h3><p>作用：主题</p>
+<p><img src="https://raw.githubusercontent.com/joshpeng/One-Dark/master/images/onedark.gif" srcset="/img/loading.gif" lazyload alt="One-Dark"></p>
+<h3 id="Pangu-Markdown"><a href="#Pangu-Markdown" class="headerlink" title="Pangu-Markdown"></a>Pangu-Markdown</h3><p>作用：md 格式化</p>
+<h3 id="Polacode"><a href="#Polacode" class="headerlink" title="Polacode"></a>Polacode</h3><p>作用：生成代码图片</p>
+<p><img src="https://github.com/octref/polacode/raw/master/demo/usage.gif" srcset="/img/loading.gif" lazyload alt="Polacode"></p>
+<h3 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h3><p>作用：彩虹括号</p>
+<p><img src="http://www.2gua.info/static/uploads/20160509171502.gif" srcset="/img/loading.gif" lazyload alt="20160509171502"></p>
+<h3 id="Remote-Containers"><a href="#Remote-Containers" class="headerlink" title="Remote - Containers"></a>Remote - Containers</h3><p>作用：远程服务器连接</p>
+<p><img src="https://microsoft.github.io/vscode-remote-release/images/remote-containers-readme.gif" srcset="/img/loading.gif" lazyload alt="remote-containers-readme"></p>
+<h3 id="REST-Client"><a href="#REST-Client" class="headerlink" title="REST Client"></a>REST Client</h3><p>作用：REST 客户端</p>
+<p><img src="https://raw.githubusercontent.com/Huachao/vscode-restclient/master/images/usage.gif" srcset="/img/loading.gif" lazyload alt="vscode-restclient"></p>
+<h3 id="Settings-Sync"><a href="#Settings-Sync" class="headerlink" title="Settings Sync"></a>Settings Sync</h3><p>作用：配置同步</p>
+<p><img src="https://shanalikhan.github.io/img/login-with-github.png" srcset="/img/loading.gif" lazyload alt="login-with-github"></p>
+<h3 id="ssz-egg"><a href="#ssz-egg" class="headerlink" title="ssz-egg"></a>ssz-egg</h3><p>作用：快速生成 egg 代码</p>
+<p><img src="https://s1.ax1x.com/2018/09/19/ieyEBd.gif" srcset="/img/loading.gif" lazyload alt="ieyEBd"></p>
+<h3 id="SVG"><a href="#SVG" class="headerlink" title="SVG"></a>SVG</h3><p>作用：svg 查看器</p>
+<p><img src="https://github.com/lishu/vscode-svg2/raw/master/images/f1s.gif" srcset="/img/loading.gif" lazyload alt="vscode-svg2"></p>
+<h3 id="TabNine"><a href="#TabNine" class="headerlink" title="TabNine"></a>TabNine</h3><p>作用：全语言补全</p>
+<h3 id="VSC-Netease-Music"><a href="#VSC-Netease-Music" class="headerlink" title="VSC Netease Music"></a>VSC Netease Music</h3><p>作用：网易云音乐</p>
+<p>使用：按下 F1 或 Ctrl Shift P 打开命令面板</p>
+<p>输入命令前缀 网易云音乐 或 NeteaseMusic 开始探索 :D</p>
+<h3 id="vscode-hexo-utils"><a href="#vscode-hexo-utils" class="headerlink" title="vscode-hexo-utils"></a>vscode-hexo-utils</h3><p>作用：vscode extension for hexo</p>
+<p><img src="https://github.com/cwxyz007/vscode-hexo-utils/raw/master/docs-images/feature.gif" srcset="/img/loading.gif" lazyload alt="feature"></p>
+<h3 id="Weixin-Read"><a href="#Weixin-Read" class="headerlink" title="Weixin Read"></a>Weixin Read</h3><p>作用：微信读书插件</p>
+<p><img src="https://images.redream.cn/upic/2019/20200520001558-ohsPIa.jpg" srcset="/img/loading.gif" lazyload alt="Weixin Read"></p>
+<h3 id="Word-Count-CJK"><a href="#Word-Count-CJK" class="headerlink" title="Word Count CJK"></a>Word Count CJK</h3><p>作用：cjk 文字计算，自带计数只支持英文</p>
+<h3 id="Zhihu-Daily"><a href="#Zhihu-Daily" class="headerlink" title="Zhihu Daily"></a>Zhihu Daily</h3><p>作用：知乎日报</p>
+<p><img src="https://camo.githubusercontent.com/7ee4ec2fd6cac35f5ff52436aa148c34c4e15b7b/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f36356164376435616c79316735757866663938786a6a323162783075306538312e6a7067" srcset="/img/loading.gif" lazyload alt="Zhihu Daily"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vscode/" class="print-no-link">#vscode</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>VSCode 插件整理与设置</div>
+      <div>https://bubao.github.io/posts/99204414.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年6月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/311d2e0a.html" title="在服务器上搭建 Aria2 rpc 服务">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在服务器上搭建 Aria2 rpc 服务</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/54d37429.html" title="树莓派上部署私有云">
+                        <span class="hidden-mobile">树莓派上部署私有云</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/custom-theme.css">
+<link rel="stylesheet" href="/css/animation.css">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!-- hexo injector head_begin end -->
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/logo/mylogo.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="一念">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="集合 (aggregate)为了后面我们更好的理解函数，我们需要先了解下什么是集合。 举个简单的例子： 问题家里有多少种宠物？分别是哪些？假如我们家有两只狗，三条金鱼，一只猫。那我应该怎么回答？ 我应该回答：3 种，分别是狗，猫，鱼。 狗，猫，鱼就组成了家里的宠物种类的集合。而狗，猫，鱼都是这个集合的元素。 用数学的方法表示就是家里的宠物种类&#x3D;&#123;狗，猫，鱼&#125; 集合的三个特性确">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《普林斯顿微积分读本》读书笔记————第一章">
+<meta property="og:url" content="https://bubao.github.io/posts/f6e25e88.html">
+<meta property="og:site_name" content="瓦猫杂货铺">
+<meta property="og:description" content="集合 (aggregate)为了后面我们更好的理解函数，我们需要先了解下什么是集合。 举个简单的例子： 问题家里有多少种宠物？分别是哪些？假如我们家有两只狗，三条金鱼，一只猫。那我应该怎么回答？ 我应该回答：3 种，分别是狗，猫，鱼。 狗，猫，鱼就组成了家里的宠物种类的集合。而狗，猫，鱼都是这个集合的元素。 用数学的方法表示就是家里的宠物种类&#x3D;&#123;狗，猫，鱼&#125; 集合的三个特性确">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-19T06:58:59.000Z">
+<meta property="article:modified_time" content="2025-12-08T01:45:52.880Z">
+<meta property="article:author" content="一念">
+<meta property="article:tag" content="math">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>《普林斯顿微积分读本》读书笔记————第一章 - 瓦猫杂货铺</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2341296_qq5e51uzpqa.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"bubao.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"✦","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/global.js"></script>
+<script src="/js/cat/custom-utils.js"></script>
+<script src="/js/cat/onClick.js"></script>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>瓦猫杂货铺</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zitie/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>字帖</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdn.jsdelivr.net/gh/bubao/picgo_db_tiny/img/20210121213449.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="《普林斯顿微积分读本》读书笔记————第一章"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-09-19 14:58" pubdate>
+          2019年9月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">《普林斯顿微积分读本》读书笔记————第一章</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <span id="more"></span>
+<h2 id="集合-aggregate"><a href="#集合-aggregate" class="headerlink" title="集合 (aggregate)"></a>集合 (aggregate)</h2><p>为了后面我们更好的理解函数，我们需要先了解下什么是<strong>集合</strong>。</p>
+<p>举个简单的例子：</p>
+<p>问题家里有多少种宠物？分别是哪些？假如我们家有两只狗，三条金鱼，一只猫。那我应该怎么回答？</p>
+<p>我应该回答：3 种，分别是狗，猫，鱼。</p>
+<p><strong>狗</strong>，<strong>猫</strong>，<strong>鱼</strong>就组成了<strong>家里的宠物种类</strong>的集合。而<strong>狗</strong>，<strong>猫</strong>，<strong>鱼</strong>都是这个集合的<strong>元素</strong>。</p>
+<p>用数学的方法表示就是<code>家里的宠物种类=&#123;狗，猫，鱼&#125;</code></p>
+<h3 id="集合的三个特性"><a href="#集合的三个特性" class="headerlink" title="集合的三个特性"></a>集合的三个特性</h3><p><strong>确定性</strong>：</p>
+<p>给定一个集合，任给一个元素，该元素或者属于或者不属于该集合，二者必居其一，不允许有模棱两可的情况出现。</p>
+<p>说人话就是：在人类性别的集合里，要么是女要么是男。</p>
+<p><strong>互异性</strong>：</p>
+<p>一个集合中，任何两个元素都认为是不相同的，即每个元素只能出现一次。有时需要对同一元素出现多次的情形进行刻画，可以使用多重集，其中的元素允许出现多次。</p>
+<p>说人话就是：我家两条狗，但是在<strong>家里的宠物种类</strong>的集合里只会出现一次<strong>狗</strong>，而不会出现两次<strong>狗</strong>。</p>
+<p><strong>无序性</strong>：</p>
+<p>一个集合中，每个元素的地位都是相同的，元素之间是无序的。集合上可以定义序关系，定义了序关系后，元素之间就可以按照序关系排序。但就集合本身的特性而言，元素之间没有必然的序。</p>
+<p>说人话就是：<code>&#123;狗，猫，鱼&#125;</code>和<code>&#123;狗，鱼，猫&#125;</code>是等价的。</p>
+<h3 id="集合的分类"><a href="#集合的分类" class="headerlink" title="集合的分类"></a>集合的分类</h3><p><strong>空集</strong>：</p>
+<p>什么元素都没有的集合就是空集，用符号<code>∅</code>表示。</p>
+<p>空集是个特殊的集合，它有 2 个特点：</p>
+<ol>
+<li>空集∅是任意一个非空集合的<strong>真子集</strong>。</li>
+<li>空集是任何一个集合的<strong>子集</strong>。</li>
+</ol>
+<p>那什么是子集和真子集呢？</p>
+<p><strong>子集</strong>：</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><strong>函数</strong>是将一个对象转换为另一个对象的规则。起始对象成为<strong>输入</strong>，来自成为<strong>定义域</strong>的<strong>集合</strong>。返回的对象成为<strong>输出</strong>，来自称为<strong>上域</strong>的集合。</p>
+<p>$$<br>f(x) &#x3D; x^2<br>$$</p>
+<p><strong>$f$是变换规则，而$f(x)$是把这个变换规则应用与变量<code>x</code>后得到的结果。因此说<code>f(x) 是一个函数</code>是不正确的，应该是<code>f 是一个函数</code></strong></p>
+<p>用 JavaScript 举个例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">addOne</span>(<span class="hljs-params">x</span>)&#123;<br>    x += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">addOne</span>(<span class="hljs-number">1</span>)) <span class="hljs-comment">// 2</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(addOne) <span class="hljs-comment">// [Function: addOne]</span><br></code></pre></td></tr></table></figure>
+
+<p>演示：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh">➜ node<br>Welcome to Node.js v12.13.1.<br>Type <span class="hljs-string">&quot;.help&quot;</span> <span class="hljs-keyword">for</span> more information.<br>&gt; <span class="hljs-keyword">function</span> addOne(x)&#123;<br>...     x += 1;<br>...     <span class="hljs-built_in">return</span> x;<br>... &#125;<br>undefined<br>&gt;<br>&gt; console.log(addOne(1))<br>2<br>undefined<br>&gt; console.log(addOne)<br>[Function: addOne]<br>undefined<br>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>令<code>g(x) = x^2</code>的定义域为大于或者等于 0 <code>(x&gt;=0)</code>，它看上去和上面的<code>f</code>一样，但是实际不一样，因为<strong>定义域</strong>不一样。例如<code>f(-1/2)=1/4</code>，而<code>g(-1/2)</code>却是没有意义的。函数<code>g</code>会拒绝非其定义域中的一切。由于<code>g</code>和<code>f</code>有相同的规则，但<code>g</code>的定义域小于<code>f</code>的定义域，因此我们就说<code>g</code>是由限制<code>f</code>的定义域产生的。</p>
+<p><strong>一个函数必须给每一个有效的输入制定唯一的输出</strong>：一个患有消化不良症的狗，吃什么都会吐出来。我们可以令<code>j(x)=当狗吃 x 时呕吐物的颜色</code>。为了使之有效，我们必须认为如果狗吃了玉米面卷，它的呕吐物始终是一种颜色。如果有时是红色，有时是绿色，那就不太好了。</p>
+<p>这个是什么意思呢？难道函数还会有不唯一的输出的情况？数学上的例子我是找不到了，以为我是数学渣。但是我能找到一类 JavaScript 的函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getTime</span>(<span class="hljs-params">x</span>)&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>() + <span class="hljs-string">&quot; &quot;</span> + x<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>演示：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">➜ node<br>Welcome to Node.js v12.13.1.<br>Type <span class="hljs-string">&quot;.help&quot;</span> <span class="hljs-keyword">for</span> more information.<br>&gt; <span class="hljs-keyword">function</span> getTime(x)&#123;<br>... <span class="hljs-built_in">return</span> new Date() + <span class="hljs-string">&quot; &quot;</span> + x<br>... &#125;<br>undefined<br>&gt; getTime(2)<br><span class="hljs-string">&#x27;Wed Dec 11 2019 16:16:00 GMT+0800 (GMT+08:00) 2&#x27;</span><br>&gt; getTime(2)<br><span class="hljs-string">&#x27;Wed Dec 11 2019 16:16:02 GMT+0800 (GMT+08:00) 2&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>值域</strong>是所有可能的输出组成的集合。值域是可以重复的。</p>
+<p><strong>值域</strong>是<strong>上域</strong>的子集，上域是可能输出的集合，值域是实际输出的集合。</p>
+<h3 id="区间表示法"><a href="#区间表示法" class="headerlink" title="区间表示法"></a>区间表示法</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">[a, b] <span class="hljs-comment"># &#123;x:a&lt;=x&lt;=b&#125; 闭区间</span><br>(a, b] <span class="hljs-comment"># &#123;x:a&lt;x&lt;=b&#125; 半开区间</span><br>[a, b) <span class="hljs-comment"># &#123;x:a&lt;=x&lt;b&#125; 半开区间</span><br>(a, b) <span class="hljs-comment"># &#123;x:a&lt;x&lt;b&#125; 开区间</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="求定义域"><a href="#求定义域" class="headerlink" title="求定义域"></a>求定义域</h3><p>就是求输入集合，需要考虑到式子对定义域取值的限制</p>
+<ol>
+<li>分数的分母不能是零</li>
+<li>不能区一个附属的平方根</li>
+<li>不能取一个负数和零的对数</li>
+<li>tan(90deg) 是无定义的</li>
+</ol>
+<h3 id="利用图像求值域"><a href="#利用图像求值域" class="headerlink" title="利用图像求值域"></a>利用图像求值域</h3><h3 id="垂线检验"><a href="#垂线检验" class="headerlink" title="垂线检验"></a>垂线检验</h3><p>圆形轨道公式不是函数，因为没有通过垂线检验。</p>
+<h2 id="反函数"><a href="#反函数" class="headerlink" title="反函数"></a>反函数</h2><ol>
+<li>从一个函数 f 出发，使得：对于在 f 值域中的任意 y，都只有唯一的 x 值满足 f(x)&#x3D;y，也就是说，不同的输入对于不同的输出，现在我们就来定义反函数$f^-1$</li>
+<li>$f^-1$的定义域和 f 的值域相同</li>
+<li>$f^-1$的值域与 f 的定义域相同</li>
+<li>$f^-1(y)$的值就是满足 f(x)&#x3D;y 的 x。所以如果 f(x)&#x3D;y，那么$f^-1(y)&#x3D;x$</li>
+</ol>
+<h3 id="水平线检验"><a href="#水平线检验" class="headerlink" title="水平线检验"></a>水平线检验</h3><p>Q1: 如何知道对于 f 值域中的任意 y，只有一个 x 值满足$f(x)&#x3D;y$，最好的方法也许是看下函数图像。</p>
+<p><strong>水平线检验</strong>这是用来检验一个函数是否存在反函数的一种方法。</p>
+<h3 id="求逆"><a href="#求逆" class="headerlink" title="求逆"></a>求逆</h3><p>Q2: 如何求得函数 f 的反函数？</p>
+<p>如果一个函数有反函数，那么反函数的图像会与原函数关于 y&#x3D;x 对称（镜像）</p>
+<h3 id="限制定义域"><a href="#限制定义域" class="headerlink" title="限制定义域"></a>限制定义域</h3><p>Q3: 如果水平线检验失败并且没有反函数，那么应该怎么办？</p>
+<p>解决这个唯一的方法是：除了这些多个 x 值中的一个，我们放弃所有其他的值，这称为<strong>限制函数的定义域</strong>。</p>
+<h3 id="关于反函数的反函数"><a href="#关于反函数的反函数" class="headerlink" title="关于反函数的反函数"></a>关于反函数的反函数</h3><p>如果 f 有反函数，那么对于在 f 定义域中的所有的 x，$f^-1(f(x)) &#x3D; x$成立；同样，对于在 f 值域中的所有的 y, 都有 x，$f(f^-1(y)) &#x3D; y$</p>
+<p>对于限制定义域的情况需要注意：</p>
+<p>如果一个函数 f 的定义域可以被限制，使得 f 有反函数$f^-1$，那么</p>
+<ul>
+<li>对于 f 值域中的所有 y，都有$f(f^-1(y))&#x3D;y$, 但是</li>
+<li>$f^-1(f(x))$可能不等于 x；事实上，$f^-1(f(x)) &#x3D; x$仅当 x 在限制的定义域中才成立</li>
+</ul>
+<h2 id="函数的复合"><a href="#函数的复合" class="headerlink" title="函数的复合"></a>函数的复合</h2><p>将一个函数的输出作为另一个函数的输入。</p>
+<p>我们使用下面的形式表示</p>
+<p>$$<br>f&#x3D;hog<br>$$</p>
+<p>从右到左，g 的输出是 h 的输入。</p>
+<p>用 js 的写法就是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">x</span>)&#123;<br>    <span class="hljs-keyword">return</span> x+<span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">h</span>(<span class="hljs-params">x</span>)&#123;<br>    <span class="hljs-keyword">return</span> x*x;<br>&#125;<br><br><span class="hljs-keyword">const</span> f = <span class="hljs-title function_">h</span>(<span class="hljs-title function_">g</span>(<span class="hljs-number">1</span>))<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f)<br></code></pre></td></tr></table></figure>
+
+<p>函数的复合与函数顺序有关，而函数的乘积与函数的顺序无关</p>
+<h2 id="奇函数和偶函数"><a href="#奇函数和偶函数" class="headerlink" title="奇函数和偶函数"></a>奇函数和偶函数</h2><p>当对 f 定义域内所有的 x，有 f(-x)&#x3D;f(x)，则 f 是偶函数。函数的图像关于 y 轴具有镜像对称性</p>
+<p>当对 f 定义域内所有的 x，有 f(-x)&#x3D;-f(x)，则 f 是奇函数。函数的图像关于原点具有 180 度的点对称性</p>
+<p>一个函数可能是奇函数，也可能是偶函数，也可能是非奇非偶函数。</p>
+<p>只有一个函数是又奇又偶的，f(x)&#x3D;0（零函数）</p>
+<h3 id="怎么验证奇偶性"><a href="#怎么验证奇偶性" class="headerlink" title="怎么验证奇偶性"></a>怎么验证奇偶性</h3><p>要判断一个函数的奇偶性，使用定义，将原函数的 x 换成-x，与原函数做对比。 f(-x)&#x3D;f(x)，则 f 是偶函数。f(-x)&#x3D;-f(x)，则 f 是奇函数。前面两者都不是则是非奇非偶函数。</p>
+<h2 id="线性函数的图像"><a href="#线性函数的图像" class="headerlink" title="线性函数的图像"></a>线性函数的图像</h2><p>形如 f(x)&#x3D;mx+b 的函数叫做线性函数。</p>
+<p>如果已知直线通过点$(x_0,y_0)$斜率为 m，则它们的方程为$y-y_0&#x3D;m(x-x_0)$</p>
+<p>如果一条直线通过$(x_1,y_1)$和$(x_2,y_2)$，则它的斜率为$(y_2-y_1)&#x2F;(x_2-x_1)$</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%87%AA%E7%94%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">自用笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/math/" class="print-no-link">#math</a>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/" class="print-no-link">#笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>《普林斯顿微积分读本》读书笔记————第一章</div>
+      <div>https://bubao.github.io/posts/f6e25e88.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>一念</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年9月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/ba3c82b6.html" title="在 Archlinux 上给 U 盘安装 Archlinux">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在 Archlinux 上给 U 盘安装 Archlinux</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/28762641.html" title="ssl 加密文字">
+                        <span class="hidden-mobile">ssl 加密文字</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appKey":"RTEVOUkcOQW24bsIRC0tIlUH","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"https://t6w6kmao.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"appid":"t6W6KmAoPXNvoRHvalIiqrVC-gzGzoHsz","appkey":"RTEVOUkcOQW24bsIRC0tIlUH"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/bubao" target="_blank" rel="nofollow noopener"><span>bubao</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
